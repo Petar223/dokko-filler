@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
-import styled from "styled-components";
-import DocumentItem from "~shared-components/DocumentItem/DocumentItem";
-import useFetch from "~hooks/useFetch";
-import getDocuments from "~api/getDocuments";
-import { useNotification } from "~context/NotificationContext";
-import Loading from "~shared-components/Loading/Loading";
-import ErrorHandler from "~shared-components/ErrorHandler/ErrorHandler";
+import React, { useEffect } from 'react';
+import styled from 'styled-components';
+import DocumentItem from '~shared-components/DocumentItem/DocumentItem';
+import useFetch from '~hooks/useFetch';
+import getDocuments from '~api/getDocuments';
+import { useNotification } from '~context/NotificationContext';
+import Loading from '~shared-components/Loading/Loading';
+import ErrorHandler from '~shared-components/ErrorHandler/ErrorHandler';
 
 const DocumentsContainer = styled.div`
   padding: 20px;
@@ -39,23 +39,22 @@ const StateContainerWrapper = styled.div`
 function DocumentsList() {
   const { data: documents, loading, error } = useFetch(getDocuments);
   const showNotification = useNotification();
+  const isValidDocumentsArray = Array.isArray(documents?.body);
 
   useEffect(() => {
     if (error) {
       showNotification(
-        "Neuspešno učitavanje liste dokumenata. Molimo vas pokušajte opet.",
+        'Neuspešno učitavanje liste dokumenata. Molimo vas pokušajte opet.',
         5000,
-        "error"
+        'error'
       );
     }
   }, [error]);
 
-  const documentsList = Array.isArray(documents?.body) ? documents.body : [];
-
-  if (documentsList?.length === 0)
+  if (documents?.length === 0)
     return (
       <StateContainerWrapper>
-        <ErrorHandler message="Lista dokumenata je prazna."></ErrorHandler>
+        <ErrorHandler message='Lista dokumenata je prazna.'></ErrorHandler>
       </StateContainerWrapper>
     );
 
@@ -66,10 +65,10 @@ function DocumentsList() {
       </StateContainerWrapper>
     );
 
-  if (error)
+  if (error || !documents || !isValidDocumentsArray)
     return (
       <StateContainerWrapper>
-        <ErrorHandler message="Neuspešno učitavanje liste ugovora."></ErrorHandler>
+        <ErrorHandler message='Neuspešno učitavanje liste ugovora.'></ErrorHandler>
       </StateContainerWrapper>
     );
 
