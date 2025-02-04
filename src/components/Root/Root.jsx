@@ -11,7 +11,6 @@ import Signup from "~components/Authentication/Signup";
 import PrivateRoute from "~components/PrivateRoute/PrivateRoute";
 
 function Root() {
-
   return (
     <Router>
       <Layout>
@@ -21,7 +20,7 @@ function Root() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/about" element={<AboutPage />} />
 
-          <Route element={<PrivateRoute/>}>
+          <Route element={<PrivateRoute />}>
             <Route path="/documents" element={<DocumentsList />} />
             <Route
               path="/documents/create/:name/:id"

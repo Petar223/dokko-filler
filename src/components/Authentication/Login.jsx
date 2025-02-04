@@ -49,7 +49,7 @@ function Login() {
       showNotification(
         "Došlo je do greške prilikom logovanja. Molimo vas pokušajte opet.",
         5000,
-        "error"
+        "error",
       );
     }
   };

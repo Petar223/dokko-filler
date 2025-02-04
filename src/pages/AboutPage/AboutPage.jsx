@@ -1,6 +1,6 @@
-import React from 'react';
-import styled, { keyframes } from 'styled-components';
-import { InfoCircleLineIcon } from '~components/Icons';
+import React from "react";
+import styled, { keyframes } from "styled-components";
+import { InfoCircleLineIcon } from "~components/Icons";
 
 const pulseAnimation = keyframes`
   0% {

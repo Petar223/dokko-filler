@@ -1,7 +1,7 @@
-import React from 'react';
-import { Button } from '@mui/material';
-import styled from 'styled-components';
-import { WebPageSourceCodeIcon } from '~components/Icons';
+import React from "react";
+import { Button } from "@mui/material";
+import styled from "styled-components";
+import { WebPageSourceCodeIcon } from "~components/Icons";
 
 const ErrorContentContainer = styled.div`
   display: flex;
@@ -55,7 +55,7 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error('ErrorBoundary caught an error', error, errorInfo);
+    console.error("ErrorBoundary caught an error", error, errorInfo);
   }
 
   resetError() {

@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import NavigationItem from './NavigationItem/NavigationItem';
+import React from "react";
+import styled from "styled-components";
+import NavigationItem from "./NavigationItem/NavigationItem";
 
 const SidebarContainer = styled.div`
   width: fit-content;
@@ -9,7 +9,7 @@ const SidebarContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background-color:  ${({ theme }) => theme.palette.lightGrey[700]};
+  background-color: ${({ theme }) => theme.palette.lightGrey[700]};
   box-sizing: border-box;
   padding-top: 16px;
   padding-bottom: 16px;
@@ -24,19 +24,19 @@ const StyledList = styled.div`
 function Sidebar() {
   const navigationItems = [
     {
-      label: 'Početna',
-      icon: 'HouseIcon',
-      route: '/',
+      label: "Početna",
+      icon: "HouseIcon",
+      route: "/",
     },
     {
-      label: 'Ugovori',
-      icon: 'DescriptionIcon',
-      route: '/documents',
+      label: "Ugovori",
+      icon: "DescriptionIcon",
+      route: "/documents",
     },
     {
-      label: 'O platformi',
-      icon: 'BuildingIcon',
-      route: '/about',
+      label: "O platformi",
+      icon: "BuildingIcon",
+      route: "/about",
     },
   ];
 

@@ -1,8 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Card, CardContent, Typography, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { FileLineIcon } from '~components/Icons';
+import React from "react";
+import styled from "styled-components";
+import { Card, CardContent, Typography, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { FileLineIcon } from "~components/Icons";
 
 const IconContainer = styled.div`
   display: flex;

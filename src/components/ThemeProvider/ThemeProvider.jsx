@@ -1,7 +1,7 @@
-import React from 'react';
-import { ThemeProvider as StyledThemeProvider } from 'styled-components';
-import { ThemeProvider as MuiThemeProvider, CssBaseline } from '@mui/material';
-import { useMode } from '../../theme/theme';
+import React from "react";
+import { ThemeProvider as StyledThemeProvider } from "styled-components";
+import { ThemeProvider as MuiThemeProvider, CssBaseline } from "@mui/material";
+import { useMode } from "../../theme/theme";
 
 function ThemeProvider({ children }) {
   const [theme] = useMode();

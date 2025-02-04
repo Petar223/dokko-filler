@@ -61,7 +61,7 @@ function Signup() {
       showNotification(
         "Uspešno ste se registrovali! Možete se sada prijaviti.",
         3000,
-        "success"
+        "success",
       );
       navigate("/documents");
     } catch (err) {
@@ -69,7 +69,7 @@ function Signup() {
       showNotification(
         "Došlo je do greške prilikom registracije. Molimo vas pokušajte opet.",
         5000,
-        "error"
+        "error",
       );
     }
   };

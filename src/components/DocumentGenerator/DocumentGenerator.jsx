@@ -81,11 +81,11 @@ function DocumentGenerator({ templateURL, readFields }) {
   const processPlaceholders = async (documentContent, enrichedFields) => {
     const placeholders = extractPlaceholders(
       documentContent.value,
-      enrichedFields
+      enrichedFields,
     );
 
     const transformedFieldsArray = await Promise.all(
-      placeholders.map((placeholder) => postPlaceholder(placeholder))
+      placeholders.map((placeholder) => postPlaceholder(placeholder)),
     );
 
     const transformedFields = Object.assign({}, ...transformedFieldsArray);
@@ -109,12 +109,12 @@ function DocumentGenerator({ templateURL, readFields }) {
 
       const enrichedFieldsWithTransforms = await processPlaceholders(
         documentContent,
-        enrichedFields
+        enrichedFields,
       );
 
       const filledBlob = await fillDocumentAndCreateBlob(
         docS3Bytes,
-        enrichedFieldsWithTransforms
+        enrichedFieldsWithTransforms,
       );
 
       setDownloadBlob(filledBlob);

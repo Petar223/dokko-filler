@@ -14,5 +14,5 @@ root.render(
         <Root />
       </ErrorBoundary>
     </ThemeProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
-import { ColorModeContext } from '../../theme/theme';
-import styled from 'styled-components';
+import React, { useContext } from "react";
+import { ColorModeContext } from "../../theme/theme";
+import styled from "styled-components";
 
 const SwitchContainer = styled.div`
   display: flex;
@@ -42,7 +42,7 @@ const Slider = styled.span`
 
   &:before {
     position: absolute;
-    content: '';
+    content: "";
     height: 16px;
     width: 16px;
     left: 2px;

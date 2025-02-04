@@ -1,9 +1,9 @@
 export async function downloadFile(filledBlob, fileName) {
-  const aElement = document.createElement('a');
-  aElement.setAttribute('download', fileName);
+  const aElement = document.createElement("a");
+  aElement.setAttribute("download", fileName);
   const href = URL.createObjectURL(filledBlob);
   aElement.href = href;
-  aElement.setAttribute('target', '_blank');
+  aElement.setAttribute("target", "_blank");
   aElement.click();
   URL.revokeObjectURL(href);
 }

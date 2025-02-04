@@ -1,6 +1,6 @@
-import React from 'react';
-import styled, { keyframes } from 'styled-components';
-import { FileLineIcon } from '~components/Icons';
+import React from "react";
+import styled, { keyframes } from "styled-components";
+import { FileLineIcon } from "~components/Icons";
 
 const pulseAnimation = keyframes`
   0% {
@@ -86,7 +86,7 @@ function HomePage() {
         pregledajte ugovore na jednom mestu uz maksimalnu efikasnost i
         intuitivno korisničko iskustvo.
       </Description>
-      <CTAButton onClick={() => (window.location.href = '/documents')}>
+      <CTAButton onClick={() => (window.location.href = "/documents")}>
         Pregledaj ugovore
       </CTAButton>
     </HomeContainer>

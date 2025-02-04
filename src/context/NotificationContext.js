@@ -1,5 +1,5 @@
-import React, { createContext, useState, useContext } from 'react';
-import Notification from '~shared-components/Notification/Notification';
+import React, { createContext, useState, useContext } from "react";
+import Notification from "~shared-components/Notification/Notification";
 
 const NotificationContext = createContext();
 
@@ -10,7 +10,7 @@ export const useNotification = () => {
 export const NotificationProvider = ({ children }) => {
   const [notification, setNotification] = useState(null);
 
-  const showNotification = (message, duration, type = 'default') => {
+  const showNotification = (message, duration, type = "default") => {
     setNotification({ message, duration, type });
   };
 

@@ -1,7 +1,7 @@
-import axiosInstance from './readerAxios';
+import axiosInstance from "./readerAxios";
 
 const health = async () => {
-  const response = await axiosInstance.get('/health');
+  const response = await axiosInstance.get("/health");
   return response.data;
 };
 

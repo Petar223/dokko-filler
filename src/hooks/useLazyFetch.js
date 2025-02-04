@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
 const useLazyFetch = (fetchFunction) => {
   const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ const useLazyFetch = (fetchFunction) => {
         setLoading(false);
       }
     },
-    [fetchFunction]
+    [fetchFunction],
   );
 
   const resetData = () => {

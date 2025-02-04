@@ -23,7 +23,7 @@ axiosInstance.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 axiosInstance.interceptors.response.use(
@@ -95,7 +95,7 @@ axiosInstance.interceptors.response.use(
         message: "Error setting up the request: " + error.message,
       });
     }
-  }
+  },
 );
 
 export default axiosInstance;

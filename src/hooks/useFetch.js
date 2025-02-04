@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 
 const useFetch = (fetchFunction) => {
   const [data, setData] = useState(null);

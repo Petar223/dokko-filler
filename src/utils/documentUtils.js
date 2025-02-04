@@ -25,7 +25,7 @@ const formatOnlyFirstUpper = (string = "") =>
     .map((word) =>
       word.startsWith(`'`)
         ? `'${word[1]?.toUpperCase()}${word?.slice(2)?.toLowerCase()}`
-        : `${word[0]?.toUpperCase()}${word?.slice(1)?.toLowerCase()}`
+        : `${word[0]?.toUpperCase()}${word?.slice(1)?.toLowerCase()}`,
     )
     .join(" ");
 

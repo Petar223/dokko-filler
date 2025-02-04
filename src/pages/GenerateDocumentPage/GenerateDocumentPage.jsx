@@ -1,16 +1,16 @@
-import React, { useEffect, useCallback, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
-import getDocumentById from '~api/getDocumentById';
-import { useNotification } from '~context/NotificationContext';
-import useFetch from '~hooks/useFetch';
-import ErrorHandler from '~shared-components/ErrorHandler/ErrorHandler';
-import Loading from '~shared-components/Loading/Loading';
-import DocumentRenderer from '~components/DocumentRender/DocumentRender';
-import useLazyFetch from '~hooks/useLazyFetch';
-import read from '~api/read';
-import DocumentGenerator from '~components/DocumentGenerator/DocumentGenerator';
-import { requiredFieldsMap } from './consts';
+import React, { useEffect, useCallback, useState } from "react";
+import { useParams } from "react-router-dom";
+import styled from "styled-components";
+import getDocumentById from "~api/getDocumentById";
+import { useNotification } from "~context/NotificationContext";
+import useFetch from "~hooks/useFetch";
+import ErrorHandler from "~shared-components/ErrorHandler/ErrorHandler";
+import Loading from "~shared-components/Loading/Loading";
+import DocumentRenderer from "~components/DocumentRender/DocumentRender";
+import useLazyFetch from "~hooks/useLazyFetch";
+import read from "~api/read";
+import DocumentGenerator from "~components/DocumentGenerator/DocumentGenerator";
+import { requiredFieldsMap } from "./consts";
 
 const CreateContainer = styled.div`
   display: flex;
@@ -99,9 +99,9 @@ function GenerateDocumentPage() {
   useEffect(() => {
     if (fetchDocumentError) {
       showNotification(
-        'Neuspešno učitavanje ugovora. Molimo vas pokušajte opet.',
+        "Neuspešno učitavanje ugovora. Molimo vas pokušajte opet.",
         5000,
-        'error'
+        "error",
       );
     }
   }, [fetchDocumentError]);
@@ -111,7 +111,7 @@ function GenerateDocumentPage() {
       showNotification(
         `Neuspešno učitavanje dokumenta. Molimo vas pokušajte opet ili ubacite dokument u citac kartica.`,
         5000,
-        'error'
+        "error",
       );
     }
   }, [cardError]);
@@ -156,7 +156,7 @@ function GenerateDocumentPage() {
   if (fetchDocumentError)
     return (
       <StateContainerWrapper>
-        <ErrorHandler message={'Neuspešno učitavanje ugovora.'}></ErrorHandler>
+        <ErrorHandler message={"Neuspešno učitavanje ugovora."}></ErrorHandler>
       </StateContainerWrapper>
     );
 

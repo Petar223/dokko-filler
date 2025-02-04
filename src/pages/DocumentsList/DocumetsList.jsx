@@ -45,7 +45,7 @@ function DocumentsList() {
       showNotification(
         "Neuspešno učitavanje liste dokumenata. Molimo vas pokušajte opet.",
         5000,
-        "error"
+        "error",
       );
     }
   }, [error]);

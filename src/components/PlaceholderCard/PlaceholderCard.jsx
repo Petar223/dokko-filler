@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import Loading from '~shared-components/Loading/Loading';
-import { PlusRoundLineIcon } from '~components/Icons';
+import React from "react";
+import styled from "styled-components";
+import Loading from "~shared-components/Loading/Loading";
+import { PlusRoundLineIcon } from "~components/Icons";
 
 const CardContainer = styled.div`
   width: 400px;

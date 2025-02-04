@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { InfoCircleLineIcon, DownloadToStorageIcon } from '~components/Icons';
+import React from "react";
+import styled from "styled-components";
+import { InfoCircleLineIcon, DownloadToStorageIcon } from "~components/Icons";
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -90,7 +90,7 @@ const A4Paper = styled.div`
   margin-bottom: 20px;
 `;
 const WordStyledContent = styled.div`
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
   font-size: 9pt;
   line-height: 1.5;
   color: ${({ theme }) => theme.palette.text.primary};

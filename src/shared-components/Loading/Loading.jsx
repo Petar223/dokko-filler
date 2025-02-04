@@ -1,6 +1,6 @@
-import React from 'react';
-import styled, { keyframes } from 'styled-components';
-import { ActivityLogIcon } from '~components/Icons';
+import React from "react";
+import styled, { keyframes } from "styled-components";
+import { ActivityLogIcon } from "~components/Icons";
 
 const pulseAnimation = keyframes`
   0% {
@@ -33,7 +33,7 @@ const AnimatedIcon = styled(ActivityLogIcon)`
   fill: ${({ theme }) => theme.palette.grey[700]};
 `;
 
-function Loading({ text = 'Učitavanje' }) {
+function Loading({ text = "Učitavanje" }) {
   return (
     <LoadingContainer>
       {text}

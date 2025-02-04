@@ -34,9 +34,11 @@ module.exports = {
     sourceType: "module",
   },
   rules: {
+    "import/no-unresolved": "off",
+    "import/extensions": "off",
+    "react/prop-types": "off",
     "react/jsx-filename-extension": [1, { extensions: [".jsx", ".js"] }],
     "react/react-in-jsx-scope": "off",
-    quotes: ["error", "single", { avoidEscape: true }],
     "comma-dangle": ["error", "always-multiline"],
     "prettier/prettier": [
       "error",
@@ -54,11 +56,9 @@ module.exports = {
     ],
     "linebreak-style": ["error", "unix"],
     "import/no-extraneous-dependencies": [
+      "error",
       {
-        files: ["webpack*.js"],
-        rules: {
-          "import/no-extraneous-dependencies": "off",
-        },
+        devDependencies: ["webpack*.js"],
       },
     ],
     camelcase: ["error", { properties: "always" }],

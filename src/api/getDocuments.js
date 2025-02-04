@@ -1,7 +1,7 @@
-import axiosInstance from './axios';
+import axiosInstance from "./axios";
 
 const getDocuments = async () => {
-  const response = await axiosInstance.get('GetListOfDocs');
+  const response = await axiosInstance.get("GetListOfDocs");
   return response.data;
 };
 

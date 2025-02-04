@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import { BrowserError404Icon } from '~components/Icons';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import styled from "styled-components";
+import { BrowserError404Icon } from "~components/Icons";
+import { useNavigate } from "react-router-dom";
 
 const NotFoundContainer = styled.div`
   display: flex;
@@ -49,7 +49,7 @@ function PageNotFound() {
     <NotFoundContainer>
       <StyledIcon />
       <Title>Stranica nije pronađena</Title>
-      <StyledButton variant="contained" onClick={() => navigate('/')}>
+      <StyledButton variant="contained" onClick={() => navigate("/")}>
         Idi na Poačetak
       </StyledButton>
     </NotFoundContainer>

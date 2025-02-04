@@ -1,9 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
-import Header from '~components/Header/Header';
-import Footer from '~components/Footer/Footer';
-import Sidebar from '~components/Sidebar/Sidebar';
-import { NotificationProvider } from '~context/NotificationContext';
+import React from "react";
+import styled from "styled-components";
+import Header from "~components/Header/Header";
+import Footer from "~components/Footer/Footer";
+import Sidebar from "~components/Sidebar/Sidebar";
+import { NotificationProvider } from "~context/NotificationContext";
 
 const FlexContainer = styled.div`
   display: flex;

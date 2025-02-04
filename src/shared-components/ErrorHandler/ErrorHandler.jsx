@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { TextDocumentRemoveIcon } from '~components/Icons';
+import React from "react";
+import styled from "styled-components";
+import { TextDocumentRemoveIcon } from "~components/Icons";
 
 const ErrorContainer = styled.div`
   display: flex;
@@ -27,7 +27,7 @@ const StyledErrorIcon = styled(TextDocumentRemoveIcon)`
   fill: ${({ theme }) => theme.palette.grey[700]};
 `;
 
-function ErrorHandler({ message = 'Došlo je do greške' }) {
+function ErrorHandler({ message = "Došlo je do greške" }) {
   return (
     <ErrorContainer>
       <StyledErrorIcon />
