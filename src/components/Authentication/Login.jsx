@@ -53,6 +53,7 @@ function Login() {
       showNotification('Uspešno ste se prijavili!', 3000, 'success');
       navigate('/documents');
     } catch (err) {
+      console.log(err)
       setIsLoading(false);
       showNotification(
         'Došlo je do greške prilikom logovanja. Molimo vas pokušajte opet.',
