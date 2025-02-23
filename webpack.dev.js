@@ -9,9 +9,9 @@ const configFile = fs.readFileSync(
   path.resolve(process.cwd(), '.env-cmdrc'),
   'utf8'
 );
-const ENV = JSON.parse(configFile);
 
 const config = (profileName) => {
+  const ENV = JSON.parse(configFile);
   const port = process.env.PORT || 3000;
   const basePath = process.env.BASE_PATH || '';
   const server = process.env.HTTPS === 'true' ? 'https' : 'http';
