@@ -6,7 +6,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development npx env-cmd -e dev webpack serve -- --env=dev",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "NODE_ENV=production webpack --config webpack.config.js",
+    "build": "webpack --config webpack.config.js",
     "analyze": "ANALYZE=true npm run build",
     "svgr": "svgr --icon --no-dimensions --out-dir src/components/Icons ./public/assets/icons"
   },
