@@ -1,6 +1,7 @@
-import React from "react";
-import styled, { keyframes } from "styled-components";
-import { FileLineIcon } from "~components/Icons";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled, { keyframes } from 'styled-components';
+import { FileLineIcon } from '~components/Icons';
 
 const pulseAnimation = keyframes`
   0% {
@@ -75,6 +76,8 @@ const CTAButton = styled.button`
 `;
 
 function HomePage() {
+  const navigate = useNavigate();
+
   return (
     <HomeContainer>
       <IconWrapper>
@@ -86,7 +89,7 @@ function HomePage() {
         pregledajte ugovore na jednom mestu uz maksimalnu efikasnost i
         intuitivno korisničko iskustvo.
       </Description>
-      <CTAButton onClick={() => (window.location.href = "/documents")}>
+      <CTAButton onClick={() => navigate('/documents')}>
         Pregledaj ugovore
       </CTAButton>
     </HomeContainer>
