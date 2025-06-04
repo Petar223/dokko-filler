@@ -51,7 +51,7 @@ function DocumentsList() {
     }
   }, [error]);
 
-  if (documents?.length === 0)
+  if (isValidDocumentsArray && documents.body.length === 0)
     return (
       <StateContainerWrapper>
         <ErrorHandler message='Lista dokumenata je prazna.'></ErrorHandler>
