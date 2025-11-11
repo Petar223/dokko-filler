@@ -34,6 +34,11 @@ function Sidebar() {
       route: "/documents",
     },
     {
+      label: "Demo",
+      icon: "DescriptionIcon",
+      route: "/demo",
+    },
+    {
       label: "O platformi",
       icon: "BuildingIcon",
       route: "/about",

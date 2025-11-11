@@ -97,7 +97,7 @@ const OwnerRow = styled(({ label, value, className }) => (
   }
 `;
 
-function VehicleCardID({ data, onRemove, order }) {
+function VehicleCardID({ data, onRemove, order, showRemoveAction = true }) {
   const getKey = (key) => `${key}_${order}`;
 
   if (!data) return null;
@@ -109,9 +109,11 @@ function VehicleCardID({ data, onRemove, order }) {
           <CarDocumentIcon />
         </ProfileIcon>
         <DocumentType>Saobraćajna dozvola</DocumentType>
-        <StyledIconButton onClick={onRemove} aria-label="Delete">
-          <RecycleBinIcon />
-        </StyledIconButton>
+        {showRemoveAction && onRemove && (
+          <StyledIconButton onClick={onRemove} aria-label="Delete">
+            <RecycleBinIcon />
+          </StyledIconButton>
+        )}
       </Header>
       <InfoRow
         label="Broj registracije"

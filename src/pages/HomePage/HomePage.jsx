@@ -55,6 +55,13 @@ const IconWrapper = styled.div`
   }
 `;
 
+const ButtonGroup = styled.div`
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
+
 const CTAButton = styled.button`
   padding: 12px 24px;
   font-size: 1rem;
@@ -75,6 +82,14 @@ const CTAButton = styled.button`
   }
 `;
 
+const SecondaryButton = styled(CTAButton)`
+  background-color: ${({ theme }) => theme.palette.grey[700]};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.palette.grey[600]};
+  }
+`;
+
 function HomePage() {
   const navigate = useNavigate();
 
@@ -89,9 +104,14 @@ function HomePage() {
         pregledajte ugovore na jednom mestu uz maksimalnu efikasnost i
         intuitivno korisničko iskustvo.
       </Description>
-      <CTAButton onClick={() => navigate('/documents')}>
-        Pregledaj ugovore
-      </CTAButton>
+      <ButtonGroup>
+        <CTAButton onClick={() => navigate('/documents')}>
+          Pregledaj ugovore
+        </CTAButton>
+        <SecondaryButton onClick={() => navigate('/demo')}>
+          Pogledaj demo
+        </SecondaryButton>
+      </ButtonGroup>
     </HomeContainer>
   );
 }

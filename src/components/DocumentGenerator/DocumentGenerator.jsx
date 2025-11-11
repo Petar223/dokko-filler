@@ -1,6 +1,6 @@
 import CircularProgress from '@mui/material/CircularProgress';
 import Mammoth from 'mammoth';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import postPlaceholder from '~api/postPlaceholder';
@@ -68,6 +68,7 @@ function DocumentGenerator({
   readFields,
   letterType,
   documentName,
+  onBack,
 }) {
   const [docContent, setDocContent] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -154,6 +155,11 @@ function DocumentGenerator({
   };
 
   const handleBack = () => {
+    if (typeof onBack === 'function') {
+      onBack();
+      return;
+    }
+
     navigate('/documents');
   };
 

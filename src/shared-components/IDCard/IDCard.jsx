@@ -95,7 +95,7 @@ const AdressRow = styled(({ label, value, className }) => (
   }
 `;
 
-function IDCard({ data, onRemove, order }) {
+function IDCard({ data, onRemove, order, showRemoveAction = true }) {
   if (!data) return null;
 
   const getKey = (key) => `${key}_${order}`;
@@ -110,9 +110,11 @@ function IDCard({ data, onRemove, order }) {
         <DocumentType>
           {data[getKey("DocumentType")] || "Lična karta"}
         </DocumentType>
-        <StyledIconButton onClick={onRemove} aria-label="Delete">
-          <RecycleBinIcon />
-        </StyledIconButton>
+        {showRemoveAction && onRemove && (
+          <StyledIconButton onClick={onRemove} aria-label="Delete">
+            <RecycleBinIcon />
+          </StyledIconButton>
+        )}
       </Header>
       <Row label="Broj lične karte" value={data[getKey("DocumentNumber")]} />
       <Row

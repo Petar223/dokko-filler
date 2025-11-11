@@ -13,6 +13,7 @@ const GenerateDocumentPage = lazy(
   () => import('~pages/GenerateDocumentPage/GenerateDocumentPage')
 );
 const HomePage = lazy(() => import('~pages/HomePage/HomePage'));
+const DemoPage = lazy(() => import('~pages/DemoPage/DemoPage'));
 const PageNotFound = lazy(() => import('~pages/PageNotFound/PageNotFound'));
 
 const Container = styled.div`
@@ -52,6 +53,7 @@ function Root() {
               }
             />
             <Route path='/about' element={<AboutPage />} />
+            <Route path='/demo' element={<DemoPage />} />
 
             <Route element={<PrivateRoute />}>
               <Route path='/documents' element={<DocumentsList />} />

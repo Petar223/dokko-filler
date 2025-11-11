@@ -45,8 +45,19 @@ const StyledTypography = styled(Typography)`
   font-weight: 700;
 `;
 
-function DocumentItem({ name, navigateTo }) {
+function DocumentItem({ name, navigateTo, onAction, actionLabel = "Napravi Ugovor" }) {
   const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (onAction) {
+      onAction();
+      return;
+    }
+
+    if (navigateTo) {
+      navigate(navigateTo);
+    }
+  };
 
   return (
     <StyledCard>
@@ -55,8 +66,8 @@ function DocumentItem({ name, navigateTo }) {
       </IconContainer>
       <CardContentWrapper>
         <StyledTypography component="div">{name}</StyledTypography>
-        <StyledButton variant="contained" onClick={() => navigate(navigateTo)}>
-          Napravi Ugovor
+        <StyledButton variant="contained" onClick={handleClick}>
+          {actionLabel}
         </StyledButton>
       </CardContentWrapper>
     </StyledCard>

@@ -13,6 +13,7 @@ const DocumentRenderer = ({
   order,
   requiredFieldsMap,
   loading,
+  showRemoveAction = true,
 }) => {
   const isCardFilled = (type, data, order) => {
     const requiredFields = requiredFieldsMap[type]?.map(
@@ -38,9 +39,19 @@ const DocumentRenderer = ({
   return (
     <div>
       {type === "saobracajna_dozvola" ? (
-        <VehicleCardID data={data} onRemove={onRemove} order={order} />
+        <VehicleCardID
+          data={data}
+          onRemove={onRemove}
+          order={order}
+          showRemoveAction={showRemoveAction}
+        />
       ) : (
-        <IDCard data={data} onRemove={onRemove} order={order} />
+        <IDCard
+          data={data}
+          onRemove={onRemove}
+          order={order}
+          showRemoveAction={showRemoveAction}
+        />
       )}
     </div>
   );
