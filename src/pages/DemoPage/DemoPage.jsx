@@ -201,14 +201,10 @@ function DemoPage() {
           <HeaderSection>
             <Title>Ugovori</Title>
             <Subtitle>
-              Demo prikaz liste ugovora sa unapred pripremljenim podacima. Izaberite
-              ugovor da pokrenete ceo proces bez prijave i ucitavanja dokumenata.
+              Demo prikaz liste ugovora sa unapred pripremljenim podacima.
+              Izaberite ugovor da pokrenete ceo proces bez prijave i ucitavanja
+              dokumenata.
             </Subtitle>
-            <HighlightList>
-              {DEMO_DOCUMENTS[0].highlights?.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </HighlightList>
           </HeaderSection>
           <DocumentsGrid>
             {DEMO_DOCUMENTS.map((document) => (
@@ -240,9 +236,3 @@ function DemoPage() {
 }
 
 export default DemoPage;
-
-
-
-
-
-
