@@ -1,29 +1,16 @@
-import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import styled from 'styled-components';
-import useAuth from '~hooks/useAuth';
-import Loading from '~ui/Loading';
-
-const LoaderContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-`;
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { ROUTES } from '~constants/routes';
+import { AUTH_STATUS, useAuth } from '~features/auth/AuthContext';
+import LoadingState from '~ui/LoadingState';
 
 const PrivateRoute = () => {
-  const { isAuthenticated, loading } = useAuth();
+  const { status } = useAuth();
+  const location = useLocation();
 
-  if (loading) {
-    return (
-      <LoaderContainer>
-        <Loading />
-      </LoaderContainer>
-    );
-  }
+  if (status === AUTH_STATUS.LOADING) return <LoadingState />;
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+  if (status === AUTH_STATUS.ANONYMOUS) {
+    return <Navigate to={ROUTES.LOGIN} replace state={{ from: location }} />;
   }
 
   return <Outlet />;

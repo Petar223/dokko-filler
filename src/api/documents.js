@@ -1,8 +1,7 @@
-import axiosInstance from './httpClient';
+import httpClient from './httpClient';
 
-const getDocuments = async () => {
-  const response = await axiosInstance.get('GetListOfDocs');
-  return response.data;
-};
+export const getDocuments = async () =>
+  (await httpClient.get('GetListOfDocs')).data;
 
-export default getDocuments;
+export const getDocumentById = async (id) =>
+  (await httpClient.get('/document', { params: { id } })).data;

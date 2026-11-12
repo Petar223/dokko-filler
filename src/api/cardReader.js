@@ -1,8 +1,4 @@
-import axiosInstance from './readerClient';
+import readerClient from './readerClient';
 
-const read = async () => {
-  const response = await axiosInstance.get('/read');
-  return response.data;
-};
-
-export default read;
+// Returns the card fields as delivered by the reader, e.g. { GivenName, ... }.
+export const readCard = async () => (await readerClient.get('/read')).data;

@@ -1,11 +1,18 @@
 import { Amplify } from 'aws-amplify';
 import {
-  signIn,
-  signUp,
-  signOut,
+  confirmSignUp,
   fetchAuthSession,
   getCurrentUser,
+  resendSignUpCode,
+  signIn,
+  signOut,
+  signUp,
 } from 'aws-amplify/auth';
+
+const redirectUrls = (process.env.REACT_APP_COGNITO_REDIRECT_URLS || '')
+  .split(',')
+  .map((url) => url.trim())
+  .filter(Boolean);
 
 Amplify.configure({
   Auth: {
@@ -13,61 +20,59 @@ Amplify.configure({
       userPoolClientId: process.env.REACT_APP_COGNITO_CLIENT_ID,
       userPoolId: process.env.REACT_APP_COGNITO_USER_POOL_ID,
       loginWith: {
-        oauth: {
-          domain: process.env.REACT_APP_COGNITO_DOMAIN,
-          scopes: ['openid email profile aws.cognito.signin.user.admin'],
-          redirectSignIn: ['http://localhost:3000/', 'https://example.com/'],
-          redirectSignOut: ['http://localhost:3000/', 'https://example.com/'],
-          responseType: 'code',
-        },
-        username: 'false',
-        email: 'true',
-        phone: 'false',
+        email: true,
+        ...(redirectUrls.length && {
+          oauth: {
+            domain: process.env.REACT_APP_COGNITO_DOMAIN,
+            scopes: [
+              'openid',
+              'email',
+              'profile',
+              'aws.cognito.signin.user.admin',
+            ],
+            redirectSignIn: redirectUrls,
+            redirectSignOut: redirectUrls,
+            responseType: 'code',
+          },
+        }),
       },
     },
   },
 });
 
-async function signUpUtil(email, password) {
-  return await signUp({
+export const signInUser = (email, password) =>
+  signIn({ username: email, password });
+
+export const signUpUser = (email, password) =>
+  signUp({
     username: email,
     password,
+    options: { userAttributes: { email } },
   });
-}
 
-async function signInUtil(email, password) {
-  return await signIn({
-    username: email,
-    password,
-  });
-}
+export const confirmSignUpUser = (email, code) =>
+  confirmSignUp({ username: email, confirmationCode: code });
 
-async function signOutUtil(global = false) {
-  return await signOut({ global });
-}
+export const resendCode = (email) => resendSignUpCode({ username: email });
 
-async function getIdTokenUtil() {
+export const signOutUser = () => signOut();
+
+// Returns null when nobody is signed in.
+export const getIdToken = async () => {
   try {
     const session = await fetchAuthSession();
-    return session.tokens.idToken?.toString();
-  } catch (error) {
-    throw new Error('Niste prijavljeni.');
+    return session.tokens?.idToken?.toString() ?? null;
+  } catch {
+    return null;
   }
-}
+};
 
-async function getCurrentUserUtil() {
+// `signInDetails` is missing after a page refresh, so fall back to username.
+export const getCurrentUserEmail = async () => {
   try {
     const user = await getCurrentUser();
-    return user;
-  } catch (error) {
-    throw new Error('Nema prijavljenog korisnika.');
+    return user.signInDetails?.loginId ?? user.username;
+  } catch {
+    return null;
   }
-}
-
-export {
-  signUpUtil,
-  signInUtil,
-  signOutUtil,
-  getIdTokenUtil,
-  getCurrentUserUtil,
 };
