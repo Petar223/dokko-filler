@@ -10,12 +10,6 @@ const dirs = {
   '~hooks': 'src/hooks',
   '~lib': 'src/lib',
   '~constants': 'src/constants',
-  // legacy (removed after the feature-folder move)
-  '~components': 'src/components',
-  '~shared-components': 'src/shared-components',
-  '~pages': 'src/pages',
-  '~context': 'src/context',
-  '~utils': 'src/utils',
 };
 
 module.exports = Object.fromEntries(

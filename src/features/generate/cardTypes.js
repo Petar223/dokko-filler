@@ -1,0 +1,25 @@
+export const requiredFieldsMap = {
+  licna_karta: [
+    'PersonalNumber',
+    'DocumentNumber',
+    'Place',
+    'GivenName',
+    'Surname',
+    'DateOfBirth',
+    'PlaceOfBirth',
+    'Street',
+    'AddressNumber',
+    'Sex',
+  ],
+  saobracajna_dozvola: [
+    'RegistrationNumberOfVehicle',
+    'VehicleCategory',
+    'VehicleMake',
+    'CommercialDescription',
+    'YearOfProduction',
+    'EngineCapacity',
+    'OwnersSurnameOrBusinessName',
+    'OwnerName',
+    'OwnerAddress',
+  ],
+};

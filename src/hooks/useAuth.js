@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getCurrentUserUtil } from '../utils/cognitoAuth';
+import { getCurrentUserUtil } from '~features/auth/authService';
 
 const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
