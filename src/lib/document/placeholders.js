@@ -1,6 +1,7 @@
 import Mammoth from 'mammoth';
 
-const PLACEHOLDER = /{{\s*([\w]+)\s*}}/g;
+// Must match exactly what docx patchDocument replaces: no spaces inside.
+const PLACEHOLDER = /{{(\w+)}}/g;
 const CASE_PLACEHOLDER = /^(\w+)_p([1-7])_(\d+)$/;
 
 export const hasValue = (value) =>

@@ -9,7 +9,7 @@
     "lint": "eslint src --ext .js,.jsx",
     "test": "jest",
     "template:check": "node scripts/checkTemplate.js",
-    "svgr": "svgr --icon --no-dimensions --out-dir src/components/Icons ./public/assets/icons"
+    "svgr": "svgr --icon --no-dimensions --out-dir src/ui/Icons ./public/assets/icons"
   },
   "keywords": [],
   "author": "",

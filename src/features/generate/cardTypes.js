@@ -1,4 +1,6 @@
 import { hasValue } from '~lib/document/placeholders';
+// Shared with scripts/checkTemplate.js.
+import CARD_FIELDS from './cardFields.json';
 
 export const CARD_TYPE = {
   ID: 'licna_karta',
@@ -10,33 +12,12 @@ export const CARD_TYPES = {
   [CARD_TYPE.ID]: {
     label: 'Lična karta',
     detectBy: 'PersonalNumber',
-    requiredFields: [
-      'PersonalNumber',
-      'DocumentNumber',
-      'Place',
-      'GivenName',
-      'Surname',
-      'DateOfBirth',
-      'PlaceOfBirth',
-      'Street',
-      'AddressNumber',
-      'Sex',
-    ],
+    requiredFields: CARD_FIELDS[CARD_TYPE.ID],
   },
   [CARD_TYPE.VEHICLE]: {
     label: 'Saobraćajna dozvola',
     detectBy: 'RegistrationNumberOfVehicle',
-    requiredFields: [
-      'RegistrationNumberOfVehicle',
-      'VehicleCategory',
-      'VehicleMake',
-      'CommercialDescription',
-      'YearOfProduction',
-      'EngineCapacity',
-      'OwnersSurnameOrBusinessName',
-      'OwnerName',
-      'OwnerAddress',
-    ],
+    requiredFields: CARD_FIELDS[CARD_TYPE.VEHICLE],
   },
 };
 

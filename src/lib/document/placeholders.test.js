@@ -5,7 +5,7 @@ import {
 } from './placeholders';
 
 const text =
-  'Kupac {{name_2}}, od {{GivenName_p2_1}} i {{GivenName_p2_1}}, {{Street_1}} {{ date }}';
+  'Kupac {{name_2}}, od {{GivenName_p2_1}} i {{GivenName_p2_1}}, {{Street_1}} {{date}} {{ bad }}';
 
 it('extracts unique placeholder names', () => {
   expect(extractPlaceholderNames(text)).toEqual([
