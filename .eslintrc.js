@@ -1,4 +1,7 @@
+const alias = require('./aliases');
+
 module.exports = {
+  root: true,
   env: {
     browser: true,
     es2021: true,
@@ -7,47 +10,37 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
     'plugin:jsx-a11y/recommended',
+    'plugin:import/recommended',
     'plugin:prettier/recommended',
   ],
   parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
+    ecmaFeatures: { jsx: true },
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
   settings: {
-    react: {
-      version: 'detect',
+    react: { version: 'detect' },
+    'import/resolver': {
+      alias: {
+        map: Object.entries(alias),
+        extensions: ['.js', '.jsx', '.json'],
+      },
     },
   },
   plugins: ['react', 'jsx-a11y', 'prettier', 'import'],
   rules: {
-    'prettier/prettier': [
-      'warn',
-      {
-        singleQuote: true,
-        semi: true,
-        printWidth: 80,
-        tabWidth: 2,
-        trailingComma: 'es5',
-        bracketSpacing: true,
-        arrowParens: 'always',
-        endOfLine: 'auto',
-      },
-    ],
+    // Formatting rules live in .prettierrc.
+    'prettier/prettier': 'warn',
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
-    'react/jsx-props-no-spreading': 'off',
-    'react/function-component-definition': 'off',
-    'no-console': 'warn',
+    'no-console': ['warn', { allow: ['warn', 'error'] }],
     'no-unused-vars': [
       'warn',
       { vars: 'all', args: 'after-used', ignoreRestSiblings: true },
     ],
-    'no-multiple-empty-lines': ['warn', { max: 2 }],
-    'import/no-extraneous-dependencies': 'off',
+    'import/no-unresolved': ['error', { ignore: ['\\.svg$'] }],
     'import/order': [
       'warn',
       {
@@ -56,12 +49,15 @@ module.exports = {
           'internal',
           ['parent', 'sibling', 'index'],
         ],
-        'newlines-between': 'ignore',
-        alphabetize: {
-          order: 'asc',
-          caseInsensitive: true,
-        },
+        pathGroups: [{ pattern: '~*/**', group: 'internal' }],
+        alphabetize: { order: 'asc', caseInsensitive: true },
       },
     ],
   },
+  overrides: [
+    {
+      files: ['**/*.test.js', '**/*.test.jsx', 'jest.setup.js'],
+      env: { jest: true },
+    },
+  ],
 };
