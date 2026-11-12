@@ -7,17 +7,17 @@ description: Workflow for fixing a bug in Dokko Filler - reproduce (preferably o
 
 1. **Reproduce**
    - Contract flow bugs: reproduce on `/demo` first (no login, no reader).
-     Demo data is in `src/features/demo/demoData.js`. Change a snapshot
+     Demo data is in `src/pages/DemoPage/demoData.js`. Change a snapshot
      temporarily to trigger edge cases (missing field, odd casing, Cyrillic).
    - Reader bugs: stop the reader service to test the offline path.
    - API bugs: check the network tab. Error messages come from
-     `api/httpClient.js` / `api/readerClient.js`.
+     `api/axios.js` / `api/readerAxios.js`.
 2. **Root cause, not symptom**: find the shared function every caller goes
    through and fix it there. Grep all callers before editing. The usual places:
-   - `src/lib/document/*` – placeholders, filling, formatting, script
-   - `src/features/generate/useCardSlots.js` – card loading
-   - `src/features/preview/useDocumentGeneration.js` – generation
-   - `src/features/auth/AuthContext.jsx` – auth state
+   - `src/utils/*` – placeholders, filling, formatting, script
+   - `src/hooks/useCardSlots.js` – card loading
+   - `src/hooks/useDocumentGeneration.js` – generation
+   - `src/context/AuthContext.js` – auth state
 3. **Failing test first** next to the file (`*.test.js[x]`). It must fail
    without the fix. Pure logic → unit test. UI → RTL with
    `renderWithProviders` and mocked API.

@@ -1,6 +1,6 @@
 ---
 name: ui-design-system
-description: Rules for any visual/styling work in Dokko Filler - theme tokens, typography, spacing, ui/ component catalog, do/don't list and the light/dark contrast checklist. Use whenever changing colors, layout, spacing, typography or the look of any component or page.
+description: Rules for any visual/styling work in Dokko Filler - theme tokens, typography, spacing, shared-components catalog, do/don't list and the light/dark contrast checklist. Use whenever changing colors, layout, spacing, typography or the look of any component or page.
 ---
 
 # UI design system

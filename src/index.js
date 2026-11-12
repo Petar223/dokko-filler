@@ -1,16 +1,16 @@
 import '@fontsource-variable/inter';
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
-import ErrorBoundary from '~app/ErrorBoundary/ErrorBoundary';
-import GlobalStyle from '~app/GlobalStyle';
-import { NotificationProvider } from '~app/Notifications';
-import Root from '~app/Root';
-import { AuthProvider } from '~features/auth/AuthContext';
-import ColorModeProvider from '~theme/ColorModeProvider';
+import ErrorBoundary from '~components/ErrorBoundary/ErrorBoundary';
+import Root from '~components/Root/Root';
+import ThemeProvider from '~components/ThemeProvider/ThemeProvider';
+import { AuthProvider } from '~context/AuthContext';
+import { NotificationProvider } from '~context/NotificationContext';
+import GlobalStyle from './GlobalStyle/GlobalSyile';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <ColorModeProvider>
+    <ThemeProvider>
       <GlobalStyle />
       <ErrorBoundary>
         <AuthProvider>
@@ -19,6 +19,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           </NotificationProvider>
         </AuthProvider>
       </ErrorBoundary>
-    </ColorModeProvider>
+    </ThemeProvider>
   </StrictMode>
 );

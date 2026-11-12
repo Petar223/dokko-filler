@@ -2,14 +2,13 @@
 const path = require('path');
 
 const dirs = {
-  '~app': 'src/app',
-  '~api': 'src/api',
-  '~features': 'src/features',
-  '~ui': 'src/ui',
-  '~theme': 'src/theme',
+  '~components': 'src/components',
+  '~shared-components': 'src/shared-components',
+  '~pages': 'src/pages',
   '~hooks': 'src/hooks',
-  '~lib': 'src/lib',
-  '~constants': 'src/constants',
+  '~api': 'src/api',
+  '~context': 'src/context',
+  '~utils': 'src/utils',
 };
 
 module.exports = Object.fromEntries(

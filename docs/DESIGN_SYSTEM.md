@@ -57,7 +57,9 @@ Buttons are sentence case (no uppercase), weight 600.
 - Footer 40px, top `divider`, caption text and app version.
 - Card lists use `CardGrid` (`repeat(auto-fill, minmax(min(100%, $min), 1fr))`).
 
-## `ui/` catalog
+## Shared components catalog
+
+All in `src/shared-components/<Name>/<Name>.jsx` unless noted.
 
 | Component | Props | Notes |
 |---|---|---|
@@ -65,10 +67,13 @@ Buttons are sentence case (no uppercase), weight 600.
 | `EmptyState` | `icon?, title, description?, action?, color?` | Empty, error, 404 |
 | `LoadingState` | `cards?, cardHeight?, minWidth?` | Spinner, or skeleton grid with `cards` |
 | `FieldList` | `items: [{ label, value }]` | Key-value rows, `—` for empty |
-| `CardGrid` | `$min?` (px, default 260) | Fluid grid |
+| `CardGrid` | `$min?` (px, default 260) | Fluid grid; `shared-styled-components/CardGrid` (named export) |
 | `Icon` | `as, size?, color?` | Wraps svgr icons, fills with `currentColor` |
 | `PasswordField` | TextField props | Show/hide toggle |
-| `Icons/*` | | svgr components; regenerate with `npm run svgr` |
+| `DocumentItem` | `name, onClick, actionLabel?` | Clickable contract card |
+| `LoadedCard` | `card, snapshot, onRemove?` | Card data read from the reader |
+| `SwitchThemeButton` | | Light/dark toggle (header) |
+| `components/Icons/*` | | svgr components; regenerate with `npm run svgr` |
 
 ## Motion
 

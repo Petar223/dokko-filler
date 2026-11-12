@@ -38,7 +38,7 @@ Full reference: `docs/DOCX_TEMPLATES.md`.
 ## Trying it end to end
 
 Copy the file into `public/assets/demo/`, point `templateURL` of a
-`DEMO_DOCUMENTS` entry (`src/features/demo/demoData.js`) at it, open `/demo`,
+`DEMO_DOCUMENTS` entry (`src/pages/DemoPage/demoData.js`) at it, open `/demo`,
 load all cards, then "Pregledaj dokument". Filled values are highlighted in
 yellow. Turn "Označi popunjena polja" off to see the final look.
 

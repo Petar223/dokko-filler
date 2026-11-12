@@ -5,16 +5,30 @@ order; this file covers what tools cannot.
 
 ## Files and folders
 
-- Feature code goes in `src/features/<feature>/`. Code used by two or more
-  features goes in `src/ui/` (presentational), `src/hooks/` (generic hooks) or
-  `src/lib/` (pure logic without React).
-- One component per file, `PascalCase.jsx`, default export, function component
+Where a new file goes:
+
+| What | Where |
+|---|---|
+| A routed page | `src/pages/<Name>/<Name>.jsx` (+ page-only `consts.js` / data next to it) |
+| App-level or stateful component (layout, flows, dialogs) | `src/components/<Name>/<Name>.jsx` |
+| Reusable presentational component | `src/shared-components/<Name>/<Name>.jsx` |
+| Plain styled wrapper (no logic) | `src/shared-components/shared-styled-components/<Name>/<Name>.jsx` |
+| React context + provider | `src/context/<Name>Context.js` |
+| Hook | `src/hooks/use<Name>.js` |
+| Backend / reader call | `src/api/<functionName>.js` (one function, default export) |
+| Pure logic, constants, helpers | `src/utils/<name>.js` |
+| Theme tokens | `src/theme/` |
+
+- Every component has its own folder named like the component; the file name
+  matches the default-exported component name.
+- One component per file, default export, function component
   (`const Name = (props) => ...`). The only class component is `ErrorBoundary`.
 - If a component's styled-components code grows past ~30 lines, move it to
-  `Name.styles.js` next to it.
+  `Name.styles.js` in the same folder.
 - Tests sit next to the file: `name.test.js` / `Name.test.jsx`.
-- Import through aliases (`~ui/EmptyState`), relative imports only inside the
-  same folder (`./cardTypes`).
+- Import across folders through aliases (`~shared-components/EmptyState/EmptyState`);
+  relative imports only inside the same folder (`./consts`) and for
+  `src/theme/` and `src/GlobalStyle/`, which have no alias.
 
 ## Naming
 
@@ -40,15 +54,16 @@ order; this file covers what tools cannot.
 
 ## Data
 
-- One module per backend domain in `src/api/<domain>.js`. It uses `httpClient`
-  or `readerClient` and returns `response.data`.
+- One file per endpoint in `src/api/` (`getDocuments.js`, `read.js`...), one
+  default-exported async function that uses the instance from `axios.js`
+  (backend) or `readerAxios.js` (card reader) and returns `response.data`.
 - Load on mount with `useFetch(fn)`; wrap `fn` in `useCallback` if it depends on
   props/params. Use the returned `refetch` for "Pokušaj ponovo".
 - For user-triggered actions, write a plain `async` handler or a feature hook
   (`useCardSlots`, `useDocumentGeneration`) that holds its own state.
 - Report errors with `useNotification()` → `notify(message, 'error')`. Error
   messages already come in Serbian from the API clients. Shared copy lives in
-  `constants/messages.js`.
+  `src/utils/messages.js`.
 
 ## Screen states
 
@@ -75,7 +90,7 @@ Pages start with `PageHeader` (title, optional subtitle, `onBack`, `actions`).
 ## Tests
 
 - Every bug fix gets a test that fails without the fix.
-- Pure logic (`src/lib`, hooks): unit tests. Pages/components: React Testing
+- Pure logic (`src/utils`, hooks): unit tests. Pages/components: React Testing
   Library via `test/renderWithProviders.jsx`, with the API module mocked
-  (`jest.mock('~api/documents')`).
+  (`jest.mock('~api/getDocuments')`).
 - Query by role and accessible name, not by class names.

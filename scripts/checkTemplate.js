@@ -2,7 +2,7 @@
 // Usage: npm run template:check -- path/to/template.docx
 const mammoth = require('mammoth');
 const path = require('path');
-const CARD_FIELDS = require('../src/features/generate/cardFields.json');
+const CARD_FIELDS = require('../src/pages/GenerateDocumentPage/cardFields.json');
 
 const file = process.argv[2];
 if (!file) {

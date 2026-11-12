@@ -41,7 +41,7 @@ Rules:
 
 The contract's `letter` decides the script: `1` = Latin, anything else =
 Cyrillic. All text values are converted except identifiers listed in
-`SCRIPT_EXEMPT_FIELDS` (`src/lib/document/scriptConversion.js`):
+`SCRIPT_EXEMPT_FIELDS` (`src/utils/scriptConversion.js`):
 `RegistrationNumberOfVehicle`, `DocumentNumber`, `PersonalNumber`.
 
 ## Title case
@@ -49,11 +49,11 @@ Cyrillic. All text values are converted except identifiers listed in
 These fields are written as "Title Case" (e.g. `PETROVIĆ-JOVANOVIĆ` →
 `Petrović-Jovanović`): `name`, `GivenName`, `Surname`, `ParentGivenName`,
 `Street`, `Place`, `PlaceOfBirth`, `CommunityOfBirth`, `StateOfBirth`,
-`Community` (`FIELDS_FOR_FORMATTING` in `src/lib/document/formatters.js`).
+`Community` (`FIELDS_FOR_FORMATTING` in `src/utils/formatters.js`).
 
 ## Available fields
 
-Required fields per card type are in `src/features/generate/cardFields.json`.
+Required fields per card type are in `src/pages/GenerateDocumentPage/cardFields.json`.
 The reader may return more (e.g. `ParentGivenName`, `Community`,
 `DocumentType`). Those are filled when present but are not guaranteed.
 
@@ -72,7 +72,7 @@ The reader may return more (e.g. `ParentGivenName`, `Community`,
    marks invalid ones and fields no card type guarantees. Exit code 1 means
    there are warnings.
 2. To try it end to end, put the file in `public/assets/demo/`, point a
-   `DEMO_DOCUMENTS` entry (`src/features/demo/demoData.js`) at it, open `/demo`,
+   `DEMO_DOCUMENTS` entry (`src/pages/DemoPage/demoData.js`) at it, open `/demo`,
    load the cards and preview. The preview highlights every filled value in
    yellow. Anything still in `{{…}}` is listed as missing.
 

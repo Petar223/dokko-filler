@@ -22,21 +22,25 @@ Before committing: `npm run lint && npm test && npm run build` (see the `verify-
 ## Where things live
 
 Aliases (defined once in `aliases.js`, shared by webpack, Jest and ESLint):
-`~app`, `~api`, `~features`, `~ui`, `~theme`, `~hooks`, `~lib`, `~constants`.
+`~components`, `~shared-components`, `~pages`, `~hooks`, `~api`, `~context`, `~utils`.
+`src/theme/` and `src/GlobalStyle/` have no alias (import them relatively).
 
-- `src/app/` – shell: Root (routes), Layout, Header, Sidebar, Footer, PrivateRoute, ErrorBoundary, Notifications
-- `src/api/` – `httpClient` (backend, adds Cognito token), `readerClient` (local card reader), one file per domain
-- `src/features/<feature>/` – pages and feature components (auth, documents, generate, preview, demo, static)
-- `src/ui/` – reusable presentational components + `Icons/` (svgr)
-- `src/theme/` – palette, typography, MUI overrides, `ColorModeProvider`
-- `src/lib/document/` – pure document logic (placeholders, fill, script conversion, formatting, download)
-- `src/constants/` – `routes.js`, `messages.js` (shared Serbian UI copy)
+Every component lives in its own folder: `<Name>/<Name>.jsx`.
+
+- `src/pages/` – one folder per route (HomePage, AboutPage, DemoPage, DocumentsList, GenerateDocumentPage, PageNotFound); page-only data/constants sit next to the page (`demoData.js`, `consts.js`)
+- `src/components/` – app-level and stateful components: Root (routes), Layout, Header, Sidebar, Footer, Profile, PrivateRoute, ErrorBoundary, ThemeProvider, Authentication (Login, Signup, ConfirmSignup), DocumentWorkspace, DocumentRender, PlaceholderCard, DocumentModal, DocxViewer, `Icons/` (svgr)
+- `src/shared-components/` – reusable presentational components (PageHeader, EmptyState, LoadingState, FieldList, Icon, PasswordField, DocumentItem, LoadedCard, SwitchThemeButton); plain styled wrappers in `shared-styled-components/`
+- `src/context/` – `AuthContext`, `NotificationContext`
+- `src/hooks/` – `useFetch`, `useCardSlots`, `useDocumentGeneration`
+- `src/api/` – `axios.js` (backend, adds Cognito token), `readerAxios.js` (local card reader), one file per endpoint
+- `src/utils/` – Cognito wrapper, document logic (placeholders, fill, script conversion, formatting, download), `routes.js`, `messages.js` (shared Serbian copy), `validation.js`
+- `src/theme/` – palette, typography, MUI overrides, `theme.js` (`buildTheme`, `useColorMode`)
 
 ## Docs
 
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) – data flow, auth, API clients, state
 - [docs/CONVENTIONS.md](docs/CONVENTIONS.md) – how to write code here (read before changing code)
-- [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) – tokens, `ui/` catalog, dark mode rules
+- [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md) – tokens, shared-components catalog, dark mode rules
 - [docs/DOCX_TEMPLATES.md](docs/DOCX_TEMPLATES.md) – placeholder syntax for Word templates
 
 Task-specific workflows are in `.claude/skills/` (add-page, add-component,
