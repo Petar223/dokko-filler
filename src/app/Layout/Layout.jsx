@@ -1,41 +1,41 @@
-import React from 'react';
-import styled from 'styled-components';
+import Box from '@mui/material/Box';
+import { useLocation } from 'react-router-dom';
+import ErrorBoundary from '~app/ErrorBoundary/ErrorBoundary';
 import Footer from '~app/Footer/Footer';
 import Header from '~app/Header/Header';
 import Sidebar from '~app/Sidebar/Sidebar';
-import { NotificationProvider } from '~app/NotificationContext';
 
-const FlexContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-`;
+const Layout = ({ children }) => {
+  const { pathname } = useLocation();
 
-const Content = styled.div`
-  flex-grow: 1;
-  padding: 16px;
-  overflow-y: auto;
-`;
-
-const MainContent = styled.div`
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-`;
-
-function Layout({ children }) {
   return (
-    <NotificationProvider>
-      <FlexContainer>
-        <Header />
-        <MainContent>
-          <Sidebar />
-          <Content>{children}</Content>
-        </MainContent>
-        <Footer />
-      </FlexContainer>
-    </NotificationProvider>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <Header />
+      <Box sx={{ display: 'flex', flex: 1, minHeight: 0 }}>
+        <Sidebar />
+        <Box
+          component="main"
+          sx={{ flex: 1, overflowY: 'auto', bgcolor: 'background.default' }}
+        >
+          <Box
+            sx={{
+              maxWidth: 1200,
+              mx: 'auto',
+              px: { xs: 2, sm: 4 },
+              py: { xs: 3, sm: 4 },
+              minHeight: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            {/* A crashing page keeps header and sidebar usable. */}
+            <ErrorBoundary resetKey={pathname}>{children}</ErrorBoundary>
+          </Box>
+        </Box>
+      </Box>
+      <Footer />
+    </Box>
   );
-}
+};
 
 export default Layout;

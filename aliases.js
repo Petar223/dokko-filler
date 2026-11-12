@@ -13,5 +13,8 @@ const dirs = {
 };
 
 module.exports = Object.fromEntries(
-  Object.entries(dirs).map(([alias, dir]) => [alias, path.resolve(__dirname, dir)])
+  Object.entries(dirs).map(([alias, dir]) => [
+    alias,
+    path.resolve(__dirname, dir),
+  ])
 );

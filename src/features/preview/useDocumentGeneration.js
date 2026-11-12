@@ -61,6 +61,7 @@ const useDocumentGeneration = ({ templateURL, fields, letter }) => {
         previewBlob,
         missingFields: getMissingFields(names, allFields),
       });
+      return true;
     } catch (error) {
       console.error(error);
       setState({ status: GENERATION_STATUS.ERROR });
@@ -70,6 +71,7 @@ const useDocumentGeneration = ({ templateURL, fields, letter }) => {
           : MSG.documents.generateFailed,
         'error'
       );
+      return false;
     }
   }, [templateURL, fields, letter, notify]);
 

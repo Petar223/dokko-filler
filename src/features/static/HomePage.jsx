@@ -1,119 +1,110 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
-import { FileLineIcon } from '~ui/Icons';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import Stack from '@mui/material/Stack';
+import { alpha } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import { Link as RouterLink } from 'react-router-dom';
+import { ROUTES } from '~constants/routes';
+import { CardGrid } from '~ui/CardGrid';
+import Icon from '~ui/Icon';
+import {
+  DownloadToStorageIcon,
+  IdProofLineIcon,
+  WordFileIcon,
+} from '~ui/Icons';
 
-const pulseAnimation = keyframes`
-  0% {
-    transform: scale(0.8);
-  }
- 
-  100% {
-    transform: scale(1);
-  }
-`;
+const STEPS = [
+  {
+    icon: WordFileIcon,
+    title: 'Izaberi ugovor',
+    text: 'Odaberite šablon iz liste dostupnih ugovora.',
+  },
+  {
+    icon: IdProofLineIcon,
+    title: 'Učitaj dokumente',
+    text: 'Ubacite ličnu kartu ili saobraćajnu u čitač i podaci se popunjavaju sami.',
+  },
+  {
+    icon: DownloadToStorageIcon,
+    title: 'Pregledaj i preuzmi',
+    text: 'Proverite izgled dokumenta i preuzmite gotov .docx fajl.',
+  },
+];
 
-const HomeContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  height: 100%;
-  gap: 24px;
-  padding: 20px;
-  background-color: ${({ theme }) => theme.palette.background.default};
-  color: ${({ theme }) => theme.palette.text.primary};
-  animation: ${pulseAnimation} 1.5s ease-in-out forwards;
-`;
-
-const Title = styled.h1`
-  font-size: 3rem;
-  font-weight: bold;
-  color: ${({ theme }) => theme.palette.grey[500]};
-`;
-
-const Description = styled.p`
-  font-size: 1.2rem;
-  line-height: 1.6;
-  max-width: 600px;
-  color: ${({ theme }) => theme.palette.text.secondary};
-`;
-
-const IconWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 120px;
-  height: 120px;
-  margin-bottom: 16px;
-
-  & > svg {
-    width: 100%;
-    height: 100%;
-    fill: ${({ theme }) => theme.palette.grey[500]};
-  }
-`;
-
-const ButtonGroup = styled.div`
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  justify-content: center;
-`;
-
-const CTAButton = styled.button`
-  padding: 12px 24px;
-  font-size: 1rem;
-  font-weight: bold;
-  color: #fff;
-  background-color: ${({ theme }) => theme.palette.primary.main};
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition:
-    background-color 0.3s ease,
-    transform 0.2s ease;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.palette.primary.dark};
-    transform: scale(1.05);
-  }
-`;
-
-const SecondaryButton = styled(CTAButton)`
-  background-color: ${({ theme }) => theme.palette.grey[700]};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.palette.grey[600]};
-  }
-`;
-
-function HomePage() {
-  const navigate = useNavigate();
-
-  return (
-    <HomeContainer>
-      <IconWrapper>
-        <FileLineIcon />
-      </IconWrapper>
-      <Title>Dobrodošli u Dokko Filler</Title>
-      <Description>
-        Ova platforma vam omogućava lako i brzo generisanje ugovora. Kreirajte i
-        pregledajte ugovore na jednom mestu uz maksimalnu efikasnost i
-        intuitivno korisničko iskustvo.
-      </Description>
-      <ButtonGroup>
-        <CTAButton onClick={() => navigate('/documents')}>
+const HomePage = () => (
+  <Box sx={{ animation: 'fadeIn 0.4s ease' }}>
+    <Stack
+      spacing={3}
+      sx={{ alignItems: 'center', textAlign: 'center', py: { xs: 4, md: 8 } }}
+    >
+      <Typography
+        variant="overline"
+        color="primary"
+        sx={{ fontWeight: 700, letterSpacing: '0.12em' }}
+      >
+        Dokko Filler
+      </Typography>
+      <Typography variant="h1" sx={{ maxWidth: 720 }}>
+        Ugovori popunjeni za nekoliko sekundi
+      </Typography>
+      <Typography
+        color="text.secondary"
+        sx={{ maxWidth: 600, fontSize: '1.125rem' }}
+      >
+        Podaci se čitaju direktno sa lične karte i saobraćajne dozvole, a ugovor
+        dobijate spreman za štampu, bez prepisivanja i grešaka.
+      </Typography>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5}>
+        <Button
+          component={RouterLink}
+          to={ROUTES.DOCUMENTS}
+          variant="contained"
+          size="large"
+        >
           Pregledaj ugovore
-        </CTAButton>
-        <SecondaryButton onClick={() => navigate('/demo')}>
+        </Button>
+        <Button
+          component={RouterLink}
+          to={ROUTES.DEMO}
+          variant="outlined"
+          size="large"
+        >
           Pogledaj demo
-        </SecondaryButton>
-      </ButtonGroup>
-    </HomeContainer>
-  );
-}
+        </Button>
+      </Stack>
+    </Stack>
+
+    <Typography variant="h4" component="h2" sx={{ mb: 2 }}>
+      Kako radi
+    </Typography>
+    <CardGrid $min={240}>
+      {STEPS.map((step, i) => (
+        <Card key={step.title} sx={{ p: 3 }}>
+          <Box
+            sx={(t) => ({
+              width: 44,
+              height: 44,
+              borderRadius: 3,
+              display: 'grid',
+              placeItems: 'center',
+              color: 'primary.main',
+              bgcolor: alpha(t.palette.primary.main, 0.1),
+              mb: 2,
+            })}
+          >
+            <Icon as={step.icon} size={22} />
+          </Box>
+          <Typography variant="h6" component="h3">
+            {i + 1}. {step.title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+            {step.text}
+          </Typography>
+        </Card>
+      ))}
+    </CardGrid>
+  </Box>
+);
 
 export default HomePage;

@@ -1,164 +1,108 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { signUpUtil } from './authService';
-import CustomTextField from '~ui/CustomTextField';
-import CustomForm from '~ui/CustomForm';
-import CustomButton from '~ui/CustomButton';
-import FormWrapper from '~ui/FormWrapper';
-import LinkContainer from '~ui/LinkContainer';
-import { useNotification } from '~app/NotificationContext';
+import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import Link from '@mui/material/Link';
+import TextField from '@mui/material/TextField';
+import { useState } from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useNotification } from '~app/Notifications';
+import { MSG } from '~constants/messages';
+import { ROUTES } from '~constants/routes';
+import PasswordField from '~ui/PasswordField';
+import AuthCard from './AuthCard';
+import { signUpUser } from './authService';
+import { validateEmail, validatePassword } from './validation';
 
-function Signup() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [confirmPasswordError, setConfirmPasswordError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-
-  const showNotification = useNotification();
+const SignupPage = () => {
+  const [form, setForm] = useState({ email: '', password: '', confirm: '' });
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const notify = useNotification();
   const navigate = useNavigate();
 
-  const validatePassword = (password) => {
-    const minLength = /.{6,}/;
-    const hasUpperCase = /[A-Z]/;
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/;
-    const hasNumber = /[0-9]/;
+  const field = (name) => ({
+    value: form[name],
+    onChange: (e) => setForm((f) => ({ ...f, [name]: e.target.value })),
+    error: !!errors[name],
+    helperText: errors[name],
+  });
 
-    if (!minLength.test(password)) {
-      return 'Lozinka mora imati najmanje 6 karaktera.';
-    }
-    if (!hasUpperCase.test(password)) {
-      return 'Lozinka mora sadržati bar jedno veliko slovo.';
-    }
-    if (!hasSpecialChar.test(password)) {
-      return 'Lozinka mora sadržati bar jedan specijalni karakter.';
-    }
-    if (!hasNumber.test(password)) {
-      return 'Lozinka mora sadržati bar jedan broj.';
-    }
-    return '';
-  };
-
-  const handleSignup = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    setEmailError('');
-    setPasswordError('');
-    setConfirmPasswordError('');
+    const nextErrors = {
+      email: validateEmail(form.email),
+      password: validatePassword(form.password),
+      confirm: !form.confirm
+        ? MSG.auth.confirmPasswordRequired
+        : form.confirm !== form.password
+          ? MSG.auth.passwordsMismatch
+          : '',
+    };
+    setErrors(nextErrors);
+    if (Object.values(nextErrors).some(Boolean)) return;
 
-    let isValid = true;
-
-    if (!email) {
-      setEmailError('Email je obavezan.');
-      isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      setEmailError('Email nije validan.');
-      isValid = false;
-    }
-
-    const passwordValidationMessage = validatePassword(password);
-
-    if (!password) {
-      setPasswordError('Lozinka je obavezna.');
-      isValid = false;
-    } else if (passwordValidationMessage) {
-      setPasswordError(passwordValidationMessage);
-      isValid = false;
-    }
-
-    if (!confirmPassword) {
-      setConfirmPasswordError('Potvrda lozinke je obavezna.');
-      isValid = false;
-    } else if (password !== confirmPassword) {
-      setConfirmPasswordError('Lozinke se ne podudaraju.');
-      isValid = false;
-    }
-
-    if (!isValid) {
-      setIsLoading(false);
-      return;
-    }
-
+    setLoading(true);
     try {
-      await signUpUtil(email, password);
-      showNotification(
-        'Uspešno ste se registrovali! Možete se sada prijaviti.',
-        3000,
-        'success'
-      );
-      navigate('/documents');
-    } catch (err) {
-      console.log(err);
-      setIsLoading(false);
-
-      showNotification(
-        'Došlo je do greške prilikom registracije. Molimo vas pokušajte opet.',
-        5000,
+      const { nextStep } = await signUpUser(form.email, form.password);
+      if (nextStep?.signUpStep === 'CONFIRM_SIGN_UP') {
+        notify(MSG.auth.signupSuccess, 'success');
+        navigate(
+          `${ROUTES.CONFIRM_SIGNUP}?email=${encodeURIComponent(form.email)}`
+        );
+      } else {
+        notify(MSG.auth.confirmSuccess, 'success');
+        navigate(ROUTES.LOGIN);
+      }
+    } catch (error) {
+      notify(
+        error.name === 'UsernameExistsException'
+          ? 'Nalog sa ovim emailom već postoji.'
+          : MSG.auth.signupFailed,
         'error'
       );
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   return (
-    <FormWrapper>
-      <h2>Registracija</h2>
-      <CustomForm onSubmit={handleSignup}>
-        <CustomTextField
-          label="Email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          error={!!emailError}
-          helperText={emailError}
-        />
-
-        <CustomTextField
-          label="Lozinka"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          error={!!passwordError}
-          helperText={passwordError}
-        />
-
-        <CustomTextField
-          label="Potvrdi Lozinku"
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          error={!!confirmPasswordError}
-          helperText={confirmPasswordError}
-        />
-
-        <CustomButton
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-        >
-          {isLoading ? (
-            <CircularProgress size={20} color="inherit" />
-          ) : (
-            'Registruj se'
-          )}
-        </CustomButton>
-
-        <LinkContainer>
-          <Link
-            to="/login"
-            style={{ textDecoration: 'none', color: '#1976d2' }}
-          >
-            Već imate nalog? Prijavite se
+    <AuthCard
+      title="Registracija"
+      subtitle="Napravite nalog za rad sa ugovorima."
+      onSubmit={handleSubmit}
+      footer={
+        <>
+          Već imate nalog?{' '}
+          <Link component={RouterLink} to={ROUTES.LOGIN}>
+            Prijavite se
           </Link>
-        </LinkContainer>
-      </CustomForm>
-    </FormWrapper>
+        </>
+      }
+    >
+      <TextField
+        label="Email"
+        type="email"
+        autoComplete="email"
+        {...field('email')}
+      />
+      <PasswordField
+        label="Lozinka"
+        autoComplete="new-password"
+        {...field('password')}
+      />
+      <PasswordField
+        label="Potvrdi lozinku"
+        autoComplete="new-password"
+        {...field('confirm')}
+      />
+      <Button type="submit" variant="contained" size="large" disabled={loading}>
+        {loading ? (
+          <CircularProgress size={22} color="inherit" />
+        ) : (
+          'Registruj se'
+        )}
+      </Button>
+    </AuthCard>
   );
-}
+};
 
-export default Signup;
+export default SignupPage;

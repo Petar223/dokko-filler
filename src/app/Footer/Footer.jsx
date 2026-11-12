@@ -1,26 +1,28 @@
-import React from 'react';
-import styled from 'styled-components';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
-const FooterContainer = styled.div`
-  width: 100%;
-  height: 5%;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: ${({ theme }) => theme.palette.businessBlue.dark};
-  color: ${({ theme }) => theme.palette.businessBlue.contrastText};
-  font-size: 0.875rem;
-  padding: 8px;
-  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-`;
-
-function Footer() {
-  return (
-    <FooterContainer>
+const Footer = () => (
+  <Box
+    component="footer"
+    sx={{
+      height: 40,
+      flexShrink: 0,
+      px: 3,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      borderTop: 1,
+      borderColor: 'divider',
+      bgcolor: 'background.paper',
+    }}
+  >
+    <Typography variant="caption" color="text.secondary">
       &copy; {new Date().getFullYear()} Dokko Filler
-    </FooterContainer>
-  );
-}
+    </Typography>
+    <Typography variant="caption" color="text.secondary">
+      v{process.env.APP_VERSION}
+    </Typography>
+  </Box>
+);
 
 export default Footer;

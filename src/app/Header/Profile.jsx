@@ -1,72 +1,77 @@
-import { Menu, MenuItem, IconButton } from '@mui/material';
-import React, { useState } from 'react';
+import Avatar from '@mui/material/Avatar';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { signOutUtil } from '~features/auth/authService';
-import { MyAccountIcon, PowerOffLineIcon } from '~ui/Icons';
+import { useNotification } from '~app/Notifications';
+import { MSG } from '~constants/messages';
+import { ROUTES } from '~constants/routes';
 import { useAuth } from '~features/auth/AuthContext';
-import { useNotification } from '~app/NotificationContext';
+import Icon from '~ui/Icon';
+import { PowerOffLineIcon } from '~ui/Icons';
 
-const ProfileContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: ${({ theme }) => theme.palette.primary.contrastText};
-`;
-
-const StyledMyAccountIcon = styled(MyAccountIcon)`
-  width: 32px;
-  height: 32px;
-  fill: ${({ theme }) => theme.palette.primary.light};
-`;
-
-const StyledSwitchIcon = styled(PowerOffLineIcon)`
-  width: 24px;
-  height: 24px;
-  fill: ${({ theme }) => theme.palette.error.light};
-`;
+const initials = (email = '') => email.slice(0, 2).toUpperCase();
 
 const Profile = () => {
   const navigate = useNavigate();
-  const showNotification = useNotification();
-  const { user, logout, refreshUser } = useAuth();
-
+  const notify = useNotification();
+  const { user, logout } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleLogout = async () => {
+    setAnchorEl(null);
     try {
-      await signOutUtil();
-      logout();
-      await refreshUser();
-
-      showNotification('Uspešno ste se odjavili.', 3000, 'success');
-      navigate('/login');
-    } catch (error) {
-      showNotification('Greška pri odjavi. Pokušajte ponovo.', 5000, 'error');
+      await logout();
+      notify(MSG.auth.logoutSuccess, 'success', 3000);
+      navigate(ROUTES.LOGIN);
+    } catch {
+      notify(MSG.auth.logoutFailed, 'error');
     }
   };
 
   return (
-    <ProfileContainer>
-      <IconButton onClick={(e) => setAnchorEl(e.currentTarget)} color="inherit">
-        <StyledMyAccountIcon />
+    <>
+      <IconButton
+        onClick={(e) => setAnchorEl(e.currentTarget)}
+        aria-label="Korisnički meni"
+        aria-haspopup="menu"
+        aria-expanded={Boolean(anchorEl)}
+        sx={{ p: 0.5 }}
+      >
+        <Avatar
+          sx={{ width: 34, height: 34, bgcolor: 'primary.main', fontSize: 14 }}
+        >
+          {initials(user)}
+        </Avatar>
       </IconButton>
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <MenuItem disabled>Korisnik: {user || 'Korisnik'}</MenuItem>
-        <hr />
-        <MenuItem
-          sx={{ display: 'flex', justifyContent: 'space-between' }}
-          onClick={handleLogout}
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ px: 2, py: 1, maxWidth: 260 }}
+          noWrap
         >
-          <span>Odjava</span>
-          <StyledSwitchIcon />
+          {user}
+        </Typography>
+        <Divider />
+        <MenuItem onClick={handleLogout} sx={{ color: 'error.main' }}>
+          <ListItemIcon sx={{ color: 'inherit' }}>
+            <Icon as={PowerOffLineIcon} size={18} />
+          </ListItemIcon>
+          Odjava
         </MenuItem>
       </Menu>
-    </ProfileContainer>
+    </>
   );
 };
 

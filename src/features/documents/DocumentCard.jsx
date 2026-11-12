@@ -1,82 +1,80 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Card, CardContent, Typography, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { FileLineIcon } from '~ui/Icons';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardActionArea from '@mui/material/CardActionArea';
+import { alpha } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import Icon from '~ui/Icon';
+import { AngleLeftIcon, WordFileIcon } from '~ui/Icons';
 
-const IconContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${({ theme }) => theme.palette.background.white};
-  height: 200px;
-`;
+/** Whole card is one button: no nested interactive elements. */
+const DocumentCard = ({ name, onClick, actionLabel = 'Napravi ugovor' }) => (
+  <Card
+    sx={{
+      height: '100%',
+      transition: 'border-color 0.2s, box-shadow 0.2s',
+      '&:hover': {
+        borderColor: 'primary.main',
+        boxShadow: (t) => `0 8px 24px ${alpha(t.palette.primary.main, 0.12)}`,
+      },
+    }}
+  >
+    <CardActionArea
+      onClick={onClick}
+      sx={{
+        height: '100%',
+        p: 2.5,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        gap: 2,
+      }}
+    >
+      <Box
+        sx={(t) => ({
+          width: 48,
+          height: 48,
+          borderRadius: 3,
+          display: 'grid',
+          placeItems: 'center',
+          color: 'primary.main',
+          bgcolor: alpha(t.palette.primary.main, 0.1),
+        })}
+      >
+        <Icon as={WordFileIcon} size={26} />
+      </Box>
+      <Typography
+        variant="h6"
+        component="h2"
+        sx={{
+          flex: 1,
+          display: '-webkit-box',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+        }}
+        title={name}
+      >
+        {name}
+      </Typography>
+      <Typography
+        variant="body2"
+        color="primary"
+        sx={{
+          fontWeight: 600,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 0.75,
+        }}
+      >
+        {actionLabel}
+        <Icon
+          as={AngleLeftIcon}
+          size={10}
+          style={{ transform: 'rotate(180deg)' }}
+        />
+      </Typography>
+    </CardActionArea>
+  </Card>
+);
 
-const StyledCard = styled(Card)`
-  width: 300px;
-  border: 1px solid ${({ theme }) => theme.palette.grey[900]};
-  &.MuiCard-root {
-    box-shadow: none;
-  }
-`;
-
-const StyledButton = styled(Button)`
-  margin-top: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background-color: ${({ theme }) => theme.palette.primary.light};
-`;
-
-const StyledFileLineIcon = styled(FileLineIcon)`
-  height: 120px;
-  fill: ${({ theme }) => theme.palette.grey[700]};
-`;
-
-const CardContentWrapper = styled(CardContent)`
-  display: flex;
-  height: 140px;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
-const StyledTypography = styled(Typography)`
-  font-weight: 700;
-`;
-
-function DocumentItem({
-  name,
-  navigateTo,
-  onAction,
-  actionLabel = 'Napravi Ugovor',
-}) {
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    if (onAction) {
-      onAction();
-      return;
-    }
-
-    if (navigateTo) {
-      navigate(navigateTo);
-    }
-  };
-
-  return (
-    <StyledCard>
-      <IconContainer>
-        <StyledFileLineIcon />
-      </IconContainer>
-      <CardContentWrapper>
-        <StyledTypography component="div">{name}</StyledTypography>
-        <StyledButton variant="contained" onClick={handleClick}>
-          {actionLabel}
-        </StyledButton>
-      </CardContentWrapper>
-    </StyledCard>
-  );
-}
-
-export default DocumentItem;
+export default DocumentCard;

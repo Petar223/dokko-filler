@@ -1,76 +1,51 @@
-import React, { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import styled from 'styled-components';
+import { Suspense, lazy } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from '~app/Layout/Layout';
-import PrivateRoute from './PrivateRoute';
-import Loading from '~ui/Loading';
+import PrivateRoute from '~app/PrivateRoute';
+import { ROUTES } from '~constants/routes';
+import LoadingState from '~ui/LoadingState';
 
-const Login = lazy(() => import('~features/auth/LoginPage'));
-const Signup = lazy(() => import('~features/auth/SignupPage'));
-const AboutPage = lazy(() => import('~features/static/AboutPage'));
-const DocumentsList = lazy(
+const LoginPage = lazy(() => import('~features/auth/LoginPage'));
+const SignupPage = lazy(() => import('~features/auth/SignupPage'));
+const ConfirmSignupPage = lazy(
+  () => import('~features/auth/ConfirmSignupPage')
+);
+const DocumentsListPage = lazy(
   () => import('~features/documents/DocumentsListPage')
 );
 const GenerateDocumentPage = lazy(
   () => import('~features/generate/GenerateDocumentPage')
 );
-const HomePage = lazy(() => import('~features/static/HomePage'));
 const DemoPage = lazy(() => import('~features/demo/DemoPage'));
-const PageNotFound = lazy(() => import('~features/static/NotFoundPage'));
+const HomePage = lazy(() => import('~features/static/HomePage'));
+const AboutPage = lazy(() => import('~features/static/AboutPage'));
+const NotFoundPage = lazy(() => import('~features/static/NotFoundPage'));
 
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-`;
+const Root = () => (
+  <BrowserRouter>
+    <Layout>
+      <Suspense fallback={<LoadingState />}>
+        <Routes>
+          <Route path={ROUTES.HOME} element={<HomePage />} />
+          <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+          <Route path={ROUTES.SIGNUP} element={<SignupPage />} />
+          <Route path={ROUTES.CONFIRM_SIGNUP} element={<ConfirmSignupPage />} />
+          <Route path={ROUTES.ABOUT} element={<AboutPage />} />
+          <Route path={ROUTES.DEMO} element={<DemoPage />} />
 
-function Root() {
-  return (
-    <Router>
-      <Layout>
-        <Suspense
-          fallback={
-            <Container>
-              <Loading />
-            </Container>
-          }
-        >
-          <Routes>
-            <Route path="/" element={<HomePage />} />
+          <Route element={<PrivateRoute />}>
+            <Route path={ROUTES.DOCUMENTS} element={<DocumentsListPage />} />
             <Route
-              path="/login"
-              element={
-                <Container>
-                  <Login />
-                </Container>
-              }
+              path={ROUTES.CREATE_DOCUMENT}
+              element={<GenerateDocumentPage />}
             />
-            <Route
-              path="/signup"
-              element={
-                <Container>
-                  <Signup />
-                </Container>
-              }
-            />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/demo" element={<DemoPage />} />
+          </Route>
 
-            <Route element={<PrivateRoute />}>
-              <Route path="/documents" element={<DocumentsList />} />
-              <Route
-                path="/documents/create/:name/:id"
-                element={<GenerateDocumentPage />}
-              />
-            </Route>
-
-            <Route path="*" element={<PageNotFound />} />
-          </Routes>
-        </Suspense>
-      </Layout>
-    </Router>
-  );
-}
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Suspense>
+    </Layout>
+  </BrowserRouter>
+);
 
 export default Root;

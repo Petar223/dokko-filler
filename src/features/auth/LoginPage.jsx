@@ -1,116 +1,114 @@
+import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { signInUtil } from './authService';
+import Link from '@mui/material/Link';
+import TextField from '@mui/material/TextField';
+import { useState } from 'react';
+import {
+  Link as RouterLink,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom';
+import { useNotification } from '~app/Notifications';
+import { MSG } from '~constants/messages';
+import { ROUTES } from '~constants/routes';
+import PasswordField from '~ui/PasswordField';
+import AuthCard from './AuthCard';
 import { useAuth } from './AuthContext';
-import { useNotification } from '~app/NotificationContext';
-import CustomButton from '~ui/CustomButton';
-import CustomForm from '~ui/CustomForm';
-import CustomTextField from '~ui/CustomTextField';
-import FormWrapper from '~ui/FormWrapper';
-import LinkContainer from '~ui/LinkContainer';
+import { signInUser } from './authService';
+import { safeRedirect, validateEmail } from './validation';
 
-function Login() {
+const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const showNotification = useNotification();
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const notify = useNotification();
   const { login } = useAuth();
-
   const navigate = useNavigate();
+  const location = useLocation();
+  const [params] = useSearchParams();
 
-  const handleLogin = async (e) => {
+  // From PrivateRoute (state) or from a 401 redirect (?from=).
+  const from = safeRedirect(
+    location.state?.from?.pathname ?? params.get('from'),
+    ROUTES.DOCUMENTS
+  );
+
+  const goToConfirm = () => {
+    notify(MSG.auth.needsConfirmation, 'info');
+    navigate(`${ROUTES.CONFIRM_SIGNUP}?email=${encodeURIComponent(email)}`);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setEmailError('');
-    setPasswordError('');
-    setIsLoading(true);
+    const nextErrors = {
+      email: validateEmail(email),
+      password: password ? '' : MSG.auth.passwordRequired,
+    };
+    setErrors(nextErrors);
+    if (nextErrors.email || nextErrors.password) return;
 
-    let isValid = true;
-
-    if (!email) {
-      setEmailError('Email je obavezan.');
-      isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      setEmailError('Email nije validan.');
-      isValid = false;
-    }
-
-    if (!password) {
-      setPasswordError('Lozinka je obavezna.');
-      isValid = false;
-    }
-
-    if (!isValid) {
-      setIsLoading(false);
-      return;
-    }
-
+    setLoading(true);
     try {
-      const userData = await signInUtil(email, password);
-      login(userData.isSignedIn);
-      showNotification('Uspešno ste se prijavili!', 3000, 'success');
-      navigate('/documents');
-    } catch (err) {
-      console.log(err);
-      setIsLoading(false);
-      showNotification(
-        'Došlo je do greške prilikom logovanja. Molimo vas pokušajte opet.',
-        5000,
-        'error'
-      );
+      const { isSignedIn, nextStep } = await signInUser(email, password);
+      if (isSignedIn) {
+        await login();
+        notify(MSG.auth.loginSuccess, 'success', 3000);
+        navigate(from, { replace: true });
+      } else if (nextStep?.signInStep === 'CONFIRM_SIGN_UP') {
+        goToConfirm();
+      } else {
+        notify(MSG.auth.unsupportedStep, 'warning');
+      }
+    } catch (error) {
+      if (error.name === 'UserNotConfirmedException') goToConfirm();
+      else notify(MSG.auth.loginFailed, 'error');
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   return (
-    <FormWrapper>
-      <h2>Prijava</h2>
-      <CustomForm onSubmit={handleLogin}>
-        <CustomTextField
-          label="Email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          error={!!emailError}
-          helperText={emailError}
-        />
-
-        <CustomTextField
-          label="Lozinka"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          error={!!passwordError}
-          helperText={passwordError}
-        />
-
-        <CustomButton
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-        >
-          {isLoading ? (
-            <CircularProgress size={20} color="inherit" />
-          ) : (
-            'Prijavi se'
-          )}
-        </CustomButton>
-
-        <LinkContainer>
-          <Link
-            to="/signup"
-            style={{ textDecoration: 'none', color: '#1976d2' }}
-          >
-            Nemate nalog? Registrujte se
+    <AuthCard
+      title="Prijava"
+      subtitle="Prijavite se da biste pristupili ugovorima."
+      onSubmit={handleSubmit}
+      footer={
+        <>
+          Nemate nalog?{' '}
+          <Link component={RouterLink} to={ROUTES.SIGNUP}>
+            Registrujte se
           </Link>
-        </LinkContainer>
-      </CustomForm>
-    </FormWrapper>
+        </>
+      }
+    >
+      <TextField
+        label="Email"
+        type="email"
+        autoComplete="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        error={!!errors.email}
+        helperText={errors.email}
+      />
+      <PasswordField
+        label="Lozinka"
+        autoComplete="current-password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        error={!!errors.password}
+        helperText={errors.password}
+      />
+      <Button type="submit" variant="contained" size="large" disabled={loading}>
+        {loading ? (
+          <CircularProgress size={22} color="inherit" />
+        ) : (
+          'Prijavi se'
+        )}
+      </Button>
+    </AuthCard>
   );
-}
+};
 
-export default Login;
+export default LoginPage;

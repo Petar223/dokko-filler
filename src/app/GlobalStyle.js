@@ -1,22 +1,21 @@
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
-   body{
-    
+  html, body, #root {
+    height: 100%;
   }
 
-   #root {
-    height: 100vh;
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
   }
 
-  *{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-   
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
   }
- 
-  
 `;
 
 export default GlobalStyle;

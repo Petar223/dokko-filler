@@ -75,9 +75,6 @@ export const DEMO_CARD_SNAPSHOTS = {
   },
 };
 
-export const getDemoDocument = (id) =>
-  DEMO_DOCUMENTS.find((document) => document.id === id);
-
 export const mockReadCard = (order) =>
   new Promise((resolve, reject) => {
     const snapshot = DEMO_CARD_SNAPSHOTS[order];

@@ -1,28 +1,28 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
+/** Runs `fetchFunction` on mount and whenever it changes (wrap in useCallback). */
 const useFetch = (fetchFunction) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchData = useCallback(async () => {
+  const refetch = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const result = await fetchFunction();
-      setData(result);
-    } catch (error) {
-      setError(error);
+      setData(await fetchFunction());
+    } catch (err) {
+      setError(err);
     } finally {
       setLoading(false);
     }
   }, [fetchFunction]);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    refetch();
+  }, [refetch]);
 
-  return { data, loading, error, setData };
+  return { data, loading, error, refetch };
 };
 
 export default useFetch;
