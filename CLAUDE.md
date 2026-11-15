@@ -15,9 +15,14 @@ reader → fill the `.docx` template (`docx.patchDocument`, grammatical cases vi
 | `npm run build` | Production build into `build/`; env vars must be in the shell (`npx env-cmd -e <profile> npm run build`) |
 | `npm test` | Jest + React Testing Library |
 | `npm run lint` | ESLint (prettier, react-hooks, a11y, import order) |
+| `npm run lint:fix` | Same, and fixes formatting (single quotes, import order) |
 | `npm run template:check -- file.docx` | Lists placeholders of a Word template and flags problems |
 
-Before committing: `npm run lint && npm test && npm run build` (see the `verify-change` skill).
+After every change: `npm run lint:fix && npm run lint && npm test && npm run build` (see the `verify-change` skill).
+
+**Never run `git commit`, `git push` or open a PR.** The user commits at the end
+themselves. Leave changes uncommitted in the working tree and list them in the
+final report.
 
 ## Where things live
 
@@ -28,12 +33,13 @@ Aliases (defined once in `aliases.js`, shared by webpack, Jest and ESLint):
 Every component lives in its own folder: `<Name>/<Name>.jsx`.
 
 - `src/pages/` – one folder per route (HomePage, AboutPage, DemoPage, DocumentsList, GenerateDocumentPage, PageNotFound); page-only data/constants sit next to the page (`demoData.js`, `consts.js`)
-- `src/components/` – app-level and stateful components: Root (routes), Layout, Header, Sidebar, Footer, Profile, PrivateRoute, ErrorBoundary, ThemeProvider, Authentication (Login, Signup, ConfirmSignup), DocumentWorkspace, DocumentRender, PlaceholderCard, DocumentModal, DocxViewer, `Icons/` (svgr)
-- `src/shared-components/` – reusable presentational components (PageHeader, EmptyState, LoadingState, FieldList, Icon, PasswordField, DocumentItem, LoadedCard, SwitchThemeButton); plain styled wrappers in `shared-styled-components/`
+- `src/components/` – app-level and stateful components: Root (routes), Layout, Header, Sidebar, Footer, Profile, PrivateRoute, ErrorBoundary, TutorialOffer, ThemeProvider, Authentication (Login, Signup, ConfirmSignup), DocumentWorkspace, DocumentRender, PlaceholderCard, DocumentModal, DocxViewer, `Icons/` (svgr)
+- `src/shared-components/` – reusable presentational components (PageHeader, EmptyState, LoadingState, FieldList, Icon, PasswordField, DocumentItem, LoadedCard, SwitchThemeButton, LanguageSwitch); plain styled wrappers in `shared-styled-components/`
 - `src/context/` – `AuthContext`, `NotificationContext`
 - `src/hooks/` – `useFetch`, `useCardSlots`, `useDocumentGeneration`
 - `src/api/` – `axios.js` (backend, adds Cognito token), `readerAxios.js` (local card reader), one file per endpoint
-- `src/utils/` – Cognito wrapper, document logic (placeholders, fill, script conversion, formatting, download), `routes.js`, `messages.js` (shared Serbian copy), `validation.js`
+- `src/utils/` – Cognito wrapper, document logic (placeholders, fill, script conversion, formatting, download), `routes.js`, `i18n.js` (i18next setup), `validation.js`
+- `src/locales/` – `sr.json` and `en.json`: every piece of UI copy, same keys in both
 - `src/theme/` – palette, typography, MUI overrides, `theme.js` (`buildTheme`, `useColorMode`)
 
 ## Docs
@@ -55,7 +61,10 @@ verify-change).
 - Anything in the bundle is public. `CASE_API_KEY` is not a secret.
 - `/demo` runs the whole flow without login and without a card reader (mock data
   + `public/assets/demo/demo-contract.docx`). Use it to reproduce and verify.
-- UI text is Serbian (Latin script). Code, comments and docs are English.
+- UI text is never hard-coded: add the key to both `src/locales/sr.json`
+  (Serbian, Latin script; the default) and `src/locales/en.json`, then use
+  `t('key')` from `useTranslation()` (or `i18n.t` outside components). Generated
+  contracts and card data are not translated. Code, comments and docs are English.
 - Card data keys are `<Field>_<order>` (e.g. `GivenName_1`); `order` comes from
   the contract's `needed_cards`.
 - Placeholders must be exactly `{{Name}}` with no spaces, otherwise

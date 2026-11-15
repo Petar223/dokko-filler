@@ -3,7 +3,7 @@ import postPlaceholder from '~api/postPlaceholder';
 import { useNotification } from '~context/NotificationContext';
 import { addCustomFields, fillDocument } from '~utils/documentUtils';
 import { TemplateFetchError, fetchTemplate } from '~utils/fileDownloader';
-import { MSG } from '~utils/messages';
+import i18n from '~utils/i18n';
 import {
   extractPlaceholderNames,
   extractText,
@@ -67,8 +67,8 @@ const useDocumentGeneration = ({ templateURL, fields, letter }) => {
       setState({ status: GENERATION_STATUS.ERROR });
       notify(
         error instanceof TemplateFetchError
-          ? MSG.documents.templateFailed
-          : MSG.documents.generateFailed,
+          ? i18n.t('documents.templateFailed')
+          : i18n.t('documents.generateFailed'),
         'error'
       );
       return false;

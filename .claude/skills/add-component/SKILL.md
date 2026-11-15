@@ -29,7 +29,9 @@ description: Create a new React component in Dokko Filler following the folder s
      icons from `~components/Icons`) so they inherit `currentColor`.
    - styled-components props that must not reach the DOM use `$` (`$size`).
 4. **Accessibility**:
-   - Icon-only buttons get a Serbian `aria-label`.
+   - Icon-only buttons get a translated `aria-label`.
+   - All visible text and labels come from `t('key')` (`useTranslation()`), with
+     the key added to both `src/locales/sr.json` and `src/locales/en.json`.
    - No interactive element inside another (e.g. a button in a clickable card).
    - Loading buttons/cards are `disabled` and use `aria-busy`.
    - Overlays use MUI `Dialog`/`Menu`/`Popover`, not hand-made ones.

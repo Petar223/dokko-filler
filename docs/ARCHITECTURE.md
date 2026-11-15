@@ -19,6 +19,7 @@ src/
     Root/                  router + routes
     Layout/ Header/ Sidebar/ Footer/ Profile/
     PrivateRoute/ ErrorBoundary/ ThemeProvider/
+    TutorialOffer/         first-login dialog offering the guided demo
     Authentication/        Login, Signup, ConfirmSignup, AuthCard
     DocumentWorkspace/     card slots + preview button (shared by real and demo flow)
     DocumentRender/        one slot: PlaceholderCard or LoadedCard
@@ -34,7 +35,8 @@ src/
   hooks/                   useFetch, useCardSlots, useDocumentGeneration
   api/                     axios.js, readerAxios.js + one file per endpoint
   utils/                   cognitoAuth, documentUtils, placeholders, formatters,
-                           scriptConversion, fileDownloader, routes, messages, validation
+                           scriptConversion, fileDownloader, routes, i18n, validation
+  locales/                 sr.json, en.json (all UI copy)
   theme/                   palette, typography, components (MUI overrides), theme.js
 ```
 
@@ -75,6 +77,13 @@ The demo flow (`/demo`) uses the same `DocumentWorkspace`, with
 `mockReadCard(order)` instead of the reader and a static template from
 `public/assets/demo/`.
 
+The demo doubles as the tutorial: `DemoPage` renders a stepper with a hint
+for the current step. `DocumentWorkspace` accepts `banner` as a function and
+passes it `{ allLoaded, previewed }`, which is how the page knows the step.
+`TutorialOffer` (rendered in `Layout`) offers the demo once after the first
+login; the answer is stored in `localStorage` under
+`dokko-tutorial-offered:<email>` (per browser, per user).
+
 ## Auth
 
 - `utils/cognitoAuth.js` configures Amplify once and wraps every
@@ -94,8 +103,8 @@ The demo flow (`/demo`) uses the same `DocumentWorkspace`, with
 
 | Client | Base URL | Errors |
 |---|---|---|
-| `api/axios.js` | `API_BASE_URL` | Rejects with `Error` whose `message` is Serbian (`MSG.http`) and `status` |
-| `api/readerAxios.js` | `READER_API_BASE_URL` | Rejects with `MSG.reader.offline` when the reader is not running, otherwise `MSG.reader.readFailed` |
+| `api/axios.js` | `API_BASE_URL` | Rejects with `Error` whose `message` is translated (`http.*` keys) and `status` |
+| `api/readerAxios.js` | `READER_API_BASE_URL` | Rejects with `reader.offline` when the reader is not running, otherwise `reader.readFailed` (translated) |
 
 Domain modules (`getDocuments.js`, `getDocumentById.js`, `read.js`, `postPlaceholder.js`) return
 `response.data` (or the relevant part of it) and never touch UI state.
@@ -126,3 +135,20 @@ There is no global store. State lives where it is used:
   by `NODE_ENV`. Babel config is in `babel.config.js` (shared with Jest).
 - Only variables in `PUBLIC_ENV` are inlined via `DefinePlugin`.
 - `docx-preview` is loaded with `import()` only when a preview opens.
+
+## Languages (i18n)
+
+- `src/utils/i18n.js` initialises i18next + react-i18next with two bundled
+  languages: `sr` (default and fallback) and `en`. It is imported once in
+  `src/index.js` and in `jest.setup.js` (tests run in Serbian).
+- Copy lives in `src/locales/sr.json` and `src/locales/en.json`, grouped by
+  area (`auth`, `documents`, `preview`, `tutorial`, ...). Both files must have
+  the same keys; `LanguageSwitch.test.jsx` fails when they differ.
+- Components call `t('key')` from `useTranslation()`. Non-React code (API
+  clients, hooks, validation, `ErrorBoundary`) calls `i18n.t('key')` at the
+  moment the message is needed, never at module load.
+- Counts use i18next plurals: `key_one`, `key_few` (Serbian only), `key_other`.
+- `LanguageSwitch` in the header toggles the language. The choice is stored in
+  `localStorage` (`dokko-language`) and sets `<html lang>`.
+- Not translated: generated contracts, card data from the reader, and names
+  that come from the backend (contract names, `needed_cards` names).

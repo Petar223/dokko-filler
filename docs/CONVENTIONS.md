@@ -62,8 +62,10 @@ Where a new file goes:
 - For user-triggered actions, write a plain `async` handler or a feature hook
   (`useCardSlots`, `useDocumentGeneration`) that holds its own state.
 - Report errors with `useNotification()` → `notify(message, 'error')`. Error
-  messages already come in Serbian from the API clients. Shared copy lives in
-  `src/utils/messages.js`.
+  messages already come translated from the API clients. All copy lives in
+  `src/locales/sr.json` and `src/locales/en.json` (same keys in both); use
+  `t('key')` from `useTranslation()` in components and `i18n.t('key')` elsewhere.
+  Never hard-code UI text.
 
 ## Screen states
 
@@ -81,7 +83,7 @@ Pages start with `PageHeader` (title, optional subtitle, `onBack`, `actions`).
 ## Accessibility
 
 - Everything clickable is a real button (`Button`, `IconButton`, `ButtonBase`,
-  `CardActionArea`) or a link. Icon-only buttons have `aria-label` (Serbian).
+  `CardActionArea`) or a link. Icon-only buttons have a translated `aria-label`.
 - No nested interactive elements (no button inside a clickable card).
 - Dialogs use MUI `Dialog` (Esc, focus trap, scroll lock come for free).
 - Do not use `autoFocus`.

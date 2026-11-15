@@ -1,4 +1,5 @@
 import '@fontsource-variable/inter';
+import '~utils/i18n';
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import ErrorBoundary from '~components/ErrorBoundary/ErrorBoundary';

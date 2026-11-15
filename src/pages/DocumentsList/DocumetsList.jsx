@@ -1,4 +1,5 @@
 import Button from '@mui/material/Button';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import getDocuments from '~api/getDocuments';
 import { DocumentsSearchIcon } from '~components/Icons';
@@ -8,10 +9,10 @@ import EmptyState from '~shared-components/EmptyState/EmptyState';
 import LoadingState from '~shared-components/LoadingState/LoadingState';
 import PageHeader from '~shared-components/PageHeader/PageHeader';
 import { CardGrid } from '~shared-components/shared-styled-components/CardGrid/CardGrid';
-import { MSG } from '~utils/messages';
 import { createDocumentPath } from '~utils/routes';
 
 const DocumentsList = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { data, loading, error, refetch } = useFetch(getDocuments);
   const documents = Array.isArray(data?.body) ? data.body : null;
@@ -23,11 +24,11 @@ const DocumentsList = () => {
       return (
         <EmptyState
           color="error"
-          title={MSG.documents.listFailed}
+          title={t('documents.listFailed')}
           description={error?.message}
           action={
             <Button variant="contained" onClick={refetch}>
-              Pokušaj ponovo
+              {t('common.retry')}
             </Button>
           }
         />
@@ -38,7 +39,7 @@ const DocumentsList = () => {
       return (
         <EmptyState
           icon={DocumentsSearchIcon}
-          title={MSG.documents.listEmpty}
+          title={t('documents.listEmpty')}
         />
       );
     }
@@ -59,11 +60,11 @@ const DocumentsList = () => {
   return (
     <>
       <PageHeader
-        title="Ugovori"
+        title={t('documents.title')}
         subtitle={
           documents?.length
-            ? `${documents.length} dostupnih šablona. Izaberite ugovor koji želite da popunite.`
-            : 'Izaberite ugovor koji želite da popunite.'
+            ? `${t('documents.count', { count: documents.length })} ${t('documents.subtitle')}`
+            : t('documents.subtitle')
         }
       />
       {content()}

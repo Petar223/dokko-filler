@@ -1,7 +1,8 @@
+// `name` values are translation keys (see src/locales).
 export const DEMO_DOCUMENTS = [
   {
     id: 'demo-vehicle-sale',
-    name: 'Demo ugovor o kupoprodaji vozila',
+    name: 'demo.docName',
     summary:
       'Prikaz procesa pripreme ugovora sa unapred popunjenim demo podacima.',
     templateURL: '/assets/demo/demo-contract.docx',
@@ -10,23 +11,18 @@ export const DEMO_DOCUMENTS = [
       {
         order: 1,
         type: 'licna_karta',
-        name: 'Prodavac - lična karta',
+        name: 'demo.seller',
       },
       {
         order: 2,
         type: 'licna_karta',
-        name: 'Kupac - lična karta',
+        name: 'demo.buyer',
       },
       {
         order: 3,
         type: 'saobracajna_dozvola',
-        name: 'Saobraćajna dozvola vozila',
+        name: 'demo.vehicle',
       },
-    ],
-    highlights: [
-      'Učitavanje ličnih karata iz demo izvora',
-      'Pregled i brisanje učitanih podataka',
-      'Generisanje .docx dokumenta bez prijave',
     ],
   },
 ];

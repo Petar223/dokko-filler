@@ -1,20 +1,18 @@
-import { MSG } from './messages';
+import i18n from './i18n';
 
 export const validateEmail = (email) => {
-  if (!email) return MSG.auth.emailRequired;
-  if (!/^\S+@\S+\.\S+$/.test(email)) return MSG.auth.emailInvalid;
+  if (!email) return i18n.t('auth.emailRequired');
+  if (!/^\S+@\S+\.\S+$/.test(email)) return i18n.t('auth.emailInvalid');
   return '';
 };
 
 // Keep in sync with the Cognito user pool password policy.
 export const validatePassword = (password) => {
-  if (!password) return MSG.auth.passwordRequired;
-  if (password.length < 6) return 'Lozinka mora imati najmanje 6 karaktera.';
-  if (!/[A-Z]/.test(password))
-    return 'Lozinka mora sadržati bar jedno veliko slovo.';
-  if (!/[^A-Za-z0-9]/.test(password))
-    return 'Lozinka mora sadržati bar jedan specijalni karakter.';
-  if (!/[0-9]/.test(password)) return 'Lozinka mora sadržati bar jedan broj.';
+  if (!password) return i18n.t('auth.passwordRequired');
+  if (password.length < 6) return i18n.t('auth.passwordMin');
+  if (!/[A-Z]/.test(password)) return i18n.t('auth.passwordUpper');
+  if (!/[^A-Za-z0-9]/.test(password)) return i18n.t('auth.passwordSpecial');
+  if (!/[0-9]/.test(password)) return i18n.t('auth.passwordNumber');
   return '';
 };
 

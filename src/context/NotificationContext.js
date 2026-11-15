@@ -29,8 +29,9 @@ export const NotificationProvider = ({ children }) => {
           open
           autoHideDuration={notification.duration}
           onClose={handleClose}
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-          sx={{ mt: 7 }}
+          // Bottom right: the top right corner holds the page's primary action.
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          sx={{ mb: 5 }}
         >
           <Alert
             severity={notification.severity}

@@ -13,10 +13,11 @@ Card types are identified by the `type` string the backend sends in
    returns. `scripts/checkTemplate.js` reads this file too.
 2. **`src/pages/GenerateDocumentPage/consts.js`**
    - `CARD_TYPE.<NAME> = '<type>'`
-   - `CARD_TYPES[<type>] = { label, detectBy, requiredFields }`. `detectBy`
+   - `CARD_TYPES[<type>] = { detectBy, requiredFields }`. `detectBy`
      must be a field that only this card returns (it is how a wrong card in
      the reader gets rejected).
-   - Labels for new fields in `FIELD_LABELS` (Serbian).
+   - Labels in both `src/locales/sr.json` and `src/locales/en.json`:
+     `cardType.<type>` for the type, `field.<Field>` for each new field.
 3. **Rendering**: add a `ROWS[<type>]` entry in `shared-components/LoadedCard/LoadedCard.jsx` (what to show,
    in which order) and an icon in `cardIcon()`. Add a placeholder icon in
    `components/DocumentRender/DocumentRender.jsx`.

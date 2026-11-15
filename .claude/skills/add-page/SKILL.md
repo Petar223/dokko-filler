@@ -19,7 +19,7 @@ Read `docs/CONVENTIONS.md` first.
    - Needs login: inside the `<Route element={<PrivateRoute />}>` group.
 4. **Sidebar** (only if it is a top-level destination): add
    `{ label, icon, route }` to `NAV_ITEMS` in `src/components/Sidebar/Sidebar.jsx`.
-   Pick an icon from `~components/Icons` that no other item uses. Label is Serbian.
+   Pick an icon from `~components/Icons` that no other item uses. Label is a translation key (`nav.*`).
 5. **Layout of the page**:
    ```jsx
    <>
@@ -37,7 +37,8 @@ Read `docs/CONVENTIONS.md` first.
    - `error` → `<EmptyState color="error" title=… action={<Button onClick={refetch}>Pokušaj ponovo</Button>} />`
    - empty → `<EmptyState title=… />`
    - success → content (`CardGrid` for card lists)
-8. **Copy**: Serbian (Latin). Messages reused elsewhere go in `src/utils/messages.js`.
+8. **Copy**: never hard-coded. Add keys to both `src/locales/sr.json` (Serbian,
+   Latin) and `src/locales/en.json`, use `t('key')` from `useTranslation()`.
 9. **Test**: `src/pages/<Name>/<Name>.test.jsx` with `renderWithProviders`
    (from `test/renderWithProviders.jsx`). Mock the API module and assert
    loading, empty, error and success (see `pages/DocumentsList/DocumetsList.test.jsx`).

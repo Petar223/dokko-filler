@@ -9,7 +9,8 @@ const Item = styled(NavLink)`
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  padding: 10px 6px;
+  padding: 10px 0;
+  white-space: nowrap;
   border-radius: 12px;
   text-decoration: none;
   color: ${({ theme }) => theme.palette.text.secondary};
@@ -38,7 +39,7 @@ const Item = styled(NavLink)`
   &.active::before {
     content: '';
     position: absolute;
-    left: -12px;
+    left: -8px;
     top: 12px;
     bottom: 12px;
     width: 3px;

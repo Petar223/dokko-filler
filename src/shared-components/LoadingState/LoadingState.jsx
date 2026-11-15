@@ -1,12 +1,14 @@
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Skeleton from '@mui/material/Skeleton';
+import { useTranslation } from 'react-i18next';
 import { CardGrid } from '~shared-components/shared-styled-components/CardGrid/CardGrid';
 
 /** Centered spinner, or a skeleton grid when `cards` is given. */
-const LoadingState = ({ cards, cardHeight = 220, minWidth }) =>
-  cards ? (
-    <CardGrid $min={minWidth} aria-busy="true" aria-label="Učitavanje">
+const LoadingState = ({ cards, cardHeight = 220, minWidth }) => {
+  const { t } = useTranslation();
+  return cards ? (
+    <CardGrid $min={minWidth} aria-busy="true" aria-label={t('common.loading')}>
       {Array.from({ length: cards }, (_, i) => (
         <Skeleton key={i} variant="rounded" height={cardHeight} />
       ))}
@@ -16,8 +18,9 @@ const LoadingState = ({ cards, cardHeight = 220, minWidth }) =>
       sx={{ display: 'grid', placeItems: 'center', py: 10, flex: 1 }}
       aria-busy="true"
     >
-      <CircularProgress aria-label="Učitavanje" />
+      <CircularProgress aria-label={t('common.loading')} />
     </Box>
   );
+};
 
 export default LoadingState;

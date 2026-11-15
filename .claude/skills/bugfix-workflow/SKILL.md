@@ -25,5 +25,6 @@ description: Workflow for fixing a bug in Dokko Filler - reproduce (preferably o
    `docs/CONVENTIONS.md`.
 5. **Verify**: run the `verify-change` skill, then repeat the manual
    reproduction from step 1.
-6. **Commit message**: what was wrong, why, and how it is fixed. Mention the
-   test.
+6. **Do not commit.** Never run `git commit`/`git push`; the user commits at
+   the end. Report instead: what was wrong, why, how it is fixed, which test
+   covers it, and the list of changed files.

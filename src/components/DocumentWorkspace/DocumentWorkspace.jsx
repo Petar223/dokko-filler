@@ -5,6 +5,7 @@ import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import DocumentModal from '~components/DocumentModal/DocumentModal';
 import DocumentRender from '~components/DocumentRender/DocumentRender';
 import { OverviewIcon } from '~components/Icons';
@@ -33,13 +34,17 @@ const DocumentWorkspace = ({
     useCardSlots(readFn);
   const generation = useDocumentGeneration({ templateURL, fields, letter });
   const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewed, setPreviewed] = useState(false);
+  const { t } = useTranslation();
 
   const loadedCount = neededCards.filter((c) => snapshots[c.order]).length;
   const allLoaded = loadedCount === neededCards.length;
   const generating = generation.status === GENERATION_STATUS.GENERATING;
 
   const handlePreview = async () => {
-    if (await generation.generate()) setPreviewOpen(true);
+    if (!(await generation.generate())) return;
+    setPreviewOpen(true);
+    setPreviewed(true);
   };
 
   const previewButton = (
@@ -56,7 +61,7 @@ const DocumentWorkspace = ({
         )
       }
     >
-      Pregledaj dokument
+      {t('workspace.preview')}
     </Button>
   );
 
@@ -69,7 +74,7 @@ const DocumentWorkspace = ({
           allLoaded ? (
             previewButton
           ) : (
-            <Tooltip title="Prvo učitajte sve potrebne dokumente">
+            <Tooltip title={t('workspace.loadAllFirst')}>
               {/* span: disabled buttons don't fire tooltip events */}
               <span>{previewButton}</span>
             </Tooltip>
@@ -77,15 +82,19 @@ const DocumentWorkspace = ({
         }
       />
 
-      {banner}
+      {/* A function banner gets the progress (the demo tutorial uses it). */}
+      {typeof banner === 'function' ? banner({ allLoaded, previewed }) : banner}
 
       <Stack spacing={1} sx={{ mb: 3 }}>
         <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
           <Typography variant="h5" component="h2">
-            Učitajte potrebna dokumenta
+            {t('workspace.loadTitle')}
           </Typography>
           <Typography color="text.secondary" sx={{ fontWeight: 600 }}>
-            Učitano {loadedCount}/{neededCards.length}
+            {t('workspace.loadedCount', {
+              loaded: loadedCount,
+              total: neededCards.length,
+            })}
           </Typography>
         </Stack>
         <LinearProgress
@@ -93,7 +102,7 @@ const DocumentWorkspace = ({
           value={
             neededCards.length ? (loadedCount / neededCards.length) * 100 : 0
           }
-          aria-label="Napredak učitavanja"
+          aria-label={t('workspace.progress')}
         />
       </Stack>
 

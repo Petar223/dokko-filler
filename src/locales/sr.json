@@ -1,0 +1,253 @@
+{
+  "generic": "Došlo je do greške.",
+  "common": {
+    "retry": "Pokušaj ponovo",
+    "back": "Nazad",
+    "loading": "Učitavanje"
+  },
+  "language": {
+    "switchTo": "Switch to English"
+  },
+  "theme": {
+    "light": "Svetla tema",
+    "dark": "Tamna tema"
+  },
+  "nav": {
+    "label": "Glavna navigacija",
+    "home": "Početna",
+    "contracts": "Ugovori",
+    "demo": "Demo",
+    "about": "O platformi"
+  },
+  "header": {
+    "login": "Prijava",
+    "userMenu": "Korisnički meni",
+    "logout": "Odjava"
+  },
+  "home": {
+    "title": "Dobrodošli u Dokko Filler",
+    "description": "Ova platforma vam omogućava lako i brzo generisanje ugovora. Kreirajte i pregledajte ugovore na jednom mestu uz maksimalnu efikasnost i intuitivno korisničko iskustvo.",
+    "viewContracts": "Pregledaj ugovore",
+    "viewDemo": "Pogledaj demo",
+    "howItWorks": "Kako radi",
+    "steps": {
+      "choose": {
+        "title": "Izaberi ugovor",
+        "text": "Odaberite šablon iz liste dostupnih ugovora."
+      },
+      "load": {
+        "title": "Učitaj dokumente",
+        "text": "Ubacite ličnu kartu ili saobraćajnu u čitač i podaci se popunjavaju sami."
+      },
+      "download": {
+        "title": "Pregledaj i preuzmi",
+        "text": "Proverite izgled dokumenta i preuzmite gotov .docx fajl."
+      }
+    }
+  },
+  "about": {
+    "title": "O dokko-u",
+    "purpose": "Ova platforma služi za automatsko generisanje ugovora. Cilj aplikacije je da omogućimo brže i jednostavnije popunjavanje raznih tipova ugovora, čime se štedi vreme i povećava efikasnost u radu.",
+    "goal": "Naš cilj je da unapredimo vašu produktivnost i pružimo korisničko iskustvo koje je intuitivno i prijatno."
+  },
+  "notFound": {
+    "title": "Stranica nije pronađena",
+    "description": "Adresa koju ste otvorili ne postoji ili je premeštena.",
+    "action": "Idi na početak"
+  },
+  "error": {
+    "title": "Ups! Nešto je pošlo naopako.",
+    "description": "Došlo je do neočekivane greške. Osvežite stranicu i pokušajte ponovo.",
+    "reload": "Osveži stranicu"
+  },
+  "http": {
+    "400": "Neispravan zahtev. Proverite unete podatke.",
+    "401": "Sesija je istekla. Prijavite se ponovo.",
+    "403": "Nemate dozvolu za ovu akciju.",
+    "404": "Traženi resurs nije pronađen.",
+    "500": "Greška na serveru. Pokušajte ponovo kasnije.",
+    "502": "Server trenutno nije dostupan (502).",
+    "503": "Servis je privremeno nedostupan.",
+    "504": "Server nije odgovorio na vreme.",
+    "unknown": "Neočekivana greška (status {{status}}).",
+    "noResponse": "Server ne odgovara. Proverite internet konekciju.",
+    "setup": "Greška pri slanju zahteva."
+  },
+  "reader": {
+    "offline": "Čitač kartica nije dostupan. Proverite da li je program za čitač pokrenut.",
+    "readFailed": "Neuspešno čitanje kartice. Ubacite karticu u čitač i pokušajte ponovo.",
+    "wrongType": "Učitani dokument ne odgovara traženom tipu ({{expected}}).",
+    "loaded": "{{name}}: podaci su učitani."
+  },
+  "auth": {
+    "loginSuccess": "Uspešno ste se prijavili!",
+    "loginFailed": "Pogrešan email ili lozinka.",
+    "logoutSuccess": "Uspešno ste se odjavili.",
+    "logoutFailed": "Greška pri odjavi. Pokušajte ponovo.",
+    "signupSuccess": "Poslali smo vam kod za potvrdu na email.",
+    "signupFailed": "Registracija nije uspela. Pokušajte ponovo.",
+    "userExists": "Nalog sa ovim emailom već postoji.",
+    "confirmSuccess": "Nalog je potvrđen. Možete se prijaviti.",
+    "confirmFailed": "Kod nije ispravan ili je istekao.",
+    "codeResent": "Novi kod je poslat na email.",
+    "needsConfirmation": "Nalog još nije potvrđen. Unesite kod iz emaila.",
+    "unsupportedStep": "Prijava zahteva dodatni korak koji aplikacija još ne podržava.",
+    "emailRequired": "Email je obavezan.",
+    "emailInvalid": "Email nije validan.",
+    "passwordRequired": "Lozinka je obavezna.",
+    "passwordMin": "Lozinka mora imati najmanje 6 karaktera.",
+    "passwordUpper": "Lozinka mora sadržati bar jedno veliko slovo.",
+    "passwordSpecial": "Lozinka mora sadržati bar jedan specijalni karakter.",
+    "passwordNumber": "Lozinka mora sadržati bar jedan broj.",
+    "confirmPasswordRequired": "Potvrda lozinke je obavezna.",
+    "passwordsMismatch": "Lozinke se ne podudaraju.",
+    "codeRequired": "Kod je obavezan.",
+    "email": "Email",
+    "password": "Lozinka",
+    "confirmPassword": "Potvrdi lozinku",
+    "showPassword": "Prikaži lozinku",
+    "hidePassword": "Sakrij lozinku",
+    "loginTitle": "Prijava",
+    "loginSubtitle": "Prijavite se da biste pristupili ugovorima.",
+    "loginSubmit": "Prijavi se",
+    "noAccount": "Nemate nalog?",
+    "signupLink": "Registrujte se",
+    "signupTitle": "Registracija",
+    "signupSubtitle": "Napravite nalog za rad sa ugovorima.",
+    "signupSubmit": "Registruj se",
+    "haveAccount": "Već imate nalog?",
+    "loginLink": "Prijavite se",
+    "confirmTitle": "Potvrda naloga",
+    "confirmSubtitle": "Unesite kod koji smo poslali na vaš email.",
+    "code": "Kod za potvrdu",
+    "confirmSubmit": "Potvrdi",
+    "resendCode": "Pošalji kod ponovo"
+  },
+  "documents": {
+    "title": "Ugovori",
+    "subtitle": "Izaberite ugovor koji želite da popunite.",
+    "count_one": "{{count}} dostupan šablon.",
+    "count_few": "{{count}} dostupna šablona.",
+    "count_other": "{{count}} dostupnih šablona.",
+    "create": "Napravi ugovor",
+    "backToList": "Nazad na ugovore",
+    "listFailed": "Neuspešno učitavanje liste ugovora.",
+    "listEmpty": "Lista ugovora je prazna.",
+    "documentFailed": "Neuspešno učitavanje ugovora.",
+    "templateFailed": "Šablon ugovora nije dostupan (link je možda istekao). Pokušajte ponovo.",
+    "generateFailed": "Greška prilikom pripreme dokumenta. Pokušajte ponovo."
+  },
+  "workspace": {
+    "preview": "Pregledaj dokument",
+    "loadAllFirst": "Prvo učitajte sve potrebne dokumente",
+    "loadTitle": "Učitaj neophodna dokumenta",
+    "loadedCount": "Učitano {{loaded}}/{{total}}",
+    "progress": "Napredak učitavanja"
+  },
+  "slot": {
+    "load": "Učitaj sa čitača",
+    "loadNamed": "Učitaj sa čitača: {{name}}",
+    "reading": "Čitanje kartice…",
+    "insert": "Ubacite karticu u čitač"
+  },
+  "card": {
+    "loaded": "Učitano",
+    "remove": "Ukloni podatke",
+    "removeNamed": "Ukloni podatke: {{name}}",
+    "missing": "Nedostaju polja: {{fields}}",
+    "rows": {
+      "fullName": "Ime i prezime",
+      "idNumber": "Broj lične karte",
+      "personalNumber": "JMBG",
+      "birthDate": "Datum rođenja",
+      "birthPlace": "Mesto rođenja",
+      "residence": "Adresa prebivališta",
+      "registration": "Broj registracije",
+      "vehicleType": "Tip vozila",
+      "make": "Proizvođač",
+      "model": "Model",
+      "year": "Godina proizvodnje",
+      "engine": "Zapremina motora",
+      "owner": "Vlasnik",
+      "address": "Adresa"
+    }
+  },
+  "cardType": {
+    "licna_karta": "Lična karta",
+    "saobracajna_dozvola": "Saobraćajna dozvola"
+  },
+  "field": {
+    "PersonalNumber": "JMBG",
+    "DocumentNumber": "Broj dokumenta",
+    "Place": "Mesto",
+    "GivenName": "Ime",
+    "Surname": "Prezime",
+    "DateOfBirth": "Datum rođenja",
+    "PlaceOfBirth": "Mesto rođenja",
+    "Street": "Ulica",
+    "AddressNumber": "Broj",
+    "Sex": "Pol",
+    "RegistrationNumberOfVehicle": "Registarski broj",
+    "VehicleCategory": "Kategorija",
+    "VehicleMake": "Marka",
+    "CommercialDescription": "Model",
+    "YearOfProduction": "Godina proizvodnje",
+    "EngineCapacity": "Zapremina motora",
+    "OwnersSurnameOrBusinessName": "Prezime / naziv vlasnika",
+    "OwnerName": "Ime vlasnika",
+    "OwnerAddress": "Adresa vlasnika"
+  },
+  "preview": {
+    "preparing": "Priprema pregleda…",
+    "preparingLabel": "Priprema pregleda",
+    "pages_one": "{{count}} stranica",
+    "pages_few": "{{count}} stranice",
+    "pages_other": "{{count}} stranica",
+    "zoomOut": "Umanji",
+    "zoomIn": "Uvećaj",
+    "fitWidth": "Prilagodi širini",
+    "highlight": "Označi popunjena polja",
+    "print": "Štampaj",
+    "download": "Preuzmi .docx",
+    "close": "Zatvori pregled",
+    "closeHint": "Zatvori (Esc)",
+    "missing_one": "{{count}} polje nije popunjeno: {{fields}}",
+    "missing_few": "{{count}} polja nije popunjeno: {{fields}}",
+    "missing_other": "{{count}} polja nije popunjeno: {{fields}}",
+    "unavailable": "Pregled nije dostupan. Dokument i dalje možete da preuzmete.",
+    "fallback": "Prikaz u punom formatu nije uspeo. Ispod je pojednostavljen pregled; preuzeti dokument je ispravno formatiran."
+  },
+  "tutorial": {
+    "offerTitle": "Dobrodošli u Dokko Filler",
+    "offerText": "Želite li kratak vodič? Na izmišljenim podacima ćete za oko minut proći ceo proces: izbor ugovora, učitavanje dokumenata i pregled popunjenog ugovora.",
+    "offerNote": "Vodič uvek možete pokrenuti i kasnije, iz menija „Demo“.",
+    "notNow": "Ne sada",
+    "start": "Pokreni vodič",
+    "steps": {
+      "choose": {
+        "label": "Izaberite ugovor",
+        "hint": "Svaki ugovor je Word šablon sa poljima koja se popunjavaju sama. Kliknite „Pokreni demo“ na ugovoru ispod."
+      },
+      "load": {
+        "label": "Učitajte dokumenta",
+        "hint": "U pravom radu ubacite ličnu kartu ili saobraćajnu dozvolu u čitač i kliknete na karticu. Ovde klik na svaku karticu učitava izmišljene podatke. Proverite ih, a pogrešno učitanu karticu možete da uklonite."
+      },
+      "preview": {
+        "label": "Pregledajte i preuzmite",
+        "hint": "Svi podaci su tu. Kliknite „Pregledaj dokument“ gore desno: videćete popunjen ugovor, sa označenim poljima koja je aplikacija upisala."
+      }
+    },
+    "done": "To je ceo proces. Iz pregleda ugovor možete da odštampate ili preuzmete kao .docx. Sada probajte sa svojim ugovorima i pravim dokumentima.",
+    "goToContracts": "Idi na ugovore",
+    "demoNote": "Demo režim: podaci su izmišljeni, čitač i prijava nisu potrebni."
+  },
+  "demo": {
+    "title": "Ugovori",
+    "subtitle": "Demo prikaz liste ugovora sa unapred pripremljenim podacima. Izaberite ugovor da pokrenete ceo proces bez prijave i učitavanja dokumenata.",
+    "run": "Pokreni demo",
+    "docName": "Demo ugovor o kupoprodaji vozila",
+    "seller": "Prodavac - lična karta",
+    "buyer": "Kupac - lična karta",
+    "vehicle": "Saobraćajna dozvola vozila"
+  }
+}

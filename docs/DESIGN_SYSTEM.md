@@ -73,6 +73,7 @@ All in `src/shared-components/<Name>/<Name>.jsx` unless noted.
 | `DocumentItem` | `name, onClick, actionLabel?` | Clickable contract card |
 | `LoadedCard` | `card, snapshot, onRemove?` | Card data read from the reader |
 | `SwitchThemeButton` | | Light/dark toggle (header) |
+| `LanguageSwitch` | | Serbian/English toggle (header) |
 | `components/Icons/*` | | svgr components; regenerate with `npm run svgr` |
 
 ## Motion

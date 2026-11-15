@@ -2,16 +2,19 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { FileLineIcon } from '~components/Icons';
 import Profile from '~components/Profile/Profile';
 import { AUTH_STATUS, useAuth } from '~context/AuthContext';
 import Icon from '~shared-components/Icon/Icon';
+import LanguageSwitch from '~shared-components/LanguageSwitch/LanguageSwitch';
 import SwitchThemeButton from '~shared-components/SwitchThemeButton/SwitchThemeButton';
 import { ROUTES } from '~utils/routes';
 
 const Header = () => {
   const { status } = useAuth();
+  const { t } = useTranslation();
 
   return (
     <Box
@@ -58,11 +61,12 @@ const Header = () => {
       </Stack>
 
       <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+        <LanguageSwitch />
         <SwitchThemeButton />
         {status === AUTH_STATUS.AUTHENTICATED && <Profile />}
         {status === AUTH_STATUS.ANONYMOUS && (
           <Button component={RouterLink} to={ROUTES.LOGIN} variant="contained">
-            Prijava
+            {t('header.login')}
           </Button>
         )}
       </Stack>

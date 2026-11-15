@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { MSG } from '~utils/messages';
+import i18n from '~utils/i18n';
 
 const readerClient = axios.create({
   baseURL: process.env.READER_API_BASE_URL,
@@ -9,7 +9,9 @@ const readerClient = axios.create({
 // No `error.response` means the local reader service is not running.
 export const toReaderError = (error) =>
   Object.assign(
-    new Error(error.response ? MSG.reader.readFailed : MSG.reader.offline),
+    new Error(
+      error.response ? i18n.t('reader.readFailed') : i18n.t('reader.offline')
+    ),
     { status: error.response?.status ?? 0, cause: error }
   );
 

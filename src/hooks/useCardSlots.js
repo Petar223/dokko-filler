@@ -1,11 +1,10 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useNotification } from '~context/NotificationContext';
 import {
-  CARD_TYPES,
   detectCardType,
   toOrderedFields,
 } from '~pages/GenerateDocumentPage/consts';
-import { MSG } from '~utils/messages';
+import i18n from '~utils/i18n';
 
 /**
  * Card slot state for one document.
@@ -29,15 +28,19 @@ const useCardSlots = (readFn) => {
         const detected = detectCardType(snapshot);
         if (detected && detected !== card.type) {
           notify(
-            MSG.reader.wrongType(CARD_TYPES[card.type]?.label ?? card.name),
+            i18n.t('reader.wrongType', {
+              expected: i18n.t(`cardType.${card.type}`, {
+                defaultValue: card.name,
+              }),
+            }),
             'warning'
           );
           return;
         }
         setSnapshots((prev) => ({ ...prev, [card.order]: snapshot }));
-        notify(MSG.reader.loaded(card.name), 'success', 3000);
+        notify(i18n.t('reader.loaded', { name: card.name }), 'success', 3000);
       } catch (error) {
-        notify(error.message || MSG.reader.readFailed, 'error');
+        notify(error.message || i18n.t('reader.readFailed'), 'error');
       } finally {
         busy.current = false;
         setLoadingOrder(null);

@@ -2,6 +2,7 @@ import Button from '@mui/material/Button';
 import { Component } from 'react';
 import { WebPageSourceCodeIcon } from '~components/Icons';
 import EmptyState from '~shared-components/EmptyState/EmptyState';
+import i18n from '~utils/i18n';
 
 /**
  * Catches render errors. Pass `resetKey` (e.g. the pathname) to clear the
@@ -32,12 +33,12 @@ class ErrorBoundary extends Component {
       <EmptyState
         icon={WebPageSourceCodeIcon}
         color="error"
-        title="Ups! Nešto je pošlo naopako."
-        description="Došlo je do neočekivane greške. Osvežite stranicu i pokušajte ponovo."
+        title={i18n.t('error.title')}
+        description={i18n.t('error.description')}
         action={
           // Resetting state alone would re-render the same broken tree.
           <Button variant="contained" onClick={() => window.location.reload()}>
-            Osveži stranicu
+            {i18n.t('error.reload')}
           </Button>
         }
       />

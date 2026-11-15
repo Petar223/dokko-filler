@@ -8,39 +8,16 @@ export const CARD_TYPE = {
 };
 
 // `detectBy`: a field only this card type returns from the reader.
+// Labels live in the locale files: `cardType.<type>` and `field.<Field>`.
 export const CARD_TYPES = {
   [CARD_TYPE.ID]: {
-    label: 'Lična karta',
     detectBy: 'PersonalNumber',
     requiredFields: CARD_FIELDS[CARD_TYPE.ID],
   },
   [CARD_TYPE.VEHICLE]: {
-    label: 'Saobraćajna dozvola',
     detectBy: 'RegistrationNumberOfVehicle',
     requiredFields: CARD_FIELDS[CARD_TYPE.VEHICLE],
   },
-};
-
-export const FIELD_LABELS = {
-  PersonalNumber: 'JMBG',
-  DocumentNumber: 'Broj dokumenta',
-  Place: 'Mesto',
-  GivenName: 'Ime',
-  Surname: 'Prezime',
-  DateOfBirth: 'Datum rođenja',
-  PlaceOfBirth: 'Mesto rođenja',
-  Street: 'Ulica',
-  AddressNumber: 'Broj',
-  Sex: 'Pol',
-  RegistrationNumberOfVehicle: 'Registarski broj',
-  VehicleCategory: 'Kategorija',
-  VehicleMake: 'Marka',
-  CommercialDescription: 'Model',
-  YearOfProduction: 'Godina proizvodnje',
-  EngineCapacity: 'Zapremina motora',
-  OwnersSurnameOrBusinessName: 'Prezime / naziv vlasnika',
-  OwnerName: 'Ime vlasnika',
-  OwnerAddress: 'Adresa vlasnika',
 };
 
 // Returns null when the snapshot does not clearly belong to a known type.

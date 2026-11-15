@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Mammoth from 'mammoth';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const RENDER_OPTIONS = {
   className: 'docx',
@@ -11,6 +12,11 @@ const RENDER_OPTIONS = {
   renderHeaders: true,
   renderFooters: true,
   renderFootnotes: true,
+  renderEndnotes: true,
+  ignoreFonts: false, // use fonts embedded in the template
+  experimental: true, // real tab stops (signature lines, aligned columns)
+  // Break pages where Word last broke them, so the page count matches Word.
+  ignoreLastRenderedPageBreak: false,
   ignoreWidth: false,
   ignoreHeight: false,
   useBase64URL: true,
@@ -27,6 +33,7 @@ const DocxViewer = ({ blob, zoom = 1, onRendered }) => {
   onRenderedRef.current = onRendered;
   const [status, setStatus] = useState('rendering');
   const [fallbackHtml, setFallbackHtml] = useState('');
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!blob) return undefined;
@@ -47,12 +54,18 @@ const DocxViewer = ({ blob, zoom = 1, onRendered }) => {
       } catch (error) {
         console.error('docx-preview failed, using fallback', error);
         if (cancelled) return;
-        const { value } = await Mammoth.convertToHtml({
-          arrayBuffer: await blob.arrayBuffer(),
-        });
-        if (cancelled) return;
-        setFallbackHtml(value);
-        setStatus('fallback');
+        try {
+          const { value } = await Mammoth.convertToHtml({
+            arrayBuffer: await blob.arrayBuffer(),
+          });
+          if (cancelled) return;
+          setFallbackHtml(value);
+          setStatus('fallback');
+        } catch (fallbackError) {
+          console.error('fallback preview failed', fallbackError);
+          if (cancelled) return;
+          setStatus('error');
+        }
         onRenderedRef.current?.(1);
       }
     })();
@@ -67,8 +80,13 @@ const DocxViewer = ({ blob, zoom = 1, onRendered }) => {
       <div ref={styleRef} />
       {status === 'rendering' && (
         <Box sx={{ display: 'grid', placeItems: 'center', py: 10 }}>
-          <CircularProgress aria-label="Priprema pregleda" />
+          <CircularProgress aria-label={t('preview.preparingLabel')} />
         </Box>
+      )}
+      {status === 'error' && (
+        <Alert severity="error" sx={{ m: 3, mx: 'auto', maxWidth: 794 }}>
+          {t('preview.unavailable')}
+        </Alert>
       )}
       {status === 'fallback' && (
         <>
@@ -77,8 +95,7 @@ const DocxViewer = ({ blob, zoom = 1, onRendered }) => {
             className="no-print"
             sx={{ mb: 2, mx: 'auto', maxWidth: 794 }}
           >
-            Prikaz u punom formatu nije uspeo. Ispod je pojednostavljen pregled;
-            preuzeti dokument je ispravno formatiran.
+            {t('preview.fallback')}
           </Alert>
           <section
             className="docx docx-fallback"
@@ -87,7 +104,7 @@ const DocxViewer = ({ blob, zoom = 1, onRendered }) => {
           />
         </>
       )}
-      <div ref={bodyRef} hidden={status === 'fallback'} />
+      <div ref={bodyRef} hidden={status !== 'ready'} />
     </Box>
   );
 };

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { getIdToken, signOutUser } from '~utils/cognitoAuth';
-import { MSG } from '~utils/messages';
+import i18n from '~utils/i18n';
 import { ROUTES } from '~utils/routes';
 
 const httpClient = axios.create({
@@ -16,9 +16,9 @@ httpClient.interceptors.request.use(async (config) => {
 
 export const toHttpError = (error) => {
   const status = error.response?.status;
-  let message = MSG.http.setup;
-  if (status) message = MSG.http[status] ?? MSG.http.unknown(status);
-  else if (error.request) message = MSG.http.noResponse;
+  let message = i18n.t('http.setup');
+  if (status) message = i18n.t([`http.${status}`, 'http.unknown'], { status });
+  else if (error.request) message = i18n.t('http.noResponse');
   return Object.assign(new Error(message), { status, cause: error });
 };
 

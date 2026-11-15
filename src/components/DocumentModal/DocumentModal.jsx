@@ -12,6 +12,7 @@ import Switch from '@mui/material/Switch';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import DocxViewer from '~components/DocxViewer/DocxViewer';
 import { CloseLineIcon, DownloadToStorageIcon } from '~components/Icons';
 import Icon from '~shared-components/Icon/Icon';
@@ -22,29 +23,47 @@ const MAX_ZOOM = 2;
 const clampZoom = (z) =>
   Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, Math.round(z * 100) / 100));
 
-// 1 stranica, 2-4 stranice, 5+ stranica (12-14 -> stranica)
-const pageCountLabel = (n) => {
-  const few = n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14);
-  return `${n} ${few ? 'stranice' : 'stranica'}`;
-};
+// Space around each page on the canvas (theme spacing units).
+const PAGE_GAP = 3;
+// Margin between the dialog and the window edge (theme spacing units).
+const DIALOG_MARGIN = { xs: 1, sm: 4 };
 
 const pageStyles = (theme) => ({
   // docx-preview wrapper: transparent so our canvas color shows through.
   '.docx-wrapper': {
     background: 'transparent !important',
-    padding: `${theme.spacing(3)} !important`,
+    padding: `${theme.spacing(PAGE_GAP)} !important`,
+    [theme.breakpoints.down('sm')]: {
+      padding: `${theme.spacing(2)} !important`,
+    },
   },
   // Paper stays white in dark mode too: this is what gets printed.
   'section.docx': {
     background: '#fff',
     color: '#000',
+    // Word's default when the template sets no font; without this the page
+    // would inherit the app font and not match the downloaded file.
+    fontFamily: '"Times New Roman", Times, serif',
+    fontSize: '10pt',
+    // Isolate the page from the app: text the template does not style must
+    // fall back to Word's defaults, not to the app typography or dark mode.
+    fontWeight: 400,
+    fontStyle: 'normal',
+    lineHeight: 'normal',
+    letterSpacing: 'normal',
+    wordSpacing: 'normal',
+    textAlign: 'start',
+    textTransform: 'none',
+    fontFeatureSettings: 'normal',
+    fontVariantNumeric: 'normal',
+    colorScheme: 'light',
     boxShadow: '0 2px 12px rgba(15, 23, 42, 0.18) !important',
-    marginBottom: `${theme.spacing(3)} !important`,
+    marginBottom: `${theme.spacing(PAGE_GAP)} !important`,
   },
   '.docx-fallback': {
     maxWidth: 794,
     minHeight: 1123,
-    margin: '0 auto',
+    margin: `${theme.spacing(PAGE_GAP)} auto`,
     padding: '72px',
     fontFamily: '"Times New Roman", serif',
   },
@@ -61,6 +80,11 @@ const printStyles = (
             overflow: 'visible !important',
             height: 'auto !important',
             background: 'none !important',
+            margin: '0 !important',
+            width: 'auto !important',
+            maxHeight: 'none !important',
+            border: 'none !important',
+            boxShadow: 'none !important',
           },
         '.preview-canvas > div': { zoom: '1 !important' },
         '.docx-wrapper': { padding: '0 !important' },
@@ -85,20 +109,40 @@ const DocumentModal = ({
   const [zoom, setZoom] = useState(1);
   const [highlight, setHighlight] = useState(true);
   const [pages, setPages] = useState(null);
+  const { t } = useTranslation();
   const canvasRef = useRef(null);
 
   const fitWidth = () => {
     const page = canvasRef.current?.querySelector('section.docx');
     if (!page) return;
     const pageWidth = page.getBoundingClientRect().width / zoom;
-    setZoom(clampZoom((canvasRef.current.clientWidth - 64) / pageWidth));
+    // Zoom scales the gap too; 16px is left for the scrollbar.
+    const gap = PAGE_GAP * 8 * 2;
+    setZoom(
+      clampZoom((canvasRef.current.clientWidth - 16) / (pageWidth + gap))
+    );
   };
 
   const handleDownload = () => downloadBlob(cleanBlob, `${title}.docx`);
 
   return (
     <Dialog
-      fullScreen
+      maxWidth={false}
+      PaperProps={{
+        sx: (t) => ({
+          m: DIALOG_MARGIN,
+          width: {
+            xs: `calc(100% - ${t.spacing(DIALOG_MARGIN.xs * 2)})`,
+            sm: `calc(100% - ${t.spacing(DIALOG_MARGIN.sm * 2)})`,
+          },
+          height: {
+            xs: `calc(100% - ${t.spacing(DIALOG_MARGIN.xs * 2)})`,
+            sm: `calc(100% - ${t.spacing(DIALOG_MARGIN.sm * 2)})`,
+          },
+          maxHeight: 'none',
+          overflow: 'hidden',
+        }),
+      }}
       open={open}
       onClose={onClose}
       aria-labelledby="preview-title"
@@ -130,13 +174,15 @@ const DocumentModal = ({
             {title}
           </Typography>
           <Typography variant="caption" color="text.secondary">
-            {pages ? pageCountLabel(pages) : 'Priprema pregleda…'}
+            {pages
+              ? t('preview.pages', { count: pages })
+              : t('preview.preparing')}
           </Typography>
         </Box>
 
         <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
           <IconButton
-            aria-label="Umanji"
+            aria-label={t('preview.zoomOut')}
             onClick={() => setZoom((z) => clampZoom(z - 0.1))}
             disabled={zoom <= MIN_ZOOM}
           >
@@ -159,7 +205,7 @@ const DocumentModal = ({
             {Math.round(zoom * 100)}%
           </Typography>
           <IconButton
-            aria-label="Uvećaj"
+            aria-label={t('preview.zoomIn')}
             onClick={() => setZoom((z) => clampZoom(z + 0.1))}
             disabled={zoom >= MAX_ZOOM}
           >
@@ -171,7 +217,7 @@ const DocumentModal = ({
             </Typography>
           </IconButton>
           <Button size="small" onClick={fitWidth}>
-            Prilagodi širini
+            {t('preview.fitWidth')}
           </Button>
         </Stack>
 
@@ -188,20 +234,20 @@ const DocumentModal = ({
               onChange={(e) => setHighlight(e.target.checked)}
             />
           }
-          label="Označi popunjena polja"
+          label={t('preview.highlight')}
         />
         <Button variant="outlined" onClick={() => window.print()}>
-          Štampaj
+          {t('preview.print')}
         </Button>
         <Button
           variant="contained"
           onClick={handleDownload}
           startIcon={<Icon as={DownloadToStorageIcon} size={18} />}
         >
-          Preuzmi .docx
+          {t('preview.download')}
         </Button>
-        <Tooltip title="Zatvori (Esc)">
-          <IconButton onClick={onClose} aria-label="Zatvori pregled">
+        <Tooltip title={t('preview.closeHint')}>
+          <IconButton onClick={onClose} aria-label={t('preview.close')}>
             <Icon as={CloseLineIcon} size={18} />
           </IconButton>
         </Tooltip>
@@ -209,10 +255,10 @@ const DocumentModal = ({
 
       {missingFields.length > 0 && (
         <Alert severity="warning" className="no-print" sx={{ borderRadius: 0 }}>
-          {missingFields.length === 1
-            ? '1 polje nije popunjeno'
-            : `${missingFields.length} polja nije popunjeno`}
-          : {missingFields.join(', ')}
+          {t('preview.missing', {
+            count: missingFields.length,
+            fields: missingFields.join(', '),
+          })}
         </Alert>
       )}
 

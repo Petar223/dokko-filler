@@ -3,16 +3,17 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useNotification } from '~context/NotificationContext';
 import PasswordField from '~shared-components/PasswordField/PasswordField';
 import { signUpUser } from '~utils/cognitoAuth';
-import { MSG } from '~utils/messages';
 import { ROUTES } from '~utils/routes';
 import { validateEmail, validatePassword } from '~utils/validation';
 import AuthCard from './AuthCard';
 
 const Signup = () => {
+  const { t } = useTranslation();
   const [form, setForm] = useState({ email: '', password: '', confirm: '' });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -32,9 +33,9 @@ const Signup = () => {
       email: validateEmail(form.email),
       password: validatePassword(form.password),
       confirm: !form.confirm
-        ? MSG.auth.confirmPasswordRequired
+        ? t('auth.confirmPasswordRequired')
         : form.confirm !== form.password
-          ? MSG.auth.passwordsMismatch
+          ? t('auth.passwordsMismatch')
           : '',
     };
     setErrors(nextErrors);
@@ -44,19 +45,19 @@ const Signup = () => {
     try {
       const { nextStep } = await signUpUser(form.email, form.password);
       if (nextStep?.signUpStep === 'CONFIRM_SIGN_UP') {
-        notify(MSG.auth.signupSuccess, 'success');
+        notify(t('auth.signupSuccess'), 'success');
         navigate(
           `${ROUTES.CONFIRM_SIGNUP}?email=${encodeURIComponent(form.email)}`
         );
       } else {
-        notify(MSG.auth.confirmSuccess, 'success');
+        notify(t('auth.confirmSuccess'), 'success');
         navigate(ROUTES.LOGIN);
       }
     } catch (error) {
       notify(
         error.name === 'UsernameExistsException'
-          ? 'Nalog sa ovim emailom već postoji.'
-          : MSG.auth.signupFailed,
+          ? t('auth.userExists')
+          : t('auth.signupFailed'),
         'error'
       );
     } finally {
@@ -66,31 +67,31 @@ const Signup = () => {
 
   return (
     <AuthCard
-      title="Registracija"
-      subtitle="Napravite nalog za rad sa ugovorima."
+      title={t('auth.signupTitle')}
+      subtitle={t('auth.signupSubtitle')}
       onSubmit={handleSubmit}
       footer={
         <>
-          Već imate nalog?{' '}
+          {t('auth.haveAccount')}{' '}
           <Link component={RouterLink} to={ROUTES.LOGIN}>
-            Prijavite se
+            {t('auth.loginLink')}
           </Link>
         </>
       }
     >
       <TextField
-        label="Email"
+        label={t('auth.email')}
         type="email"
         autoComplete="email"
         {...field('email')}
       />
       <PasswordField
-        label="Lozinka"
+        label={t('auth.password')}
         autoComplete="new-password"
         {...field('password')}
       />
       <PasswordField
-        label="Potvrdi lozinku"
+        label={t('auth.confirmPassword')}
         autoComplete="new-password"
         {...field('confirm')}
       />
@@ -98,7 +99,7 @@ const Signup = () => {
         {loading ? (
           <CircularProgress size={22} color="inherit" />
         ) : (
-          'Registruj se'
+          t('auth.signupSubmit')
         )}
       </Button>
     </AuthCard>

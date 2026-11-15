@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import getDocuments from '~api/getDocuments';
-import { MSG } from '~utils/messages';
+import i18n from '~utils/i18n';
 import DocumentsList from './DocumetsList';
 import { renderWithProviders } from '../../../test/renderWithProviders';
 
@@ -21,7 +21,9 @@ it('shows a skeleton while loading, then the list', async () => {
 it('shows the empty state', async () => {
   getDocuments.mockResolvedValue({ body: [] });
   renderWithProviders(<DocumentsList />);
-  expect(await screen.findByText(MSG.documents.listEmpty)).toBeInTheDocument();
+  expect(
+    await screen.findByText(i18n.t('documents.listEmpty'))
+  ).toBeInTheDocument();
 });
 
 it('shows an error with retry', async () => {
@@ -29,7 +31,9 @@ it('shows an error with retry', async () => {
   getDocuments.mockResolvedValueOnce({ body: [{ id: 1, name: 'Ugovor' }] });
   renderWithProviders(<DocumentsList />);
 
-  expect(await screen.findByText(MSG.documents.listFailed)).toBeInTheDocument();
+  expect(
+    await screen.findByText(i18n.t('documents.listFailed'))
+  ).toBeInTheDocument();
   await userEvent.click(screen.getByRole('button', { name: 'Pokušaj ponovo' }));
   expect(
     await screen.findByRole('button', { name: /Ugovor/ })

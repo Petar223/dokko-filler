@@ -3,6 +3,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Link as RouterLink,
   useLocation,
@@ -13,12 +14,12 @@ import { useAuth } from '~context/AuthContext';
 import { useNotification } from '~context/NotificationContext';
 import PasswordField from '~shared-components/PasswordField/PasswordField';
 import { signInUser } from '~utils/cognitoAuth';
-import { MSG } from '~utils/messages';
 import { ROUTES } from '~utils/routes';
 import { safeRedirect, validateEmail } from '~utils/validation';
 import AuthCard from './AuthCard';
 
 const Login = () => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
@@ -36,7 +37,7 @@ const Login = () => {
   );
 
   const goToConfirm = () => {
-    notify(MSG.auth.needsConfirmation, 'info');
+    notify(t('auth.needsConfirmation'), 'info');
     navigate(`${ROUTES.CONFIRM_SIGNUP}?email=${encodeURIComponent(email)}`);
   };
 
@@ -44,7 +45,7 @@ const Login = () => {
     e.preventDefault();
     const nextErrors = {
       email: validateEmail(email),
-      password: password ? '' : MSG.auth.passwordRequired,
+      password: password ? '' : t('auth.passwordRequired'),
     };
     setErrors(nextErrors);
     if (nextErrors.email || nextErrors.password) return;
@@ -54,16 +55,16 @@ const Login = () => {
       const { isSignedIn, nextStep } = await signInUser(email, password);
       if (isSignedIn) {
         await login();
-        notify(MSG.auth.loginSuccess, 'success', 3000);
+        notify(t('auth.loginSuccess'), 'success', 3000);
         navigate(from, { replace: true });
       } else if (nextStep?.signInStep === 'CONFIRM_SIGN_UP') {
         goToConfirm();
       } else {
-        notify(MSG.auth.unsupportedStep, 'warning');
+        notify(t('auth.unsupportedStep'), 'warning');
       }
     } catch (error) {
       if (error.name === 'UserNotConfirmedException') goToConfirm();
-      else notify(MSG.auth.loginFailed, 'error');
+      else notify(t('auth.loginFailed'), 'error');
     } finally {
       setLoading(false);
     }
@@ -71,20 +72,20 @@ const Login = () => {
 
   return (
     <AuthCard
-      title="Prijava"
-      subtitle="Prijavite se da biste pristupili ugovorima."
+      title={t('auth.loginTitle')}
+      subtitle={t('auth.loginSubtitle')}
       onSubmit={handleSubmit}
       footer={
         <>
-          Nemate nalog?{' '}
+          {t('auth.noAccount')}{' '}
           <Link component={RouterLink} to={ROUTES.SIGNUP}>
-            Registrujte se
+            {t('auth.signupLink')}
           </Link>
         </>
       }
     >
       <TextField
-        label="Email"
+        label={t('auth.email')}
         type="email"
         autoComplete="email"
         value={email}
@@ -93,7 +94,7 @@ const Login = () => {
         helperText={errors.email}
       />
       <PasswordField
-        label="Lozinka"
+        label={t('auth.password')}
         autoComplete="current-password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
@@ -104,7 +105,7 @@ const Login = () => {
         {loading ? (
           <CircularProgress size={22} color="inherit" />
         ) : (
-          'Prijavi se'
+          t('auth.loginSubmit')
         )}
       </Button>
     </AuthCard>

@@ -1,6 +1,7 @@
 import IconButton from '@mui/material/IconButton';
 import SvgIcon from '@mui/material/SvgIcon';
 import Tooltip from '@mui/material/Tooltip';
+import { useTranslation } from 'react-i18next';
 import { useColorMode } from '../../theme/theme';
 
 const SUN =
@@ -10,7 +11,8 @@ const MOON =
 
 const SwitchThemeButton = () => {
   const { mode, toggleColorMode } = useColorMode();
-  const label = mode === 'dark' ? 'Svetla tema' : 'Tamna tema';
+  const { t } = useTranslation();
+  const label = mode === 'dark' ? t('theme.light') : t('theme.dark');
 
   return (
     <Tooltip title={label}>

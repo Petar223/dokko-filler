@@ -6,17 +6,18 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { PowerOffLineIcon } from '~components/Icons';
 import { useAuth } from '~context/AuthContext';
 import { useNotification } from '~context/NotificationContext';
 import Icon from '~shared-components/Icon/Icon';
-import { MSG } from '~utils/messages';
 import { ROUTES } from '~utils/routes';
 
 const initials = (email = '') => email.slice(0, 2).toUpperCase();
 
 const Profile = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const notify = useNotification();
   const { user, logout } = useAuth();
@@ -26,10 +27,10 @@ const Profile = () => {
     setAnchorEl(null);
     try {
       await logout();
-      notify(MSG.auth.logoutSuccess, 'success', 3000);
+      notify(t('auth.logoutSuccess'), 'success', 3000);
       navigate(ROUTES.LOGIN);
     } catch {
-      notify(MSG.auth.logoutFailed, 'error');
+      notify(t('auth.logoutFailed'), 'error');
     }
   };
 
@@ -37,7 +38,7 @@ const Profile = () => {
     <>
       <IconButton
         onClick={(e) => setAnchorEl(e.currentTarget)}
-        aria-label="Korisnički meni"
+        aria-label={t('header.userMenu')}
         aria-haspopup="menu"
         aria-expanded={Boolean(anchorEl)}
         sx={{ p: 0.5 }}
@@ -68,7 +69,7 @@ const Profile = () => {
           <ListItemIcon sx={{ color: 'inherit' }}>
             <Icon as={PowerOffLineIcon} size={18} />
           </ListItemIcon>
-          Odjava
+          {t('header.logout')}
         </MenuItem>
       </Menu>
     </>

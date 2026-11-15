@@ -2,15 +2,16 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useNotification } from '~context/NotificationContext';
 import { confirmSignUpUser, resendCode } from '~utils/cognitoAuth';
-import { MSG } from '~utils/messages';
 import { ROUTES } from '~utils/routes';
 import { validateEmail } from '~utils/validation';
 import AuthCard from './AuthCard';
 
 const ConfirmSignup = () => {
+  const { t } = useTranslation();
   const [params] = useSearchParams();
   const [email, setEmail] = useState(params.get('email') ?? '');
   const [code, setCode] = useState('');
@@ -23,7 +24,7 @@ const ConfirmSignup = () => {
     e.preventDefault();
     const nextErrors = {
       email: validateEmail(email),
-      code: code.trim() ? '' : MSG.auth.codeRequired,
+      code: code.trim() ? '' : t('auth.codeRequired'),
     };
     setErrors(nextErrors);
     if (nextErrors.email || nextErrors.code) return;
@@ -31,10 +32,10 @@ const ConfirmSignup = () => {
     setLoading(true);
     try {
       await confirmSignUpUser(email, code.trim());
-      notify(MSG.auth.confirmSuccess, 'success');
+      notify(t('auth.confirmSuccess'), 'success');
       navigate(ROUTES.LOGIN);
     } catch {
-      notify(MSG.auth.confirmFailed, 'error');
+      notify(t('auth.confirmFailed'), 'error');
     } finally {
       setLoading(false);
     }
@@ -46,20 +47,20 @@ const ConfirmSignup = () => {
     if (emailError) return;
     try {
       await resendCode(email);
-      notify(MSG.auth.codeResent, 'success');
+      notify(t('auth.codeResent'), 'success');
     } catch {
-      notify(MSG.generic, 'error');
+      notify(t('generic'), 'error');
     }
   };
 
   return (
     <AuthCard
-      title="Potvrda naloga"
-      subtitle="Unesite kod koji smo poslali na vaš email."
+      title={t('auth.confirmTitle')}
+      subtitle={t('auth.confirmSubtitle')}
       onSubmit={handleSubmit}
     >
       <TextField
-        label="Email"
+        label={t('auth.email')}
         type="email"
         autoComplete="email"
         value={email}
@@ -68,7 +69,7 @@ const ConfirmSignup = () => {
         helperText={errors.email}
       />
       <TextField
-        label="Kod za potvrdu"
+        label={t('auth.code')}
         autoComplete="one-time-code"
         slotProps={{ htmlInput: { inputMode: 'numeric' } }}
         value={code}
@@ -77,10 +78,14 @@ const ConfirmSignup = () => {
         helperText={errors.code}
       />
       <Button type="submit" variant="contained" size="large" disabled={loading}>
-        {loading ? <CircularProgress size={22} color="inherit" /> : 'Potvrdi'}
+        {loading ? (
+          <CircularProgress size={22} color="inherit" />
+        ) : (
+          t('auth.confirmSubmit')
+        )}
       </Button>
       <Button onClick={handleResend} disabled={loading}>
-        Pošalji kod ponovo
+        {t('auth.resendCode')}
       </Button>
     </AuthCard>
   );

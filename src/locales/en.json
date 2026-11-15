@@ -1,0 +1,250 @@
+{
+  "generic": "Something went wrong.",
+  "common": {
+    "retry": "Try again",
+    "back": "Back",
+    "loading": "Loading"
+  },
+  "language": {
+    "switchTo": "Prebaci na srpski"
+  },
+  "theme": {
+    "light": "Light theme",
+    "dark": "Dark theme"
+  },
+  "nav": {
+    "label": "Main navigation",
+    "home": "Home",
+    "contracts": "Contracts",
+    "demo": "Demo",
+    "about": "About"
+  },
+  "header": {
+    "login": "Log in",
+    "userMenu": "User menu",
+    "logout": "Log out"
+  },
+  "home": {
+    "title": "Welcome to Dokko Filler",
+    "description": "This platform lets you generate contracts quickly and easily. Create and review contracts in one place, with maximum efficiency and an intuitive experience.",
+    "viewContracts": "View contracts",
+    "viewDemo": "See the demo",
+    "howItWorks": "How it works",
+    "steps": {
+      "choose": {
+        "title": "Choose a contract",
+        "text": "Pick a template from the list of available contracts."
+      },
+      "load": {
+        "title": "Load the documents",
+        "text": "Insert an ID card or vehicle registration card into the reader and the data fills in by itself."
+      },
+      "download": {
+        "title": "Review and download",
+        "text": "Check how the document looks and download the finished .docx file."
+      }
+    }
+  },
+  "about": {
+    "title": "About Dokko",
+    "purpose": "This platform generates contracts automatically. The goal of the app is to make filling in various types of contracts faster and simpler, which saves time and makes work more efficient.",
+    "goal": "Our goal is to improve your productivity and offer an experience that is intuitive and pleasant."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The address you opened does not exist or has been moved.",
+    "action": "Go to home"
+  },
+  "error": {
+    "title": "Oops! Something went wrong.",
+    "description": "An unexpected error occurred. Reload the page and try again.",
+    "reload": "Reload page"
+  },
+  "http": {
+    "400": "Invalid request. Check the data you entered.",
+    "401": "Your session has expired. Log in again.",
+    "403": "You do not have permission for this action.",
+    "404": "The requested resource was not found.",
+    "500": "Server error. Try again later.",
+    "502": "The server is currently unavailable (502).",
+    "503": "The service is temporarily unavailable.",
+    "504": "The server did not respond in time.",
+    "unknown": "Unexpected error (status {{status}}).",
+    "noResponse": "The server is not responding. Check your internet connection.",
+    "setup": "The request could not be sent."
+  },
+  "reader": {
+    "offline": "The card reader is not available. Check that the reader program is running.",
+    "readFailed": "The card could not be read. Insert the card into the reader and try again.",
+    "wrongType": "The loaded document does not match the required type ({{expected}}).",
+    "loaded": "{{name}}: data loaded."
+  },
+  "auth": {
+    "loginSuccess": "You are logged in!",
+    "loginFailed": "Wrong email or password.",
+    "logoutSuccess": "You are logged out.",
+    "logoutFailed": "Logging out failed. Try again.",
+    "signupSuccess": "We sent a confirmation code to your email.",
+    "signupFailed": "Sign-up failed. Try again.",
+    "userExists": "An account with this email already exists.",
+    "confirmSuccess": "Your account is confirmed. You can log in.",
+    "confirmFailed": "The code is incorrect or has expired.",
+    "codeResent": "A new code was sent to your email.",
+    "needsConfirmation": "Your account is not confirmed yet. Enter the code from the email.",
+    "unsupportedStep": "Logging in needs an extra step that the app does not support yet.",
+    "emailRequired": "Email is required.",
+    "emailInvalid": "Email is not valid.",
+    "passwordRequired": "Password is required.",
+    "passwordMin": "The password must have at least 6 characters.",
+    "passwordUpper": "The password must contain at least one uppercase letter.",
+    "passwordSpecial": "The password must contain at least one special character.",
+    "passwordNumber": "The password must contain at least one number.",
+    "confirmPasswordRequired": "Password confirmation is required.",
+    "passwordsMismatch": "The passwords do not match.",
+    "codeRequired": "The code is required.",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "loginTitle": "Log in",
+    "loginSubtitle": "Log in to access the contracts.",
+    "loginSubmit": "Log in",
+    "noAccount": "No account?",
+    "signupLink": "Sign up",
+    "signupTitle": "Sign up",
+    "signupSubtitle": "Create an account to work with contracts.",
+    "signupSubmit": "Sign up",
+    "haveAccount": "Already have an account?",
+    "loginLink": "Log in",
+    "confirmTitle": "Confirm your account",
+    "confirmSubtitle": "Enter the code we sent to your email.",
+    "code": "Confirmation code",
+    "confirmSubmit": "Confirm",
+    "resendCode": "Send the code again"
+  },
+  "documents": {
+    "title": "Contracts",
+    "subtitle": "Choose the contract you want to fill in.",
+    "count_one": "{{count}} template available.",
+    "count_other": "{{count}} templates available.",
+    "create": "Create contract",
+    "backToList": "Back to contracts",
+    "listFailed": "The list of contracts could not be loaded.",
+    "listEmpty": "The list of contracts is empty.",
+    "documentFailed": "The contract could not be loaded.",
+    "templateFailed": "The contract template is not available (the link may have expired). Try again.",
+    "generateFailed": "The document could not be prepared. Try again."
+  },
+  "workspace": {
+    "preview": "Preview document",
+    "loadAllFirst": "Load all required documents first",
+    "loadTitle": "Load the required documents",
+    "loadedCount": "Loaded {{loaded}}/{{total}}",
+    "progress": "Loading progress"
+  },
+  "slot": {
+    "load": "Load from reader",
+    "loadNamed": "Load from reader: {{name}}",
+    "reading": "Reading the card…",
+    "insert": "Insert the card into the reader"
+  },
+  "card": {
+    "loaded": "Loaded",
+    "remove": "Remove data",
+    "removeNamed": "Remove data: {{name}}",
+    "missing": "Missing fields: {{fields}}",
+    "rows": {
+      "fullName": "Full name",
+      "idNumber": "ID card number",
+      "personalNumber": "Personal number (JMBG)",
+      "birthDate": "Date of birth",
+      "birthPlace": "Place of birth",
+      "residence": "Home address",
+      "registration": "Registration number",
+      "vehicleType": "Vehicle type",
+      "make": "Make",
+      "model": "Model",
+      "year": "Year of production",
+      "engine": "Engine capacity",
+      "owner": "Owner",
+      "address": "Address"
+    }
+  },
+  "cardType": {
+    "licna_karta": "ID card",
+    "saobracajna_dozvola": "Vehicle registration card"
+  },
+  "field": {
+    "PersonalNumber": "Personal number (JMBG)",
+    "DocumentNumber": "Document number",
+    "Place": "Place",
+    "GivenName": "First name",
+    "Surname": "Last name",
+    "DateOfBirth": "Date of birth",
+    "PlaceOfBirth": "Place of birth",
+    "Street": "Street",
+    "AddressNumber": "Number",
+    "Sex": "Sex",
+    "RegistrationNumberOfVehicle": "Registration number",
+    "VehicleCategory": "Category",
+    "VehicleMake": "Make",
+    "CommercialDescription": "Model",
+    "YearOfProduction": "Year of production",
+    "EngineCapacity": "Engine capacity",
+    "OwnersSurnameOrBusinessName": "Owner's last name / business name",
+    "OwnerName": "Owner's first name",
+    "OwnerAddress": "Owner's address"
+  },
+  "preview": {
+    "preparing": "Preparing the preview…",
+    "preparingLabel": "Preparing the preview",
+    "pages_one": "{{count}} page",
+    "pages_other": "{{count}} pages",
+    "zoomOut": "Zoom out",
+    "zoomIn": "Zoom in",
+    "fitWidth": "Fit to width",
+    "highlight": "Highlight filled fields",
+    "print": "Print",
+    "download": "Download .docx",
+    "close": "Close preview",
+    "closeHint": "Close (Esc)",
+    "missing_one": "{{count}} field is not filled in: {{fields}}",
+    "missing_other": "{{count}} fields are not filled in: {{fields}}",
+    "unavailable": "The preview is not available. You can still download the document.",
+    "fallback": "The full-format view failed. Below is a simplified preview; the downloaded document is formatted correctly."
+  },
+  "tutorial": {
+    "offerTitle": "Welcome to Dokko Filler",
+    "offerText": "Would you like a short tour? Using made-up data, you will go through the whole process in about a minute: choosing a contract, loading the documents and previewing the filled-in contract.",
+    "offerNote": "You can start the tour later at any time from the “Demo” menu.",
+    "notNow": "Not now",
+    "start": "Start the tour",
+    "steps": {
+      "choose": {
+        "label": "Choose a contract",
+        "hint": "Every contract is a Word template with fields that fill in by themselves. Click “Run demo” on the contract below."
+      },
+      "load": {
+        "label": "Load the documents",
+        "hint": "In real use you insert an ID card or vehicle registration card into the reader and click the card. Here, a click on each card loads made-up data. Check it; you can remove a card that was loaded by mistake."
+      },
+      "preview": {
+        "label": "Review and download",
+        "hint": "All the data is here. Click “Preview document” at the top right: you will see the filled-in contract, with the fields the app entered highlighted."
+      }
+    },
+    "done": "That is the whole process. From the preview you can print the contract or download it as .docx. Now try it with your own contracts and real documents.",
+    "goToContracts": "Go to contracts",
+    "demoNote": "Demo mode: the data is made up; no reader or login is needed."
+  },
+  "demo": {
+    "title": "Contracts",
+    "subtitle": "A demo list of contracts with prepared data. Choose a contract to run the whole process without logging in or loading documents.",
+    "run": "Run demo",
+    "docName": "Demo vehicle sale contract",
+    "seller": "Seller - ID card",
+    "buyer": "Buyer - ID card",
+    "vehicle": "Vehicle registration card"
+  }
+}

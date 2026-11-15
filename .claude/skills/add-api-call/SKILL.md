@@ -1,6 +1,6 @@
 ---
 name: add-api-call
-description: Add a new backend or card-reader endpoint call to Dokko Filler (pick axios.js vs readerAxios.js instance, one file per endpoint in src/api, useFetch or action hook, Serbian error messages, mocks for tests and demo). Use when the app must call a new endpoint.
+description: Add a new backend or card-reader endpoint call to Dokko Filler (pick axios.js vs readerAxios.js instance, one file per endpoint in src/api, useFetch or action hook, translated error messages, mocks for tests and demo). Use when the app must call a new endpoint.
 ---
 
 # Add an API call
@@ -26,8 +26,9 @@ description: Add a new backend or card-reader endpoint call to Dokko Filler (pic
    - Use `params` for query strings (encoding is handled for you).
    - Return data, not the axios response. No UI code here.
 3. **Errors**: clients already reject with an `Error` whose `message` is
-   Serbian (`MSG.http.*`, `MSG.reader.*`). If the endpoint needs a specific
-   message, add it to `src/utils/messages.js`.
+   translated (`http.*`, `reader.*` keys). If the endpoint needs a specific
+   message, add the key to both `src/locales/sr.json` and `src/locales/en.json`
+   and read it with `i18n.t('key')`.
 4. **Use it**
    - Data for a page → `useFetch(useCallback(() => getThing(id), [id]))`,
      render `loading` / `error` (+ `refetch`) / empty / success.
