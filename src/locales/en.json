@@ -221,7 +221,8 @@
     "docName": "Demo vehicle sale contract",
     "seller": "Seller - ID card",
     "buyer": "Buyer - ID card",
-    "vehicle": "Vehicle registration card"
+    "vehicle": "Vehicle registration card",
+    "goToContracts": "Go to contracts"
   },
   "tour": {
     "back": "Back",
@@ -229,7 +230,6 @@
     "next": "Next",
     "last": "Finish",
     "skip": "Skip",
-    "open": "Open tour",
     "progress": "{{current}} of {{total}}",
     "replay": "Start tour",
     "menu": "App tour",

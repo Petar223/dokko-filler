@@ -40,7 +40,7 @@ const TourTooltip = ({
   const titleId = useId();
   const show = (button) => step.buttons.includes(button);
   // The close button is an icon; its text label would render inside it.
-  const { children: closeLabel, ...closeButtonProps } = closeProps;
+  const { children, ...closeButtonProps } = closeProps;
 
   return (
     <Paper
@@ -72,7 +72,6 @@ const TourTooltip = ({
         {show('close') && (
           <IconButton
             {...closeButtonProps}
-            aria-label={closeButtonProps['aria-label'] ?? closeLabel}
             size="small"
             sx={{ mt: -0.5, mr: -1, color: 'text.secondary' }}
           >
@@ -86,11 +85,9 @@ const TourTooltip = ({
       </Typography>
 
       <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mt: 2.5 }}>
-        {size > 1 && (
-          <Typography variant="caption" color="text.secondary">
-            {t('tour.progress', { current: index + 1, total: size })}
-          </Typography>
-        )}
+        <Typography variant="caption" color="text.secondary">
+          {t('tour.progress', { current: index + 1, total: size })}
+        </Typography>
         <Stack direction="row" spacing={1} sx={{ ml: 'auto' }}>
           {show('skip') && (
             <Button {...skipProps} {...FOCUS} color="inherit" size="small" />

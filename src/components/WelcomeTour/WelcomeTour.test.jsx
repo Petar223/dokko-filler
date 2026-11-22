@@ -14,7 +14,7 @@ const TARGETS = [
   'user-menu',
 ];
 
-const setup = () => {
+const setup = ({ replay = false } = {}) => {
   const onEnd = jest.fn();
   render(
     <ThemeProvider>
@@ -24,7 +24,7 @@ const setup = () => {
             {id}
           </button>
         ))}
-        <WelcomeTour run onEnd={onEnd} />
+        <WelcomeTour run onEnd={onEnd} replay={replay} />
         <Routes>
           <Route path="/documents" element={<p>Lista ugovora</p>} />
           <Route path="/demo" element={<p>Demo stranica</p>} />
@@ -56,6 +56,17 @@ it('skipping closes the tour and stays on the page', async () => {
   await userEvent.click(
     await screen.findByRole('button', { name: 'Preskoči' })
   );
+  await waitFor(() => expect(onEnd).toHaveBeenCalled());
+  expect(screen.getByText('Lista ugovora')).toBeInTheDocument();
+});
+
+it('a replay from the user menu ends in place, without leaving the page', async () => {
+  const onEnd = setup({ replay: true });
+  await screen.findByText('Dobrodošli u Dokko Filler');
+  for (let i = 1; i < WELCOME_TOUR_STEPS.length; i += 1) {
+    await userEvent.click(screen.getByRole('button', { name: 'Dalje' }));
+  }
+  await userEvent.click(await screen.findByRole('button', { name: 'Završi' }));
   await waitFor(() => expect(onEnd).toHaveBeenCalled());
   expect(screen.getByText('Lista ugovora')).toBeInTheDocument();
 });

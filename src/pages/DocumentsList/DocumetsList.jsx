@@ -19,9 +19,15 @@ const DocumentsList = () => {
   const navigate = useNavigate();
   const { data, loading, error, refetch } = useFetch(getDocuments);
   const documents = Array.isArray(data?.body) ? data.body : null;
-  const tour = useTour('documents', { autoStart: true });
   // The tour points at the first contract, so it needs a non-empty list.
   const hasDocuments = Boolean(documents?.length);
+  const tour = useTour(hasDocuments ? 'documents' : null, { autoStart: true });
+
+  const openDocument = (id) => {
+    // The tour asks for exactly this click; leaving counts as having seen it.
+    if (tour.run) tour.end();
+    navigate(createDocumentPath(id));
+  };
 
   const content = () => {
     if (loading) return <LoadingState cards={6} cardHeight={180} />;
@@ -56,7 +62,7 @@ const DocumentsList = () => {
           <DocumentItem
             key={doc.id}
             name={doc.name}
-            onClick={() => navigate(createDocumentPath(doc.id))}
+            onClick={() => openDocument(doc.id)}
           />
         ))}
       </CardGrid>

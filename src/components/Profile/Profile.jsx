@@ -25,9 +25,12 @@ const Profile = () => {
   const { user, logout } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
   const welcomeTour = useTour(user && `welcome:${user}`, { autoStart: true });
+  // A replay must not send the user to the demo (they may be mid-contract).
+  const [replayingTour, setReplayingTour] = useState(false);
 
   const handleReplayTour = () => {
     setAnchorEl(null);
+    setReplayingTour(true);
     welcomeTour.start();
   };
 
@@ -87,7 +90,11 @@ const Profile = () => {
           {t('header.logout')}
         </MenuItem>
       </Menu>
-      <WelcomeTour run={welcomeTour.run} onEnd={welcomeTour.end} />
+      <WelcomeTour
+        run={welcomeTour.run}
+        onEnd={welcomeTour.end}
+        replay={replayingTour}
+      />
     </>
   );
 };

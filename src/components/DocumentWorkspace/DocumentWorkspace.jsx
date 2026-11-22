@@ -24,7 +24,7 @@ import { WORKSPACE_TOUR_STEPS } from './workspaceTourSteps';
  * Shared "load cards -> preview -> download" screen for real and demo flows.
  * `readFn(order)` returns a card snapshot (real reader or demo mock).
  * `tourName` picks the tour copy (`tour.<tourName>.*`); the tour runs once
- * and the header button replays it.
+ * and the header button replays it. `actions` adds header buttons (demo).
  */
 const DocumentWorkspace = ({
   title,
@@ -34,12 +34,17 @@ const DocumentWorkspace = ({
   readFn,
   onBack,
   tourName = 'workspace',
+  actions,
 }) => {
   const { snapshots, fields, loadingOrder, loadCard, removeCard } =
     useCardSlots(readFn);
   const generation = useDocumentGeneration({ templateURL, fields, letter });
   const [previewOpen, setPreviewOpen] = useState(false);
   const tour = useTour(tourName, { autoStart: true });
+  // No cards to point at: start the tour at the progress step.
+  const tourSteps = neededCards.length
+    ? WORKSPACE_TOUR_STEPS
+    : WORKSPACE_TOUR_STEPS.filter((step) => step.id !== 'cards');
   const { t } = useTranslation();
 
   const loadedCount = neededCards.filter((c) => snapshots[c.order]).length;
@@ -76,6 +81,7 @@ const DocumentWorkspace = ({
         onBack={onBack}
         actions={
           <>
+            {actions}
             <Button variant="outlined" size="large" onClick={tour.start}>
               {t('tour.replay')}
             </Button>
@@ -137,7 +143,7 @@ const DocumentWorkspace = ({
 
       <AppTour
         name={tourName}
-        steps={WORKSPACE_TOUR_STEPS}
+        steps={tourSteps}
         run={tour.run}
         onEnd={tour.end}
       />

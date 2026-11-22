@@ -5,15 +5,16 @@ import { ROUTES } from '~utils/routes';
 import { WELCOME_TOUR_STEPS } from './welcomeTourSteps';
 
 /**
- * App tour shown after the first login. Finishing it ("Isprobaj demo") opens
- * the demo, where the demo tour continues; skipping just closes it.
+ * App tour shown after the first login. The first run ends with "Isprobaj
+ * demo" and opens the demo; a `replay` from the user menu ends in place
+ * ("Završi"), so the user never loses what they were doing.
  */
-const WelcomeTour = ({ run, onEnd }) => {
+const WelcomeTour = ({ run, onEnd, replay = false }) => {
   const navigate = useNavigate();
 
   const handleEnd = (status) => {
     onEnd();
-    if (status === STATUS.FINISHED) navigate(ROUTES.DEMO);
+    if (!replay && status === STATUS.FINISHED) navigate(ROUTES.DEMO);
   };
 
   return (
@@ -22,6 +23,7 @@ const WelcomeTour = ({ run, onEnd }) => {
       steps={WELCOME_TOUR_STEPS}
       run={run}
       onEnd={handleEnd}
+      lastKey={replay ? 'tour.last' : undefined}
     />
   );
 };

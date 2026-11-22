@@ -1,12 +1,14 @@
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import AppTour from '~components/AppTour/AppTour';
 import DocumentWorkspace from '~components/DocumentWorkspace/DocumentWorkspace';
 import useTour from '~hooks/useTour';
 import DocumentItem from '~shared-components/DocumentItem/DocumentItem';
 import PageHeader from '~shared-components/PageHeader/PageHeader';
 import { CardGrid } from '~shared-components/shared-styled-components/CardGrid/CardGrid';
+import { ROUTES } from '~utils/routes';
 import { DEMO_DOCUMENTS, mockReadCard } from './demoData';
 import { DEMO_LIST_STEPS } from './demoTours';
 
@@ -14,7 +16,13 @@ const DemoPage = () => {
   const [selected, setSelected] = useState(null);
   const { t } = useTranslation();
   // The list has its own tour; the workspace runs its own (`demoWorkspace`).
-  const listTour = useTour('demo-list', { autoStart: true });
+  const listTour = useTour(selected ? null : 'demo-list', { autoStart: true });
+
+  const openDemo = (doc) => {
+    // The tour asks for exactly this click; leaving counts as having seen it.
+    if (listTour.run) listTour.end();
+    setSelected(doc);
+  };
 
   if (selected) {
     return (
@@ -31,6 +39,11 @@ const DemoPage = () => {
         readFn={mockReadCard}
         onBack={() => setSelected(null)}
         tourName="demoWorkspace"
+        actions={
+          <Button component={Link} to={ROUTES.DOCUMENTS} size="large">
+            {t('demo.goToContracts')}
+          </Button>
+        }
       />
     );
   }
@@ -52,7 +65,7 @@ const DemoPage = () => {
             key={doc.id}
             name={t(doc.name)}
             actionLabel={t('demo.run')}
-            onClick={() => setSelected(doc)}
+            onClick={() => openDemo(doc)}
           />
         ))}
       </CardGrid>

@@ -1,7 +1,7 @@
 import { alpha, useTheme } from '@mui/material/styles';
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ACTIONS, EVENTS, Joyride, ORIGIN } from 'react-joyride';
+import { ACTIONS, EVENTS, Joyride, ORIGIN, STATUS } from 'react-joyride';
 import TourTooltip from './TourTooltip/TourTooltip';
 
 /**
@@ -10,16 +10,26 @@ import TourTooltip from './TourTooltip/TourTooltip';
  *
  * - `name`: copy lives in the locale files under `tour.<name>`; each step's
  *   title/content come from `tour.<name>.<step.id>.title|content`, and the
- *   last button from `tour.<name>.last` (falls back to `tour.last`).
+ *   last button from `lastKey` ?? `tour.<name>.last` ?? `tour.last`.
  * - `steps`: data only ({ id, target, placement, ... }), no text.
- * - `onEnd(status)`: called once with `'finished'` or `'skipped'`.
+ * - `onEnd(status)`: called once with `'finished'` or `'skipped'`
+ *   (Esc, the X and "Preskoči" are always `'skipped'`).
  * - `aboveDialogs`: for tours over an open MUI Dialog. Render the AppTour
- *   next to the Dialog (not inside it, or Esc also closes the dialog) and
- *   pass `disableEnforceFocus` to the Dialog while the tour runs.
+ *   next to the Dialog (not inside it) and give the Dialog
+ *   `disableEnforceFocus` and `disableEscapeKeyDown` while the tour runs.
  */
-const AppTour = ({ name, steps, run, onEnd, aboveDialogs = false }) => {
+const AppTour = ({
+  name,
+  steps,
+  run,
+  onEnd,
+  lastKey,
+  aboveDialogs = false,
+}) => {
   const { t } = useTranslation();
   const theme = useTheme();
+  // Esc on the last step makes Joyride report "finished"; we know better.
+  const dismissed = useRef(false);
 
   const translatedSteps = useMemo(
     () =>
@@ -31,41 +41,50 @@ const AppTour = ({ name, steps, run, onEnd, aboveDialogs = false }) => {
     [steps, name, t]
   );
 
-  const locale = {
-    back: t('tour.back'),
-    close: t('tour.close'),
-    last: t([`tour.${name}.last`, 'tour.last']),
-    next: t('tour.next'),
-    open: t('tour.open'),
-    skip: t('tour.skip'),
-  };
+  const locale = useMemo(
+    () => ({
+      back: t('tour.back'),
+      close: t('tour.close'),
+      last: t([lastKey ?? `tour.${name}.last`, 'tour.last']),
+      next: t('tour.next'),
+      skip: t('tour.skip'),
+    }),
+    [t, name, lastKey]
+  );
 
-  const options = {
-    buttons: ['back', 'close', 'primary', 'skip'],
-    // The X ends the tour; by default it only closes the current step.
-    closeButtonAction: 'skip',
-    // A stray click next to the tooltip must not end or advance the tour.
-    overlayClickAction: false,
-    skipBeacon: true,
-    primaryColor: theme.palette.primary.main,
-    backgroundColor: theme.palette.background.paper,
-    arrowColor: theme.palette.background.paper,
-    textColor: theme.palette.text.primary,
-    overlayColor: alpha(theme.palette.common.black, 0.55),
-    // Above the header and sidebar; below MUI dialogs unless asked.
-    zIndex: (aboveDialogs ? theme.zIndex.modal : theme.zIndex.drawer) + 1,
-    spotlightRadius: 12,
-    spotlightPadding: 6,
-    scrollOffset: 96,
-  };
+  const options = useMemo(
+    () => ({
+      buttons: ['back', 'close', 'primary', 'skip'],
+      // The X ends the tour; by default it only closes the current step.
+      closeButtonAction: 'skip',
+      // A stray click next to the tooltip must not end or advance the tour.
+      overlayClickAction: false,
+      skipBeacon: true,
+      primaryColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.background.paper,
+      arrowColor: theme.palette.background.paper,
+      textColor: theme.palette.text.primary,
+      overlayColor: alpha(theme.palette.common.black, 0.55),
+      // Above the header and sidebar; below MUI dialogs unless asked.
+      zIndex: (aboveDialogs ? theme.zIndex.modal : theme.zIndex.drawer) + 1,
+      spotlightRadius: 12,
+      spotlightPadding: 6,
+      scrollOffset: 96,
+    }),
+    [theme, aboveDialogs]
+  );
 
   const handleEvent = ({ type, action, origin, status }, controls) => {
+    if (type === EVENTS.TOUR_START) dismissed.current = false;
     // Esc would only close the step (and continue); make it end the tour.
     if (action === ACTIONS.CLOSE && origin === ORIGIN.KEYBOARD) {
+      dismissed.current = true;
       controls.skip(ORIGIN.BUTTON_CLOSE);
       return;
     }
-    if (type === EVENTS.TOUR_END) onEnd?.(status);
+    if (type === EVENTS.TOUR_END) {
+      onEnd?.(dismissed.current ? STATUS.SKIPPED : status);
+    }
   };
 
   return (

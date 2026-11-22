@@ -45,3 +45,12 @@ it('ends the whole tour with Esc instead of jumping to the next step', async () 
   await waitFor(() => expect(onEnd).toHaveBeenCalledWith('skipped'));
   expect(screen.queryByText('To je ceo proces')).not.toBeInTheDocument();
 });
+
+it('Esc on the last step counts as skipped, not finished', async () => {
+  const onEnd = setup();
+  await userEvent.click(await screen.findByRole('button', { name: 'Dalje' }));
+  await screen.findByText('To je ceo proces');
+  await userEvent.keyboard('{Escape}');
+  await waitFor(() => expect(onEnd).toHaveBeenCalledWith('skipped'));
+  expect(onEnd).not.toHaveBeenCalledWith('finished');
+});

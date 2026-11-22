@@ -45,3 +45,26 @@ it('without autoStart waits for start()', () => {
   const { result } = renderHook(() => useTour('demo'));
   expect(result.current.run).toBe(false);
 });
+
+describe('one tour at a time', () => {
+  it('a second auto-start tour waits until the first one ends', () => {
+    const { result } = renderHook(() => ({
+      welcome: useTour('welcome', { autoStart: true }),
+      page: useTour('page', { autoStart: true }),
+    }));
+    expect(result.current.welcome.run).toBe(true);
+    expect(result.current.page.run).toBe(false);
+
+    act(() => result.current.welcome.end());
+    expect(result.current.page.run).toBe(true);
+  });
+
+  it('frees the slot when the running tour unmounts', () => {
+    const first = renderHook(() => useTour('first', { autoStart: true }));
+    const second = renderHook(() => useTour('second', { autoStart: true }));
+    expect(second.result.current.run).toBe(false);
+
+    first.unmount();
+    expect(second.result.current.run).toBe(true);
+  });
+});

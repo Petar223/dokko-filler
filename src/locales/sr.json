@@ -224,7 +224,8 @@
     "docName": "Demo ugovor o kupoprodaji vozila",
     "seller": "Prodavac - lična karta",
     "buyer": "Kupac - lična karta",
-    "vehicle": "Saobraćajna dozvola vozila"
+    "vehicle": "Saobraćajna dozvola vozila",
+    "goToContracts": "Idi na ugovore"
   },
   "tour": {
     "back": "Nazad",
@@ -232,7 +233,6 @@
     "next": "Dalje",
     "last": "Završi",
     "skip": "Preskoči",
-    "open": "Otvori vodič",
     "progress": "{{current}} od {{total}}",
     "replay": "Pokreni vodič",
     "menu": "Vodič kroz aplikaciju",

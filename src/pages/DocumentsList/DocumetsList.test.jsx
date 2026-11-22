@@ -57,3 +57,12 @@ describe('tour', () => {
     expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument();
   });
 });
+
+it('opening a contract during the tour counts as seeing the tour', async () => {
+  localStorage.clear();
+  getDocuments.mockResolvedValue({ body: [{ id: 1, name: 'Ugovor' }] });
+  renderWithProviders(<DocumentsList />);
+  await screen.findByText('Izaberite ugovor');
+  await userEvent.click(screen.getByRole('button', { name: /^Ugovor/ }));
+  expect(localStorage.getItem('dokko-tour:documents')).toBe('1');
+});

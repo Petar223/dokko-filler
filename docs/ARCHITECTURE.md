@@ -172,5 +172,8 @@ AppTour ── <Joyride> + TourTooltip (MUI), copy from tour.<name>.<stepId>.*
   (`dokko-tour:<id>`), so it auto-starts only once per browser; `start()`
   replays it (user menu → "Vodič kroz aplikaciju"; "Pokreni vodič" in the
   header of the contract list, workspace and demo; ⓘ in the preview toolbar).
+- Only one tour runs at a time: `useTour` hands a single slot to the first
+  tour that asks (the welcome tour usually wins after login); the others
+  wait and start in turn. A tour that cannot be shown passes `null` as id.
 - Each screen has its own short tour instead of one tour spanning routes, so
   no controlled `stepIndex` is needed. How to add one: `add-tour` skill.

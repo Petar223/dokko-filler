@@ -90,6 +90,13 @@ build a tooltip by hand. If every tour needs a change, change `AppTour` or
      Without it the tour waits for `start()`.
    - **Always offer a replay** (`start()`): a "Pokreni vodič" button
      (`t('tour.replay')`) in the `PageHeader` actions, or a menu item.
+   - **One tour at a time:** `useTour` gives a single slot to whichever tour
+     asks first; the others wait and start in turn. So pass `null` as the id
+     while the tour cannot be shown (`useTour(hasItems ? id : null)`),
+     otherwise it holds the slot and blocks every other tour.
+   - If a step asks the user to click something that leaves the screen, call
+     `if (tour.run) tour.end()` in that click handler (see `DocumentsList`),
+     or the tour comes back on every visit.
    - Render `<AppTour>` only while its targets can exist (e.g. inside the
      branch that renders the screen). Joyride waits `targetWaitTimeout`
      (1 s) for a missing target and then skips that step.
@@ -101,8 +108,9 @@ build a tooltip by hand. If every tour needs a change, change `AppTour` or
    - **Tour over an MUI Dialog** (see `DocumentModal`): pass `aboveDialogs`,
      render `<AppTour>` *next to* the `<Dialog>` in a fragment (inside it,
      Esc would also close the dialog through React event bubbling), give the
-     Dialog `disableEnforceFocus={open && tour.run}` so the tooltip can take
-     focus, and render the tour only while `open`.
+     Dialog `disableEnforceFocus` and `disableEscapeKeyDown` while the tour
+     runs (the tooltip needs the focus, Esc belongs to the tour), and pass
+     `useTour(open ? id : null)` so a closed dialog does not hold the tour slot.
 5. **Do not** drive `stepIndex` from app state (controlled mode). Joyride's
    docs advise against it: it breaks its lifecycle. If a step needs UI that is
    not there yet (a menu, a dialog), split the tour per screen or use the

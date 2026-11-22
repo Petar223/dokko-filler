@@ -118,8 +118,8 @@ const DocumentModal = ({
   const [pages, setPages] = useState(null);
   const { t } = useTranslation();
   const canvasRef = useRef(null);
-  const tour = useTour('preview', { autoStart: true });
-  const tourRunning = open && tour.run;
+  const tour = useTour(open ? 'preview' : null, { autoStart: true });
+  const tourRunning = tour.run;
 
   const fitWidth = () => {
     const page = canvasRef.current?.querySelector('section.docx');
@@ -156,8 +156,10 @@ const DocumentModal = ({
         open={open}
         onClose={onClose}
         aria-labelledby="preview-title"
-        // The tour tooltip lives outside the dialog and needs the focus.
+        // The tour tooltip lives outside the dialog and needs the focus, and
+        // Esc belongs to the tour while it runs (it must not close the preview).
         disableEnforceFocus={tourRunning}
+        disableEscapeKeyDown={tourRunning}
       >
         {printStyles}
         <Stack
