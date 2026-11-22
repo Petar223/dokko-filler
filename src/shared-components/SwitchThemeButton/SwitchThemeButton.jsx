@@ -16,7 +16,12 @@ const SwitchThemeButton = () => {
 
   return (
     <Tooltip title={label}>
-      <IconButton onClick={toggleColorMode} aria-label={label} color="inherit">
+      <IconButton
+        onClick={toggleColorMode}
+        aria-label={label}
+        color="inherit"
+        data-tour="theme-switch"
+      >
         <SvgIcon fontSize="small">
           <path d={mode === 'dark' ? SUN : MOON} />
         </SvgIcon>

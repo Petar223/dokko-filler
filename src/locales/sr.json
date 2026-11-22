@@ -217,30 +217,6 @@
     "unavailable": "Pregled nije dostupan. Dokument i dalje možete da preuzmete.",
     "fallback": "Prikaz u punom formatu nije uspeo. Ispod je pojednostavljen pregled; preuzeti dokument je ispravno formatiran."
   },
-  "tutorial": {
-    "offerTitle": "Dobrodošli u Dokko Filler",
-    "offerText": "Želite li kratak vodič? Na izmišljenim podacima ćete za oko minut proći ceo proces: izbor ugovora, učitavanje dokumenata i pregled popunjenog ugovora.",
-    "offerNote": "Vodič uvek možete pokrenuti i kasnije, iz menija „Demo“.",
-    "notNow": "Ne sada",
-    "start": "Pokreni vodič",
-    "steps": {
-      "choose": {
-        "label": "Izaberite ugovor",
-        "hint": "Svaki ugovor je Word šablon sa poljima koja se popunjavaju sama. Kliknite „Pokreni demo“ na ugovoru ispod."
-      },
-      "load": {
-        "label": "Učitajte dokumenta",
-        "hint": "U pravom radu ubacite ličnu kartu ili saobraćajnu dozvolu u čitač i kliknete na karticu. Ovde klik na svaku karticu učitava izmišljene podatke. Proverite ih, a pogrešno učitanu karticu možete da uklonite."
-      },
-      "preview": {
-        "label": "Pregledajte i preuzmite",
-        "hint": "Svi podaci su tu. Kliknite „Pregledaj dokument“ gore desno: videćete popunjen ugovor, sa označenim poljima koja je aplikacija upisala."
-      }
-    },
-    "done": "To je ceo proces. Iz pregleda ugovor možete da odštampate ili preuzmete kao .docx. Sada probajte sa svojim ugovorima i pravim dokumentima.",
-    "goToContracts": "Idi na ugovore",
-    "demoNote": "Demo režim: podaci su izmišljeni, čitač i prijava nisu potrebni."
-  },
   "demo": {
     "title": "Ugovori",
     "subtitle": "Demo prikaz liste ugovora sa unapred pripremljenim podacima. Izaberite ugovor da pokrenete ceo proces bez prijave i učitavanja dokumenata.",
@@ -249,5 +225,120 @@
     "seller": "Prodavac - lična karta",
     "buyer": "Kupac - lična karta",
     "vehicle": "Saobraćajna dozvola vozila"
+  },
+  "tour": {
+    "back": "Nazad",
+    "close": "Zatvori vodič",
+    "next": "Dalje",
+    "last": "Završi",
+    "skip": "Preskoči",
+    "open": "Otvori vodič",
+    "progress": "{{current}} od {{total}}",
+    "replay": "Pokreni vodič",
+    "menu": "Vodič kroz aplikaciju",
+    "welcome": {
+      "last": "Isprobaj demo",
+      "intro": {
+        "title": "Dobrodošli u Dokko Filler",
+        "content": "Za minut ćemo vam pokazati gde je šta. Vodič možete preskočiti i kasnije ga pokrenuti iz korisničkog menija."
+      },
+      "contracts": {
+        "title": "Ugovori",
+        "content": "Ovde su svi šabloni ugovora. Izaberete ugovor, učitate lične karte i saobraćajne dozvole iz čitača i aplikacija popuni ugovor."
+      },
+      "demo": {
+        "title": "Demo",
+        "content": "Ceo proces možete isprobati na izmišljenim podacima, bez čitača kartica."
+      },
+      "language": {
+        "title": "Jezik",
+        "content": "Prebacite aplikaciju na engleski ili nazad na srpski. Popunjeni ugovori ostaju na jeziku šablona."
+      },
+      "theme": {
+        "title": "Svetla i tamna tema",
+        "content": "Izaberite temu koja vam više prija; aplikacija je pamti."
+      },
+      "userMenu": {
+        "title": "Vaš nalog",
+        "content": "Ovde se odjavljujete i ponovo pokrećete ovaj vodič."
+      },
+      "done": {
+        "title": "Spremni ste",
+        "content": "Najbrže ćete savladati aplikaciju ako jednom prođete demo: traje oko minut."
+      }
+    },
+    "demoList": {
+      "last": "Razumem",
+      "intro": {
+        "title": "Demo režim",
+        "content": "Sve ovde radi kao u pravoj aplikaciji, ali su podaci izmišljeni. Čitač kartica i prijava nisu potrebni."
+      },
+      "contract": {
+        "title": "Izaberite ugovor",
+        "content": "Svaki ugovor je Word šablon sa poljima koja se popunjavaju sama. Kliknite na ugovor da počnete."
+      }
+    },
+    "demoWorkspace": {
+      "cards": {
+        "title": "Učitajte dokumenta",
+        "content": "U pravom radu ubacite karticu u čitač i kliknete na polje. Ovde klik odmah učitava izmišljene podatke. Pogrešno učitanu karticu uklanjate ikonom korpe."
+      },
+      "progress": {
+        "title": "Napredak",
+        "content": "Ovde vidite koliko je dokumenata učitano od potrebnih."
+      },
+      "preview": {
+        "title": "Pregled i preuzimanje",
+        "content": "Kad su sva dokumenta učitana, otvorite pregled: popunjena polja su označena, a ugovor možete odštampati ili preuzeti kao .docx."
+      },
+      "done": {
+        "title": "To je ceo proces",
+        "content": "Učitajte sva tri dokumenta i otvorite pregled. Posle toga probajte sa svojim ugovorima i pravim dokumentima."
+      }
+    },
+    "documents": {
+      "last": "Razumem",
+      "contract": {
+        "title": "Izaberite ugovor",
+        "content": "Kliknite na ugovor koji želite da popunite. Otvoriće se ekran za učitavanje dokumenata."
+      },
+      "reader": {
+        "title": "Pripremite čitač",
+        "content": "Pre učitavanja pokrenite program za čitač kartica na ovom računaru i priključite čitač. Podaci se čitaju direktno sa čipa lične karte i saobraćajne dozvole."
+      }
+    },
+    "workspace": {
+      "cards": {
+        "title": "Učitajte dokumenta",
+        "content": "Ubacite karticu u čitač i kliknite na polje za taj dokument. Proverite učitane podatke; pogrešno učitanu karticu uklonite ikonom korpe."
+      },
+      "progress": {
+        "title": "Napredak",
+        "content": "Ovde vidite koliko je dokumenata učitano od potrebnih."
+      },
+      "preview": {
+        "title": "Pregled i preuzimanje",
+        "content": "Kad su sva dokumenta učitana, otvorite pregled. Polja koja je aplikacija popunila biće označena."
+      },
+      "done": {
+        "title": "Spremni ste",
+        "content": "Ako čitač ne reaguje, proverite da li je program za čitač pokrenut i da li je kartica dobro ubačena."
+      }
+    },
+    "preview": {
+      "last": "Razumem",
+      "zoom": {
+        "title": "Veličina prikaza",
+        "content": "Uvećajte ili umanjite stranicu, ili je prilagodite širini ekrana."
+      },
+      "highlight": {
+        "title": "Označena polja",
+        "content": "Vrednosti koje je aplikacija upisala označene su žutom, da ih lakše proverite. Oznake ne ulaze u preuzeti dokument."
+      },
+      "download": {
+        "title": "Preuzmite ugovor",
+        "content": "Preuzmite ugovor kao .docx i otvorite ga u Wordu, ili ga odmah odštampajte."
+      }
+    }
   }
 }

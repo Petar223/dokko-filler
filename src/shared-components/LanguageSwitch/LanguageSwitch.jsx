@@ -13,6 +13,7 @@ const LanguageSwitch = () => {
         onClick={() => i18n.changeLanguage(next)}
         aria-label={t('language.switchTo')}
         color="inherit"
+        data-tour="language-switch"
         size="small"
         sx={{ minWidth: 40, fontWeight: 700 }}
       >

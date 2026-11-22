@@ -1,6 +1,7 @@
 # Conventions
 
-Read this before writing code. ESLint + Prettier enforce formatting and import
+Read this before writing code (and [PATTERNS.md](PATTERNS.md) for how code
+looks). ESLint + Prettier enforce formatting and import
 order; this file covers what tools cannot.
 
 ## Files and folders
@@ -79,6 +80,13 @@ Every page that loads data handles four states:
 | success | the content |
 
 Pages start with `PageHeader` (title, optional subtitle, `onBack`, `actions`).
+
+## Product tours
+
+- Only through `AppTour` (react-joyride v3); steps are data, copy is in the
+  locales under `tour.<name>.<stepId>`. See the `add-tour` skill.
+- Tour targets are `data-tour="<kebab-id>"` attributes on the element, never
+  CSS or MUI class names.
 
 ## Accessibility
 

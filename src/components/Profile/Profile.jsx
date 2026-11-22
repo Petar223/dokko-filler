@@ -8,9 +8,11 @@ import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { PowerOffLineIcon } from '~components/Icons';
+import { InfoCircleLineIcon, PowerOffLineIcon } from '~components/Icons';
+import WelcomeTour from '~components/WelcomeTour/WelcomeTour';
 import { useAuth } from '~context/AuthContext';
 import { useNotification } from '~context/NotificationContext';
+import useTour from '~hooks/useTour';
 import Icon from '~shared-components/Icon/Icon';
 import { ROUTES } from '~utils/routes';
 
@@ -22,6 +24,12 @@ const Profile = () => {
   const notify = useNotification();
   const { user, logout } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
+  const welcomeTour = useTour(user && `welcome:${user}`, { autoStart: true });
+
+  const handleReplayTour = () => {
+    setAnchorEl(null);
+    welcomeTour.start();
+  };
 
   const handleLogout = async () => {
     setAnchorEl(null);
@@ -38,6 +46,7 @@ const Profile = () => {
     <>
       <IconButton
         onClick={(e) => setAnchorEl(e.currentTarget)}
+        data-tour="user-menu"
         aria-label={t('header.userMenu')}
         aria-haspopup="menu"
         aria-expanded={Boolean(anchorEl)}
@@ -65,6 +74,12 @@ const Profile = () => {
           {user}
         </Typography>
         <Divider />
+        <MenuItem onClick={handleReplayTour}>
+          <ListItemIcon>
+            <Icon as={InfoCircleLineIcon} size={18} />
+          </ListItemIcon>
+          {t('tour.menu')}
+        </MenuItem>
         <MenuItem onClick={handleLogout} sx={{ color: 'error.main' }}>
           <ListItemIcon sx={{ color: 'inherit' }}>
             <Icon as={PowerOffLineIcon} size={18} />
@@ -72,6 +87,7 @@ const Profile = () => {
           {t('header.logout')}
         </MenuItem>
       </Menu>
+      <WelcomeTour run={welcomeTour.run} onEnd={welcomeTour.end} />
     </>
   );
 };

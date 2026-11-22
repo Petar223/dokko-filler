@@ -9,12 +9,33 @@ import {
 import NavigationItem from '~components/Sidebar/NavigationItem/NavigationItem';
 import { ROUTES } from '~utils/routes';
 
-// `label` values are translation keys.
+// `label` values are translation keys; `tourId` is the `data-tour` target.
 const NAV_ITEMS = [
-  { label: 'nav.home', icon: HouseWindowIcon, route: ROUTES.HOME, end: true },
-  { label: 'nav.contracts', icon: DescriptionIcon, route: ROUTES.DOCUMENTS },
-  { label: 'nav.demo', icon: EyeLookIcon, route: ROUTES.DEMO },
-  { label: 'nav.about', icon: BuildingIcon, route: ROUTES.ABOUT },
+  {
+    label: 'nav.home',
+    tourId: 'nav-home',
+    icon: HouseWindowIcon,
+    route: ROUTES.HOME,
+    end: true,
+  },
+  {
+    label: 'nav.contracts',
+    tourId: 'nav-contracts',
+    icon: DescriptionIcon,
+    route: ROUTES.DOCUMENTS,
+  },
+  {
+    label: 'nav.demo',
+    tourId: 'nav-demo',
+    icon: EyeLookIcon,
+    route: ROUTES.DEMO,
+  },
+  {
+    label: 'nav.about',
+    tourId: 'nav-about',
+    icon: BuildingIcon,
+    route: ROUTES.ABOUT,
+  },
 ];
 
 const Sidebar = () => {

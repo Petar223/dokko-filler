@@ -48,8 +48,8 @@ const Item = styled(NavLink)`
   }
 `;
 
-const NavigationItem = ({ label, icon, route, end }) => (
-  <Item to={route} end={end}>
+const NavigationItem = ({ label, icon, route, end, tourId }) => (
+  <Item to={route} end={end} data-tour={tourId}>
     <Icon as={icon} size={24} />
     {label}
   </Item>

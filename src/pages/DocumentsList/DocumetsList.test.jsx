@@ -39,3 +39,21 @@ it('shows an error with retry', async () => {
     await screen.findByRole('button', { name: /Ugovor/ })
   ).toBeInTheDocument();
 });
+
+describe('tour', () => {
+  beforeEach(() => localStorage.clear());
+
+  it('points at the first contract on the first visit', async () => {
+    getDocuments.mockResolvedValue({ body: [{ id: 1, name: 'Ugovor' }] });
+    renderWithProviders(<DocumentsList />);
+    expect(await screen.findByText('Izaberite ugovor')).toBeInTheDocument();
+    expect(screen.getByText('1 od 2')).toBeInTheDocument();
+  });
+
+  it('does not start on an empty list', async () => {
+    getDocuments.mockResolvedValue({ body: [] });
+    renderWithProviders(<DocumentsList />);
+    await screen.findByText(i18n.t('documents.listEmpty'));
+    expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument();
+  });
+});

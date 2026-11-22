@@ -6,6 +6,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import AppTour from '~components/AppTour/AppTour';
 import DocumentModal from '~components/DocumentModal/DocumentModal';
 import DocumentRender from '~components/DocumentRender/DocumentRender';
 import { OverviewIcon } from '~components/Icons';
@@ -13,13 +14,17 @@ import useCardSlots from '~hooks/useCardSlots';
 import useDocumentGeneration, {
   GENERATION_STATUS,
 } from '~hooks/useDocumentGeneration';
+import useTour from '~hooks/useTour';
 import Icon from '~shared-components/Icon/Icon';
 import PageHeader from '~shared-components/PageHeader/PageHeader';
 import { CardGrid } from '~shared-components/shared-styled-components/CardGrid/CardGrid';
+import { WORKSPACE_TOUR_STEPS } from './workspaceTourSteps';
 
 /**
  * Shared "load cards -> preview -> download" screen for real and demo flows.
  * `readFn(order)` returns a card snapshot (real reader or demo mock).
+ * `tourName` picks the tour copy (`tour.<tourName>.*`); the tour runs once
+ * and the header button replays it.
  */
 const DocumentWorkspace = ({
   title,
@@ -28,13 +33,13 @@ const DocumentWorkspace = ({
   letter,
   readFn,
   onBack,
-  banner,
+  tourName = 'workspace',
 }) => {
   const { snapshots, fields, loadingOrder, loadCard, removeCard } =
     useCardSlots(readFn);
   const generation = useDocumentGeneration({ templateURL, fields, letter });
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewed, setPreviewed] = useState(false);
+  const tour = useTour(tourName, { autoStart: true });
   const { t } = useTranslation();
 
   const loadedCount = neededCards.filter((c) => snapshots[c.order]).length;
@@ -42,9 +47,7 @@ const DocumentWorkspace = ({
   const generating = generation.status === GENERATION_STATUS.GENERATING;
 
   const handlePreview = async () => {
-    if (!(await generation.generate())) return;
-    setPreviewOpen(true);
-    setPreviewed(true);
+    if (await generation.generate()) setPreviewOpen(true);
   };
 
   const previewButton = (
@@ -52,6 +55,7 @@ const DocumentWorkspace = ({
       variant="contained"
       size="large"
       onClick={handlePreview}
+      data-tour="workspace-preview"
       disabled={!allLoaded || generating}
       startIcon={
         generating ? (
@@ -71,21 +75,23 @@ const DocumentWorkspace = ({
         title={title}
         onBack={onBack}
         actions={
-          allLoaded ? (
-            previewButton
-          ) : (
-            <Tooltip title={t('workspace.loadAllFirst')}>
-              {/* span: disabled buttons don't fire tooltip events */}
-              <span>{previewButton}</span>
-            </Tooltip>
-          )
+          <>
+            <Button variant="outlined" size="large" onClick={tour.start}>
+              {t('tour.replay')}
+            </Button>
+            {allLoaded ? (
+              previewButton
+            ) : (
+              <Tooltip title={t('workspace.loadAllFirst')}>
+                {/* span: disabled buttons don't fire tooltip events */}
+                <span>{previewButton}</span>
+              </Tooltip>
+            )}
+          </>
         }
       />
 
-      {/* A function banner gets the progress (the demo tutorial uses it). */}
-      {typeof banner === 'function' ? banner({ allLoaded, previewed }) : banner}
-
-      <Stack spacing={1} sx={{ mb: 3 }}>
+      <Stack spacing={1} sx={{ mb: 3 }} data-tour="workspace-progress">
         <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
           <Typography variant="h5" component="h2">
             {t('workspace.loadTitle')}
@@ -106,7 +112,7 @@ const DocumentWorkspace = ({
         />
       </Stack>
 
-      <CardGrid $min={300}>
+      <CardGrid $min={300} data-tour="workspace-cards">
         {neededCards.map((card) => (
           <DocumentRender
             key={card.order}
@@ -127,6 +133,13 @@ const DocumentWorkspace = ({
         previewBlob={generation.previewBlob}
         downloadBlob={generation.downloadBlob}
         missingFields={generation.missingFields}
+      />
+
+      <AppTour
+        name={tourName}
+        steps={WORKSPACE_TOUR_STEPS}
+        run={tour.run}
+        onEnd={tour.end}
       />
     </>
   );

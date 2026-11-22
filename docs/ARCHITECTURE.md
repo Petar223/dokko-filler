@@ -14,12 +14,14 @@ src/
     DocumentsList/         contract list (/documents)
     GenerateDocumentPage/  contract details + card slots (/documents/:id/create)
       consts.js            card types, labels, detection; cardFields.json
-    DemoPage/              demo flow (/demo) + demoData.js (mock contract/cards)
+    DemoPage/              demo flow (/demo) + demoData.js (mock contract/cards),
+                           demoTours.js (demo tour steps)
   components/              app-level and stateful components
     Root/                  router + routes
     Layout/ Header/ Sidebar/ Footer/ Profile/
     PrivateRoute/ ErrorBoundary/ ThemeProvider/
-    TutorialOffer/         first-login dialog offering the guided demo
+    AppTour/               the only react-joyride wrapper + TourTooltip/
+    WelcomeTour/           app tour after the first login (rendered by Profile)
     Authentication/        Login, Signup, ConfirmSignup, AuthCard
     DocumentWorkspace/     card slots + preview button (shared by real and demo flow)
     DocumentRender/        one slot: PlaceholderCard or LoadedCard
@@ -32,10 +34,10 @@ src/
     DocumentItem/ LoadedCard/ SwitchThemeButton/
     shared-styled-components/CardGrid/
   context/                 AuthContext, NotificationContext
-  hooks/                   useFetch, useCardSlots, useDocumentGeneration
+  hooks/                   useFetch, useCardSlots, useDocumentGeneration, useTour
   api/                     axios.js, readerAxios.js + one file per endpoint
   utils/                   cognitoAuth, documentUtils, placeholders, formatters,
-                           scriptConversion, fileDownloader, routes, i18n, validation
+                           scriptConversion, fileDownloader, routes, i18n, tour, validation
   locales/                 sr.json, en.json (all UI copy)
   theme/                   palette, typography, components (MUI overrides), theme.js
 ```
@@ -77,12 +79,6 @@ The demo flow (`/demo`) uses the same `DocumentWorkspace`, with
 `mockReadCard(order)` instead of the reader and a static template from
 `public/assets/demo/`.
 
-The demo doubles as the tutorial: `DemoPage` renders a stepper with a hint
-for the current step. `DocumentWorkspace` accepts `banner` as a function and
-passes it `{ allLoaded, previewed }`, which is how the page knows the step.
-`TutorialOffer` (rendered in `Layout`) offers the demo once after the first
-login; the answer is stored in `localStorage` under
-`dokko-tutorial-offered:<email>` (per browser, per user).
 
 ## Auth
 
@@ -152,3 +148,29 @@ There is no global store. State lives where it is used:
   `localStorage` (`dokko-language`) and sets `<html lang>`.
 - Not translated: generated contracts, card data from the reader, and names
   that come from the backend (contract names, `needed_cards` names).
+
+## Product tours (react-joyride v3)
+
+```
+Profile ── useTour('welcome:<email>', autoStart) ──► WelcomeTour ──► AppTour
+                                                       └─ finished ─► /demo
+DocumentsList ── useTour('documents') ──► AppTour (first contract, reader)
+DocumentWorkspace ── useTour(tourName) ──► AppTour (cards, progress, preview)
+    tourName: 'workspace' (real flow) | 'demoWorkspace' (demo copy)
+DocumentModal ── useTour('preview') ──► AppTour aboveDialogs (zoom, highlight,
+                                         download), rendered next to the Dialog
+DemoPage ── useTour('demo-list') ──► AppTour (demo intro, demo contract)
+AppTour ── <Joyride> + TourTooltip (MUI), copy from tour.<name>.<stepId>.*
+```
+
+- `AppTour` is the only component that renders `<Joyride>`. It applies theme
+  colors and z-index, the locale, the buttons, and makes X/Esc end the tour.
+- Step lists are data (`{ id, target, placement }`) next to their owner;
+  targets are `data-tour="<id>"` attributes (`utils/tour.js` → `tourTarget`).
+- `useTour(id, { autoStart })` returns `{ run, start, end }`. A tour that
+  ends (finished or skipped) is stored as seen in `localStorage`
+  (`dokko-tour:<id>`), so it auto-starts only once per browser; `start()`
+  replays it (user menu → "Vodič kroz aplikaciju"; "Pokreni vodič" in the
+  header of the contract list, workspace and demo; ⓘ in the preview toolbar).
+- Each screen has its own short tour instead of one tour spanning routes, so
+  no controlled `stepIndex` is needed. How to add one: `add-tour` skill.

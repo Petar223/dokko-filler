@@ -4,7 +4,6 @@ import ErrorBoundary from '~components/ErrorBoundary/ErrorBoundary';
 import Footer from '~components/Footer/Footer';
 import Header from '~components/Header/Header';
 import Sidebar from '~components/Sidebar/Sidebar';
-import TutorialOffer from '~components/TutorialOffer/TutorialOffer';
 
 const Layout = ({ children }) => {
   const { pathname } = useLocation();
@@ -35,7 +34,6 @@ const Layout = ({ children }) => {
         </Box>
       </Box>
       <Footer />
-      <TutorialOffer />
     </Box>
   );
 };

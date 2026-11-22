@@ -1,66 +1,20 @@
 import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import Stepper from '@mui/material/Stepper';
-import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import AppTour from '~components/AppTour/AppTour';
 import DocumentWorkspace from '~components/DocumentWorkspace/DocumentWorkspace';
+import useTour from '~hooks/useTour';
 import DocumentItem from '~shared-components/DocumentItem/DocumentItem';
 import PageHeader from '~shared-components/PageHeader/PageHeader';
 import { CardGrid } from '~shared-components/shared-styled-components/CardGrid/CardGrid';
-import { ROUTES } from '~utils/routes';
 import { DEMO_DOCUMENTS, mockReadCard } from './demoData';
-
-// Step ids; copy is in the locale files under `tutorial.steps.<id>`.
-const STEPS = ['choose', 'load', 'preview'];
-
-/** Tutorial strip: where the user is in the flow and what to do next. */
-const DemoGuide = ({ step }) => {
-  const { t } = useTranslation();
-  const done = step >= STEPS.length;
-  return (
-    <Paper
-      variant="outlined"
-      sx={{ p: { xs: 2, sm: 3 }, mb: 3, textAlign: 'center' }}
-    >
-      <Stepper activeStep={step} alternativeLabel sx={{ mb: 2 }}>
-        {STEPS.map((id) => (
-          <Step key={id}>
-            <StepLabel>{t(`tutorial.steps.${id}.label`)}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      <Typography aria-live="polite" sx={{ maxWidth: 680, mx: 'auto' }}>
-        {done ? t('tutorial.done') : t(`tutorial.steps.${STEPS[step]}.hint`)}
-      </Typography>
-      {done ? (
-        <Button
-          component={Link}
-          to={ROUTES.DOCUMENTS}
-          variant="contained"
-          sx={{ mt: 2 }}
-        >
-          {t('tutorial.goToContracts')}
-        </Button>
-      ) : (
-        <Typography
-          variant="caption"
-          color="text.secondary"
-          sx={{ display: 'block', mt: 1 }}
-        >
-          {t('tutorial.demoNote')}
-        </Typography>
-      )}
-    </Paper>
-  );
-};
+import { DEMO_LIST_STEPS } from './demoTours';
 
 const DemoPage = () => {
   const [selected, setSelected] = useState(null);
   const { t } = useTranslation();
+  // The list has its own tour; the workspace runs its own (`demoWorkspace`).
+  const listTour = useTour('demo-list', { autoStart: true });
 
   if (selected) {
     return (
@@ -76,18 +30,23 @@ const DemoPage = () => {
         letter={selected.letter}
         readFn={mockReadCard}
         onBack={() => setSelected(null)}
-        banner={({ allLoaded, previewed }) => (
-          <DemoGuide step={previewed ? 3 : allLoaded ? 2 : 1} />
-        )}
+        tourName="demoWorkspace"
       />
     );
   }
 
   return (
     <>
-      <PageHeader title={t('demo.title')} subtitle={t('demo.subtitle')} />
-      <DemoGuide step={0} />
-      <CardGrid>
+      <PageHeader
+        title={t('demo.title')}
+        subtitle={t('demo.subtitle')}
+        actions={
+          <Button variant="outlined" onClick={listTour.start}>
+            {t('tour.replay')}
+          </Button>
+        }
+      />
+      <CardGrid data-tour="demo-contracts">
         {DEMO_DOCUMENTS.map((doc) => (
           <DocumentItem
             key={doc.id}
@@ -97,6 +56,12 @@ const DemoPage = () => {
           />
         ))}
       </CardGrid>
+      <AppTour
+        name="demoList"
+        steps={DEMO_LIST_STEPS}
+        run={listTour.run}
+        onEnd={listTour.end}
+      />
     </>
   );
 };

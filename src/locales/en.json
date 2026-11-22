@@ -214,30 +214,6 @@
     "unavailable": "The preview is not available. You can still download the document.",
     "fallback": "The full-format view failed. Below is a simplified preview; the downloaded document is formatted correctly."
   },
-  "tutorial": {
-    "offerTitle": "Welcome to Dokko Filler",
-    "offerText": "Would you like a short tour? Using made-up data, you will go through the whole process in about a minute: choosing a contract, loading the documents and previewing the filled-in contract.",
-    "offerNote": "You can start the tour later at any time from the “Demo” menu.",
-    "notNow": "Not now",
-    "start": "Start the tour",
-    "steps": {
-      "choose": {
-        "label": "Choose a contract",
-        "hint": "Every contract is a Word template with fields that fill in by themselves. Click “Run demo” on the contract below."
-      },
-      "load": {
-        "label": "Load the documents",
-        "hint": "In real use you insert an ID card or vehicle registration card into the reader and click the card. Here, a click on each card loads made-up data. Check it; you can remove a card that was loaded by mistake."
-      },
-      "preview": {
-        "label": "Review and download",
-        "hint": "All the data is here. Click “Preview document” at the top right: you will see the filled-in contract, with the fields the app entered highlighted."
-      }
-    },
-    "done": "That is the whole process. From the preview you can print the contract or download it as .docx. Now try it with your own contracts and real documents.",
-    "goToContracts": "Go to contracts",
-    "demoNote": "Demo mode: the data is made up; no reader or login is needed."
-  },
   "demo": {
     "title": "Contracts",
     "subtitle": "A demo list of contracts with prepared data. Choose a contract to run the whole process without logging in or loading documents.",
@@ -246,5 +222,120 @@
     "seller": "Seller - ID card",
     "buyer": "Buyer - ID card",
     "vehicle": "Vehicle registration card"
+  },
+  "tour": {
+    "back": "Back",
+    "close": "Close tour",
+    "next": "Next",
+    "last": "Finish",
+    "skip": "Skip",
+    "open": "Open tour",
+    "progress": "{{current}} of {{total}}",
+    "replay": "Start tour",
+    "menu": "App tour",
+    "welcome": {
+      "last": "Try the demo",
+      "intro": {
+        "title": "Welcome to Dokko Filler",
+        "content": "In a minute we will show you where everything is. You can skip the tour and start it later from the user menu."
+      },
+      "contracts": {
+        "title": "Contracts",
+        "content": "All contract templates are here. Choose a contract, load ID cards and vehicle registration cards from the reader, and the app fills in the contract."
+      },
+      "demo": {
+        "title": "Demo",
+        "content": "Try the whole process with made-up data, without a card reader."
+      },
+      "language": {
+        "title": "Language",
+        "content": "Switch the app to Serbian or back to English. Filled-in contracts stay in the language of the template."
+      },
+      "theme": {
+        "title": "Light and dark theme",
+        "content": "Pick the theme you prefer; the app remembers it."
+      },
+      "userMenu": {
+        "title": "Your account",
+        "content": "Log out here, or start this tour again."
+      },
+      "done": {
+        "title": "You are ready",
+        "content": "The fastest way to learn the app is to go through the demo once: it takes about a minute."
+      }
+    },
+    "demoList": {
+      "last": "Got it",
+      "intro": {
+        "title": "Demo mode",
+        "content": "Everything here works like the real app, but the data is made up. No card reader or login is needed."
+      },
+      "contract": {
+        "title": "Choose a contract",
+        "content": "Every contract is a Word template with fields that fill in by themselves. Click the contract to start."
+      }
+    },
+    "demoWorkspace": {
+      "cards": {
+        "title": "Load the documents",
+        "content": "In real use you insert the card into the reader and click the slot. Here a click loads made-up data right away. Remove a card loaded by mistake with the bin icon."
+      },
+      "progress": {
+        "title": "Progress",
+        "content": "Here you see how many of the required documents are loaded."
+      },
+      "preview": {
+        "title": "Preview and download",
+        "content": "Once all documents are loaded, open the preview: filled fields are highlighted, and you can print the contract or download it as .docx."
+      },
+      "done": {
+        "title": "That is the whole process",
+        "content": "Load all three documents and open the preview. Then try it with your own contracts and real documents."
+      }
+    },
+    "documents": {
+      "last": "Got it",
+      "contract": {
+        "title": "Choose a contract",
+        "content": "Click the contract you want to fill in. The screen for loading documents opens."
+      },
+      "reader": {
+        "title": "Get the reader ready",
+        "content": "Before loading, start the card reader program on this computer and plug in the reader. Data is read directly from the chip of the ID card and vehicle registration card."
+      }
+    },
+    "workspace": {
+      "cards": {
+        "title": "Load the documents",
+        "content": "Insert the card into the reader and click the slot for that document. Check the loaded data; remove a card loaded by mistake with the bin icon."
+      },
+      "progress": {
+        "title": "Progress",
+        "content": "Here you see how many of the required documents are loaded."
+      },
+      "preview": {
+        "title": "Preview and download",
+        "content": "Once all documents are loaded, open the preview. The fields the app filled in are highlighted."
+      },
+      "done": {
+        "title": "You are ready",
+        "content": "If the reader does not respond, check that the reader program is running and the card is inserted correctly."
+      }
+    },
+    "preview": {
+      "last": "Got it",
+      "zoom": {
+        "title": "Zoom",
+        "content": "Zoom the page in or out, or fit it to the width of the screen."
+      },
+      "highlight": {
+        "title": "Highlighted fields",
+        "content": "Values the app entered are highlighted in yellow so you can check them easily. The highlight is not part of the downloaded document."
+      },
+      "download": {
+        "title": "Download the contract",
+        "content": "Download the contract as .docx and open it in Word, or print it right away."
+      }
+    }
   }
 }

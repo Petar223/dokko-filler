@@ -78,3 +78,30 @@ it('lists missing fields', async () => {
     screen.getByText(/2 polja nije popunjeno: name_2, date/)
   ).toBeInTheDocument();
 });
+
+describe('tour', () => {
+  beforeEach(() => localStorage.clear());
+
+  it('explains the toolbar, and Esc ends the tour but keeps the preview', async () => {
+    const onClose = jest.fn();
+    await setup({ onClose });
+    expect(await screen.findByText('Veličina prikaza')).toBeInTheDocument();
+
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() =>
+      expect(screen.queryByText('Veličina prikaza')).not.toBeInTheDocument()
+    );
+    expect(onClose).not.toHaveBeenCalled();
+    expect(localStorage.getItem('dokko-tour:preview')).toBe('1');
+  });
+
+  it('replays from the toolbar button', async () => {
+    localStorage.setItem('dokko-tour:preview', '1');
+    await setup();
+    expect(screen.queryByText('Veličina prikaza')).not.toBeInTheDocument();
+    await userEvent.click(
+      screen.getAllByRole('button', { name: 'Pokreni vodič' })[0]
+    );
+    expect(await screen.findByText('Veličina prikaza')).toBeInTheDocument();
+  });
+});

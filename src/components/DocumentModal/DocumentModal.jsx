@@ -13,10 +13,17 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import AppTour from '~components/AppTour/AppTour';
 import DocxViewer from '~components/DocxViewer/DocxViewer';
-import { CloseLineIcon, DownloadToStorageIcon } from '~components/Icons';
+import {
+  CloseLineIcon,
+  DownloadToStorageIcon,
+  InfoCircleLineIcon,
+} from '~components/Icons';
+import useTour from '~hooks/useTour';
 import Icon from '~shared-components/Icon/Icon';
 import { downloadBlob } from '~utils/fileDownloader';
+import { PREVIEW_TOUR_STEPS } from './previewTourSteps';
 
 const MIN_ZOOM = 0.5;
 const MAX_ZOOM = 2;
@@ -111,6 +118,8 @@ const DocumentModal = ({
   const [pages, setPages] = useState(null);
   const { t } = useTranslation();
   const canvasRef = useRef(null);
+  const tour = useTour('preview', { autoStart: true });
+  const tourRunning = open && tour.run;
 
   const fitWidth = () => {
     const page = canvasRef.current?.querySelector('section.docx');
@@ -126,162 +135,192 @@ const DocumentModal = ({
   const handleDownload = () => downloadBlob(cleanBlob, `${title}.docx`);
 
   return (
-    <Dialog
-      maxWidth={false}
-      PaperProps={{
-        sx: (t) => ({
-          m: DIALOG_MARGIN,
-          width: {
-            xs: `calc(100% - ${t.spacing(DIALOG_MARGIN.xs * 2)})`,
-            sm: `calc(100% - ${t.spacing(DIALOG_MARGIN.sm * 2)})`,
-          },
-          height: {
-            xs: `calc(100% - ${t.spacing(DIALOG_MARGIN.xs * 2)})`,
-            sm: `calc(100% - ${t.spacing(DIALOG_MARGIN.sm * 2)})`,
-          },
-          maxHeight: 'none',
-          overflow: 'hidden',
-        }),
-      }}
-      open={open}
-      onClose={onClose}
-      aria-labelledby="preview-title"
-    >
-      {printStyles}
-      <Stack
-        className="no-print"
-        direction="row"
-        spacing={1.5}
-        sx={{
-          px: { xs: 1.5, sm: 2.5 },
-          py: 1.25,
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          rowGap: 1,
-          borderBottom: 1,
-          borderColor: 'divider',
-          bgcolor: 'background.paper',
+    <>
+      <Dialog
+        maxWidth={false}
+        PaperProps={{
+          sx: (t) => ({
+            m: DIALOG_MARGIN,
+            width: {
+              xs: `calc(100% - ${t.spacing(DIALOG_MARGIN.xs * 2)})`,
+              sm: `calc(100% - ${t.spacing(DIALOG_MARGIN.sm * 2)})`,
+            },
+            height: {
+              xs: `calc(100% - ${t.spacing(DIALOG_MARGIN.xs * 2)})`,
+              sm: `calc(100% - ${t.spacing(DIALOG_MARGIN.sm * 2)})`,
+            },
+            maxHeight: 'none',
+            overflow: 'hidden',
+          }),
         }}
+        open={open}
+        onClose={onClose}
+        aria-labelledby="preview-title"
+        // The tour tooltip lives outside the dialog and needs the focus.
+        disableEnforceFocus={tourRunning}
       >
-        <Box sx={{ flex: 1, minWidth: 180 }}>
-          <Typography
-            id="preview-title"
-            variant="h6"
-            component="h2"
-            noWrap
-            title={title}
-          >
-            {title}
-          </Typography>
-          <Typography variant="caption" color="text.secondary">
-            {pages
-              ? t('preview.pages', { count: pages })
-              : t('preview.preparing')}
-          </Typography>
-        </Box>
+        {printStyles}
+        <Stack
+          className="no-print"
+          direction="row"
+          spacing={1.5}
+          sx={{
+            px: { xs: 1.5, sm: 2.5 },
+            py: 1.25,
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            rowGap: 1,
+            borderBottom: 1,
+            borderColor: 'divider',
+            bgcolor: 'background.paper',
+          }}
+        >
+          <Box sx={{ flex: 1, minWidth: 180 }}>
+            <Typography
+              id="preview-title"
+              variant="h6"
+              component="h2"
+              noWrap
+              title={title}
+            >
+              {title}
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              {pages
+                ? t('preview.pages', { count: pages })
+                : t('preview.preparing')}
+            </Typography>
+          </Box>
 
-        <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
-          <IconButton
-            aria-label={t('preview.zoomOut')}
-            onClick={() => setZoom((z) => clampZoom(z - 0.1))}
-            disabled={zoom <= MIN_ZOOM}
+          <Stack
+            direction="row"
+            spacing={0.5}
+            sx={{ alignItems: 'center' }}
+            data-tour="preview-zoom"
           >
-            <Typography
-              component="span"
-              sx={{ fontSize: 20, lineHeight: 1, width: 20 }}
+            <IconButton
+              aria-label={t('preview.zoomOut')}
+              onClick={() => setZoom((z) => clampZoom(z - 0.1))}
+              disabled={zoom <= MIN_ZOOM}
             >
-              −
-            </Typography>
-          </IconButton>
-          <Typography
-            variant="body2"
-            sx={{
-              width: 48,
-              textAlign: 'center',
-              fontVariantNumeric: 'tabular-nums',
-            }}
-            aria-live="polite"
-          >
-            {Math.round(zoom * 100)}%
-          </Typography>
-          <IconButton
-            aria-label={t('preview.zoomIn')}
-            onClick={() => setZoom((z) => clampZoom(z + 0.1))}
-            disabled={zoom >= MAX_ZOOM}
-          >
+              <Typography
+                component="span"
+                sx={{ fontSize: 20, lineHeight: 1, width: 20 }}
+              >
+                −
+              </Typography>
+            </IconButton>
             <Typography
-              component="span"
-              sx={{ fontSize: 20, lineHeight: 1, width: 20 }}
+              variant="body2"
+              sx={{
+                width: 48,
+                textAlign: 'center',
+                fontVariantNumeric: 'tabular-nums',
+              }}
+              aria-live="polite"
             >
-              +
+              {Math.round(zoom * 100)}%
             </Typography>
-          </IconButton>
-          <Button size="small" onClick={fitWidth}>
-            {t('preview.fitWidth')}
+            <IconButton
+              aria-label={t('preview.zoomIn')}
+              onClick={() => setZoom((z) => clampZoom(z + 0.1))}
+              disabled={zoom >= MAX_ZOOM}
+            >
+              <Typography
+                component="span"
+                sx={{ fontSize: 20, lineHeight: 1, width: 20 }}
+              >
+                +
+              </Typography>
+            </IconButton>
+            <Button size="small" onClick={fitWidth}>
+              {t('preview.fitWidth')}
+            </Button>
+          </Stack>
+
+          <Divider
+            orientation="vertical"
+            flexItem
+            sx={{ display: { xs: 'none', md: 'block' } }}
+          />
+
+          <FormControlLabel
+            data-tour="preview-highlight"
+            control={
+              <Switch
+                checked={highlight}
+                onChange={(e) => setHighlight(e.target.checked)}
+              />
+            }
+            label={t('preview.highlight')}
+          />
+          <Button variant="outlined" onClick={() => window.print()}>
+            {t('preview.print')}
           </Button>
+          <Button
+            variant="contained"
+            onClick={handleDownload}
+            data-tour="preview-download"
+            startIcon={<Icon as={DownloadToStorageIcon} size={18} />}
+          >
+            {t('preview.download')}
+          </Button>
+          <Tooltip title={t('tour.replay')}>
+            <IconButton onClick={tour.start} aria-label={t('tour.replay')}>
+              <Icon as={InfoCircleLineIcon} size={18} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={t('preview.closeHint')}>
+            <IconButton onClick={onClose} aria-label={t('preview.close')}>
+              <Icon as={CloseLineIcon} size={18} />
+            </IconButton>
+          </Tooltip>
         </Stack>
 
-        <Divider
-          orientation="vertical"
-          flexItem
-          sx={{ display: { xs: 'none', md: 'block' } }}
-        />
+        {missingFields.length > 0 && (
+          <Alert
+            severity="warning"
+            className="no-print"
+            sx={{ borderRadius: 0 }}
+          >
+            {t('preview.missing', {
+              count: missingFields.length,
+              fields: missingFields.join(', '),
+            })}
+          </Alert>
+        )}
 
-        <FormControlLabel
-          control={
-            <Switch
-              checked={highlight}
-              onChange={(e) => setHighlight(e.target.checked)}
-            />
-          }
-          label={t('preview.highlight')}
-        />
-        <Button variant="outlined" onClick={() => window.print()}>
-          {t('preview.print')}
-        </Button>
-        <Button
-          variant="contained"
-          onClick={handleDownload}
-          startIcon={<Icon as={DownloadToStorageIcon} size={18} />}
-        >
-          {t('preview.download')}
-        </Button>
-        <Tooltip title={t('preview.closeHint')}>
-          <IconButton onClick={onClose} aria-label={t('preview.close')}>
-            <Icon as={CloseLineIcon} size={18} />
-          </IconButton>
-        </Tooltip>
-      </Stack>
-
-      {missingFields.length > 0 && (
-        <Alert severity="warning" className="no-print" sx={{ borderRadius: 0 }}>
-          {t('preview.missing', {
-            count: missingFields.length,
-            fields: missingFields.join(', '),
+        <Box
+          ref={canvasRef}
+          className="preview-canvas"
+          sx={(t) => ({
+            flex: 1,
+            overflow: 'auto',
+            bgcolor: alpha(
+              t.palette.text.primary,
+              t.palette.mode === 'dark' ? 0.04 : 0.06
+            ),
+            ...pageStyles(t),
           })}
-        </Alert>
-      )}
-
-      <Box
-        ref={canvasRef}
-        className="preview-canvas"
-        sx={(t) => ({
-          flex: 1,
-          overflow: 'auto',
-          bgcolor: alpha(
-            t.palette.text.primary,
-            t.palette.mode === 'dark' ? 0.04 : 0.06
-          ),
-          ...pageStyles(t),
-        })}
-      >
-        <DocxViewer
-          blob={highlight ? previewBlob : cleanBlob}
-          zoom={zoom}
-          onRendered={setPages}
+        >
+          <DocxViewer
+            blob={highlight ? previewBlob : cleanBlob}
+            zoom={zoom}
+            onRendered={setPages}
+          />
+        </Box>
+      </Dialog>
+      {/* Outside the Dialog: Esc in the tour must not close the preview. */}
+      {open && (
+        <AppTour
+          name="preview"
+          steps={PREVIEW_TOUR_STEPS}
+          run={tourRunning}
+          onEnd={tour.end}
+          aboveDialogs
         />
-      </Box>
-    </Dialog>
+      )}
+    </>
   );
 };
 
